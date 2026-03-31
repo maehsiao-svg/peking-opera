@@ -35,6 +35,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 
 /* SIDEBAR */
 .sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 72px);overflow-y:auto;}
+#sb-content{display:flex;flex-direction:column;flex:1;overflow-y:auto;}
 .sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
 .sb-lbl{font-size:19px;color:var(--gold);letter-spacing:.04em;font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:8px;color:#ffffff;font-size:18px;font-weight:700;cursor:pointer;margin-bottom:4px;transition:all .18s;}
@@ -203,7 +204,9 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 /* ═══ MOBILE RESPONSIVE ═══ */
 @media(max-width:768px){
   .body-wrap{flex-direction:column;}
-  .sidebar{width:100%;max-height:none;border-right:none;border-bottom:3px solid var(--gold);padding:.8rem 0;flex-direction:row;flex-wrap:wrap;overflow-x:auto;}
+  .sidebar{width:100%;max-height:none;border-right:none;border-bottom:3px solid var(--gold);padding:0;overflow:hidden;}
+  #sb-content{display:none;}
+  #sb-content.open{display:block;}
   .sb-sec{padding:0 .6rem;margin-bottom:.5rem;min-width:120px;}
   .sb-lbl{font-size:14px;margin-bottom:5px;padding-bottom:4px;}
   .sb-item{font-size:14px;padding:7px 8px;}
@@ -273,7 +276,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <button onclick="toggleSidebar()" id="sb-toggle" style="display:none;width:100%;background:rgba(201,162,39,.15);border:none;border-bottom:1px solid rgba(201,162,39,.3);color:var(--gold);padding:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);">☰ 選單</button>
-  <div id="sb-content" style="display:contents;">
+  <div id="sb-content">
   <div class="sb-sec">
     <div class="sb-lbl">進入課程前</div>
     <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>學生登入</div>
@@ -302,7 +305,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
         <button onclick="hideLogoutConfirm()" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 16px;border-radius:6px;font-size:14px;cursor:pointer;">取消</button>
       </div>
     </div>
-  </div><!-- /sb-content -->
+  </div>
 </div>
 
 <!-- CONTENT -->
@@ -1210,17 +1213,18 @@ function initMobile(){
   if(!toggle||!sbContent) return;
   if(window.innerWidth<=768){
     toggle.style.display='block';
-    sbContent.style.display='none';
     toggle.textContent='☰ 選單';
+  } else {
+    toggle.style.display='none';
   }
 }
 function toggleSidebar(){
   var c=document.getElementById('sb-content');
   var btn=document.getElementById('sb-toggle');
   if(!c) return;
-  var isHidden=(c.style.display==='none'||c.style.display===''||c.style.display==='contents');
-  c.style.display=isHidden?'block':'none';
-  btn.textContent=isHidden?'✕ 關閉':'☰ 選單';
+  var isOpen=c.classList.contains('open');
+  if(isOpen){c.classList.remove('open');btn.textContent='☰ 選單';}
+  else{c.classList.add('open');btn.textContent='✕ 關閉';}
 }
 window.addEventListener('resize',function(){
   var toggle=document.getElementById('sb-toggle');
@@ -1228,7 +1232,7 @@ window.addEventListener('resize',function(){
   if(!toggle||!sbContent) return;
   if(window.innerWidth>768){
     toggle.style.display='none';
-    sbContent.style.display='contents';
+    if(sbContent) sbContent.classList.remove('open');
   } else {
     toggle.style.display='block';
   }
