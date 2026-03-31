@@ -735,7 +735,7 @@ var S={
   post:{done:false,score:0},
   weekSeen:[false,false,false,false]
 };
-var SHEETS_URL=''; // ← 貼入您的 Google Apps Script 網址
+var SHEETS_URL=''; /https://script.google.com/macros/s/AKfycbyKMEL9L41CHwaDROIebnXCRBzUDXq8Bi27yif5Hm_-452lsr3n4cBn1DmuFeowecOw/exec/ ← 貼入您的 Google Apps Script 網址
 function save(){try{localStorage.setItem('kj2_state',JSON.stringify(S));}catch(e){}}
 function load(){try{var d=localStorage.getItem('kj2_state');if(d){S=JSON.parse(d);}}catch(e){}}
 
