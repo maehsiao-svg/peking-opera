@@ -6,6 +6,7 @@
 <title>京劇華語教學平台 — 霸王別姬</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bd:#0C3B6E;--bm:#1a6dbf;--bl:#4a9fd4;--bp:#d0e8f8;--bpp:#eaf4fc;
@@ -17,24 +18,24 @@
 html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;}
 .app{display:flex;flex-direction:column;min-height:100vh;}
 .body-wrap{display:flex;flex:1;}
-.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 72px);min-height:0;}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 72px);}
 .panel{display:none;animation:fadeIn .2s ease;}
 .panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* HEADER */
-.hdr{background:var(--bd);min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:4px solid var(--gold);flex-shrink:0;position:sticky;top:0;z-index:100;gap:12px;flex-wrap:wrap;}
+.hdr{background:var(--bd);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:4px solid var(--gold);flex-shrink:0;position:sticky;top:0;z-index:100;}
 .logo{display:flex;align-items:center;gap:14px;}
 .logo-badge{width:46px;height:46px;border-radius:50%;background:var(--pm);border:2.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:700;}
 .logo-main{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:700;letter-spacing:.1em;}
-.logo-sub{font-size:11px;color:var(--bl);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;}
-.hdr-nav{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
-.hn{background:transparent;border:1.5px solid rgba(74,159,212,.35);color:var(--bl);padding:6px 12px;border-radius:22px;font-size:14px;font-family:var(--sans);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.logo-sub{font-size:12px;color:var(--bl);margin-top:2px;}
+.hdr-nav{display:flex;gap:6px;}
+.hn{background:transparent;border:1.5px solid rgba(74,159,212,.35);color:var(--bl);padding:7px 16px;border-radius:22px;font-size:15px;font-family:var(--sans);cursor:pointer;transition:all .18s;}
 .hn:hover{background:rgba(74,159,212,.15);color:#fff;}
 .hn.on{background:var(--pm);border-color:var(--pm);color:#fff;font-weight:600;}
 
 /* SIDEBAR */
-.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 72px);overflow-y:auto;min-width:220px;}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 72px);overflow-y:auto;}
 .sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
 .sb-lbl{font-size:19px;color:var(--gold);letter-spacing:.04em;font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:8px;color:#ffffff;font-size:18px;font-weight:700;cursor:pointer;margin-bottom:4px;transition:all .18s;}
@@ -200,59 +201,42 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--bd);color:#fff;padding:13px 20px;border-radius:10px;font-size:15px;border-left:4px solid var(--gold);opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;z-index:9999;}
 .toast.show{opacity:1;transform:translateY(0);}
 
-/* ═══ MOBILE RESPONSIVE ═══ */
-@media(max-width:900px){
-  .hdr-nav .hn{padding:6px 10px;font-size:13px;}
-}
+.sb-toggle{display:none;width:100%;background:rgba(201,162,39,.15);border:none;border-bottom:2px solid rgba(201,162,39,.3);color:var(--gold);padding:11px 1rem;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);text-align:left;}
+
+/* ─── MOBILE ─── */
 @media(max-width:768px){
-  /* Layout */
   .body-wrap{flex-direction:column;}
-  .sidebar{width:100%;flex-shrink:0;max-height:none;border-right:none;border-bottom:3px solid var(--gold);padding:0;overflow:hidden;display:block;}
-  .sidebar.collapsed .sb-sec,.sidebar.collapsed .sb-user{display:none;}
+  .sidebar{width:100%;max-height:none;border-right:none;border-bottom:3px solid var(--gold);padding:0;display:block;overflow:visible;}
+  .sidebar .sb-sec,.sidebar .sb-user{display:none;}
+  .sidebar.sb-open .sb-sec,.sidebar.sb-open .sb-user{display:block;}
+  .sb-toggle{display:block!important;}
   .content{padding:1rem;max-height:none;overflow-y:visible;}
-  /* Sidebar items */
-  .sb-lbl{font-size:14px;margin-bottom:5px;padding-bottom:4px;}
-  .sb-sec{padding:.4rem .8rem;margin-bottom:.4rem;}
-  .sb-item{font-size:14px;padding:8px 10px;}
-  .sb-user{margin:.5rem .8rem;padding:8px;}
-  .sb-uname{font-size:15px;}
-  /* Content layout */
   .week-grid{grid-template-columns:1fr;}
   .fgrid{grid-template-columns:1fr;}
   .fg.full{grid-column:1;}
-  /* Quiz */
   .quiz-hdr{flex-direction:column;gap:10px;padding:1rem;}
-  .qh-title{font-size:18px;}
   .sec-head h2{font-size:20px;}
-  /* Flow */
-  .flow{padding:.8rem;gap:0;}
+  .flow{padding:.8rem;overflow-x:auto;}
   .fc{width:34px;height:34px;font-size:11px;}
   .fa{width:16px;}
   .fl{font-size:10px;max-width:40px;}
-  /* Lyrics */
-  .lyric-search-box{padding:1rem;}
+  .week-nav{flex-wrap:wrap;gap:5px;}
+  .wnav{font-size:13px;padding:6px 10px;}
+  .btn-row{flex-direction:column;}
+  .btn-p,.btn-s{width:100%;text-align:center;}
+  .wbanner{height:72px;}
   .lrow{grid-template-columns:22px 1fr;}
   .lzh{font-size:16px;}
-  .lspeak{font-size:11px;padding:3px 7px;}
-  /* Week nav */
-  .week-nav{gap:5px;flex-wrap:wrap;}
-  .wnav{font-size:13px;padding:6px 10px;}
-  /* Buttons */
-  .btn-row{flex-direction:column;}
-  .btn-p,.btn-s{width:100%;text-align:center;justify-content:center;}
-  .wbanner{height:72px;}
-  .wbn{font-size:22px;}
-  .form-card{padding:1.2rem;}
+  .lspeak{font-size:11px;padding:3px 6px;}
+  .form-card{padding:1rem;}
+  .lyric-search-box{padding:1rem;}
+  .qrow{padding:.8rem 1rem;}
 }
 @media(max-width:480px){
   .hdr{padding:0 .8rem;min-height:60px;}
   .hdr-nav{gap:3px;}
   .hn{padding:5px 8px;font-size:11px;}
-  .logo-main{font-size:15px!important;letter-spacing:.04em!important;}
   .logo-sub{display:none;}
-  .quiz-hdr .qscore{font-size:14px;padding:6px 12px;}
-  .form-card{padding:.8rem;}
-  .finput,.fsel{font-size:15px;}
 }
 </style>
 </head>
@@ -280,7 +264,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 <div class="body-wrap">
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-  <button onclick="toggleSidebar()" id="sb-toggle" style="display:none;width:100%;background:rgba(201,162,39,.15);border:none;border-bottom:1px solid rgba(201,162,39,.3);color:var(--gold);padding:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);">☰ 選單</button>
+  <button onclick="toggleSidebar()" id="sb-toggle" class="sb-toggle">☰ 選單</button>
   <div class="sb-sec">
     <div class="sb-lbl">進入課程前</div>
     <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>學生登入</div>
@@ -1211,37 +1195,28 @@ function exportMyData(){
 // MOBILE SIDEBAR TOGGLE
 // ══════════════════════════════════════
 function initMobile(){
-  var toggle=document.getElementById('sb-toggle');
   var sb=document.getElementById('sidebar');
-  if(!toggle||!sb) return;
-  if(window.innerWidth<=768){
-    toggle.style.display='block';
-    toggle.textContent='☰ 選單';
-    sb.classList.add('collapsed');
-  } else {
-    toggle.style.display='none';
-    sb.classList.remove('collapsed');
+  if(!sb) return;
+  // CSS handles show/hide via media query - just ensure sb-open is removed on desktop
+  if(window.innerWidth>768){
+    sb.classList.remove('sb-open');
   }
 }
 function toggleSidebar(){
   var sb=document.getElementById('sidebar');
   var btn=document.getElementById('sb-toggle');
   if(!sb) return;
-  var isCollapsed=sb.classList.contains('collapsed');
-  if(isCollapsed){sb.classList.remove('collapsed');btn.textContent='✕ 關閉';}
-  else{sb.classList.add('collapsed');btn.textContent='☰ 選單';}
+  var isOpen=sb.classList.contains('sb-open');
+  if(isOpen){sb.classList.remove('sb-open');btn.textContent='☰ 選單';}
+  else{sb.classList.add('sb-open');btn.textContent='✕ 關閉選單';}
 }
 window.addEventListener('resize',function(){
   var toggle=document.getElementById('sb-toggle');
   var sbContent=document.getElementById('sb-content');
   if(!toggle||!sbContent) return;
   var sb=document.getElementById('sidebar');
-  if(window.innerWidth>768){
-    toggle.style.display='none';
-    if(sb) sb.classList.remove('collapsed');
-  } else {
-    toggle.style.display='block';
-    if(sb) sb.classList.add('collapsed');
+  if(window.innerWidth>768 && sb){
+    sb.classList.remove('sb-open');
   }
 });
 
