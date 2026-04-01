@@ -276,6 +276,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
 
 
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
 </div>
 
 <!-- ═══ LOGIN ═══ -->
@@ -366,6 +369,10 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="btn-row" style="justify-content:center;margin-top:1rem;">
       <button class="btn-p blue" onclick="show('course');switchWeek(1)">前往第一週課程 →</button>
     </div>
+  
+    <div style="margin-top:1rem;">
+      <button onclick="doLogout()" class="btn-s" style="font-weight:700;">暫時離開？登出 Logout</button>
+    </div>
   </div>
 </div>
 
@@ -398,6 +405,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w1-lyrics"></div>
     </div>
     <div class="btn-row"><button class="btn-s" onclick="show('overview')">↩ 回到總覽</button><button class="btn-p blue" onclick="switchWeek(2)">下一週：四面楚歌 →</button></div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
   </div>
 
   <!-- WEEK 2 -->
@@ -421,6 +431,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-s" onclick="switchWeek(1)">← 第一週</button>
       <button class="btn-p blue" onclick="switchWeek(3)">下一週：力拔山兮 →</button>
     </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
   </div>
 
   <!-- WEEK 3 -->
@@ -445,6 +458,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-s" onclick="switchWeek(2)">← 第二週</button>
       <button class="btn-p blue" onclick="switchWeek(4)">下一週：虞姬舞劍 →</button>
     </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
   </div>
 
   <!-- WEEK 4 -->
@@ -469,6 +485,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-s" onclick="switchWeek(3)">← 第三週</button>
       <button class="btn-p" onclick="show('posttest')">前往後測 →</button>
     </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
   </div>
 </div>
 
@@ -509,7 +528,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <div class="done-msg" id="post-done-msg" style="display:none">
     <h3 style="color:var(--pd);">恭喜完成後測！</h3>
     <div class="score-compare" id="post-compare"></div>
-    <p style="color:var(--muted);">感謝您完成四週的學習課程！</p>
+    <p style="color:var(--muted);margin-bottom:1.2rem;">感謝您完成四週的學習課程！</p>
+    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;">完成學習，登出 Logout</button>
   </div>
 </div>
 
@@ -518,7 +538,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
 <script>
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbxkqSy_kHm1e5DcIL6Ej7pfMca-uzTgn-A1TSqeNpcHUDxPLwGj3XhfUB4abOLu40wM/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbylOhAxeUe0TKQshfKOlZkvaWVKAgyrzQNCI28AVhyCJrVWCvw1w4dn4_4qkZboPvgl/exec';
 
 var LYRICS = {
   1:[
