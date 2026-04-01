@@ -2,11 +2,10 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>京劇華語教學平台 — 霸王別姬</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bd:#0C3B6E;--bm:#1a6dbf;--bl:#4a9fd4;--bp:#d0e8f8;--bpp:#eaf4fc;
@@ -15,84 +14,62 @@
   --bg:#f0f5fc;--card:#fff;--border:rgba(26,109,191,0.18);
   --serif:'Noto Serif TC',serif;--sans:'Noto Sans TC',sans-serif;
 }
-html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;}
 .app{display:flex;flex-direction:column;min-height:100vh;}
+/* LAYOUT */
 .body-wrap{display:flex;flex:1;}
-.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 72px);}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 84px);overflow-y:auto;}
+.sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
+.sb-lbl{font-size:19px;color:var(--gold);font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:3px;transition:all .18s;}
+.sb-item:hover{background:rgba(74,159,212,.18);}
+.sb-item.on{background:rgba(194,69,122,.3);color:var(--gold);}
+.sb-dot{width:8px;height:8px;border-radius:50%;background:rgba(232,244,255,.35);flex-shrink:0;}
+.sb-item.done .sb-dot{background:#68d391;}
+.sb-item.on .sb-dot{background:var(--gold);}
+.sb-user{margin:auto 1rem 1rem;background:rgba(74,159,212,.1);border:1px solid rgba(201,162,39,.2);border-radius:10px;padding:12px;text-align:center;}
+.sb-uid{font-size:14px;color:var(--gold);margin-bottom:4px;font-weight:700;}
+.sb-uname{font-size:19px;color:#fff;font-weight:900;}
+.sb-usub{font-size:14px;color:#e8f4ff;margin-top:3px;font-weight:600;}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 84px);}
 .panel{display:none;animation:fadeIn .2s ease;}
 .panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-/* HEADER */
-.hdr{background:var(--bd);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;border-bottom:4px solid var(--gold);flex-shrink:0;position:sticky;top:0;z-index:100;}
-.logo{display:flex;align-items:center;gap:14px;}
-.logo-badge{width:46px;height:46px;border-radius:50%;background:var(--pm);border:2.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--gold);font-weight:700;}
-.logo-main{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:700;letter-spacing:.1em;}
-.logo-sub{font-size:12px;color:var(--bl);margin-top:2px;}
-.hdr-nav{display:flex;gap:6px;}
-.hn{background:transparent;border:1.5px solid rgba(74,159,212,.35);color:var(--bl);padding:7px 16px;border-radius:22px;font-size:15px;font-family:var(--sans);cursor:pointer;transition:all .18s;}
-.hn:hover{background:rgba(74,159,212,.15);color:#fff;}
-.hn.on{background:var(--pm);border-color:var(--pm);color:#fff;font-weight:600;}
-
-/* SIDEBAR */
-.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 72px);overflow-y:auto;}
-.sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
-.sb-lbl{font-size:19px;color:var(--gold);letter-spacing:.04em;font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
-.sb-item{display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:8px;color:#ffffff;font-size:18px;font-weight:700;cursor:pointer;margin-bottom:4px;transition:all .18s;}
-.sb-item:hover{background:rgba(74,159,212,.18);color:#fff;}
-.sb-item.on{background:rgba(194,69,122,.3);color:var(--gold);font-weight:700;}
-.sb-dot{width:9px;height:9px;border-radius:50%;background:rgba(232,244,255,.35);flex-shrink:0;}
-.sb-item.done .sb-dot{background:#68d391;}
-.sb-item.on .sb-dot{background:var(--gold);}
-.sb-badge{margin-left:auto;font-size:12px;background:rgba(194,69,122,.35);color:#fce8f3;padding:2px 9px;border-radius:10px;font-weight:600;}
-.sb-user{margin:auto 1rem 1rem;background:rgba(74,159,212,.1);border:1px solid rgba(201,162,39,.2);border-radius:10px;padding:12px;text-align:center;}
-.sb-uid{font-size:15px;color:var(--gold);margin-bottom:5px;font-weight:700;}
-.sb-uname{font-size:20px;color:#fff;font-weight:900;}
-.sb-usub{font-size:15px;color:#e8f4ff;margin-top:4px;font-weight:600;}
-
-/* SECTION HEADING */
+/* SECTION */
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:1.8rem;}
 .sec-bar{width:5px;height:34px;background:var(--pm);flex-shrink:0;}
 .sec-head h2{font-family:var(--serif);font-size:26px;color:var(--bd);font-weight:700;}
-
-/* INFO BAR */
 .info{background:var(--bpp);border-left:4px solid var(--bm);border-radius:0 8px 8px 0;padding:12px 16px;font-size:15px;color:var(--ink2);margin-bottom:1.5rem;line-height:1.65;}
 .info.pink{background:var(--pp);border-left-color:var(--pm);color:var(--pd);}
-
 /* FLOW */
-.flow{display:flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.8rem;overflow-x:auto;gap:0;}
+.flow{display:flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.8rem;overflow-x:auto;}
 .fs{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;}
 .fc{width:42px;height:42px;border-radius:50%;background:var(--bpp);border:2px solid var(--bl);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--bm);}
 .fc.done{background:#c6f6d5;border-color:#48bb78;color:#22543d;}
 .fc.cur{background:var(--pm);border-color:var(--pd);color:#fff;}
-.fc.lock{background:#eee;border-color:#ccc;color:#aaa;}
 .fl{font-size:12px;color:var(--muted);text-align:center;max-width:58px;line-height:1.3;}
-.fl.cur{color:var(--pd);font-weight:600;}
 .fa{height:2px;width:28px;background:var(--bl);opacity:.3;margin:0 3px;margin-bottom:20px;flex-shrink:0;}
 .fa.done{background:#48bb78;opacity:1;}
-
 /* PROGRESS */
 .prog-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:14px;}
 .prog-lbl{font-size:15px;color:var(--muted);min-width:70px;}
 .prog-track{flex:1;height:10px;background:var(--bpp);border-radius:5px;overflow:hidden;}
 .prog-fill{height:100%;background:var(--bm);border-radius:5px;transition:width .5s;}
 .prog-pct{font-size:16px;font-weight:700;color:var(--bd);min-width:40px;text-align:right;}
-
 /* WEEK CARDS */
 .week-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin-bottom:1.5rem;}
 .wcard{background:var(--card);border:2px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;}
 .wcard:hover{border-color:var(--bm);transform:translateY(-2px);}
 .wbanner{height:86px;display:flex;align-items:center;justify-content:center;position:relative;}
-.wk1 .wbanner{background:var(--bd);} .wk2 .wbanner{background:var(--pd);}
-.wk3 .wbanner{background:#0a2a5c;} .wk4 .wbanner{background:#5e1040;}
+.wk1 .wbanner{background:var(--bd);}.wk2 .wbanner{background:var(--pd);}
+.wk3 .wbanner{background:#0a2a5c;}.wk4 .wbanner{background:#5e1040;}
 .wbn{font-family:var(--serif);font-size:26px;color:var(--gold);letter-spacing:.18em;font-weight:700;}
 .wbnum{position:absolute;top:8px;right:10px;font-size:10px;color:rgba(201,162,39,.4);}
 .wbody{padding:12px 14px;}
 .wtitle{display:none;}
 .wdesc{font-size:16px;color:var(--ink2);line-height:1.6;font-weight:500;}
-.wst{display:inline-block;font-size:12px;padding:3px 10px;border-radius:10px;margin-top:7px;font-weight:500;}
-.st-on{background:var(--pp);color:var(--pd);} .st-lock{background:var(--bpp);color:var(--bm);}
-
+.wst{display:inline-block;font-size:12px;padding:3px 10px;border-radius:10px;font-weight:500;margin-top:6px;}
+.st-on{background:var(--pp);color:var(--pd);}.st-lock{background:var(--bpp);color:var(--bm);}
 /* FORM */
 .form-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:2rem;max-width:600px;}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
@@ -108,25 +85,29 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 .fdiv{border:none;border-top:2px dashed var(--border);margin:1.4rem 0;}
 .btn-p{background:var(--pm);color:#fff;border:none;padding:11px 26px;border-radius:25px;font-size:16px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:background .18s;}
 .btn-p:hover{background:var(--pd);}
-.btn-p.blue{background:var(--bm);} .btn-p.blue:hover{background:var(--bd);}
-.btn-s{background:transparent;color:var(--bm);border:2px solid var(--bp);padding:11px 20px;border-radius:25px;font-size:16px;font-family:var(--sans);cursor:pointer;transition:all .18s;}
+.btn-p.blue{background:var(--bm);}.btn-p.blue:hover{background:var(--bd);}
+.btn-s{background:transparent;color:var(--bm);border:2px solid var(--bp);padding:11px 20px;border-radius:25px;font-size:16px;font-family:var(--sans);cursor:pointer;}
 .btn-s:hover{border-color:var(--bm);}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.4rem;}
 .err-txt{color:#c53030;font-size:15px;margin-top:10px;display:none;}
-
 /* QUIZ */
-.quiz-hdr{background:var(--bd);border-radius:12px;padding:1.4rem 2rem;margin-bottom:1.4rem;display:flex;justify-content:space-between;align-items:center;}
+.quiz-hdr{background:var(--bd);border-radius:12px;padding:1.4rem 2rem;margin-bottom:1.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
 .quiz-hdr.pink{background:var(--pd);}
 .qh-title{font-family:var(--serif);font-size:22px;color:var(--gold);}
 .qh-sub{font-size:14px;color:var(--bl);margin-top:4px;}
 .qscore{background:var(--pm);color:#fff;padding:8px 20px;border-radius:20px;font-size:18px;font-weight:700;}
+.qpart-scores{display:flex;gap:8px;flex-wrap:wrap;}
+.qps{background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;}
+.qps-lbl{font-size:11px;color:var(--bl);}
+.qps-val{font-size:16px;font-weight:700;color:#fff;}
 .qpart{background:var(--card);border:2px solid var(--border);border-radius:12px;margin-bottom:1.2rem;overflow:hidden;}
-.qphdr{background:var(--bpp);padding:12px 1.3rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bp);}
+.qphdr{background:var(--bpp);padding:12px 1.3rem;display:flex;justify-content:space-between;align-items:center;}
 .qphdr.pink{background:var(--pp);}
 .qphdr-t{font-size:17px;font-weight:700;color:var(--bd);}
 .qphdr.pink .qphdr-t{color:var(--pd);}
 .qphdr-s{font-size:14px;color:var(--muted);}
-.qrow{padding:1.1rem 1.3rem;border-bottom:1px solid var(--bpp);}
+.qrow{padding:1.1rem 1.3rem;border-bottom:1px solid var(--bpp);transition:background .2s;}
+.qrow.unanswered{background:#fff5f5;border-left:4px solid #e24b4a;border-radius:0 8px 8px 0;}
 .qrow:last-of-type{border-bottom:none;}
 .qt{font-size:17px;color:var(--ink);margin-bottom:11px;line-height:1.7;font-weight:500;}
 .qopts{display:flex;flex-direction:column;gap:8px;}
@@ -135,166 +116,117 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 .qopt input{accent-color:var(--pm);width:18px;height:18px;margin-top:3px;flex-shrink:0;}
 .qopt.correct{background:#f0fff4;color:#22543d;font-weight:500;}
 .qopt.wrong{background:#fff5f5;color:#742a2a;}
-.qfooter{padding:11px 1.3rem;display:flex;justify-content:space-between;align-items:center;background:var(--bpp);}
-.qfooter.pink{background:var(--pp);}
-.part-note{font-size:13px;color:var(--muted);}
-
-/* submit area */
 .submit-area{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:1.5rem 2rem;margin-top:1rem;text-align:center;}
 .submit-area h3{font-family:var(--serif);font-size:20px;color:var(--bd);margin-bottom:8px;}
 .submit-area p{font-size:15px;color:var(--muted);margin-bottom:1.2rem;}
-.locked-notice{background:#fff8e1;border:2px solid var(--gold);border-radius:8px;padding:10px 14px;font-size:15px;color:#7a5500;text-align:center;}
-
+.done-msg{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:1.8rem 2rem;text-align:center;margin-top:1rem;}
+.done-msg h3{font-family:var(--serif);font-size:22px;margin-bottom:8px;}
+.score-compare{font-size:17px;color:var(--bd);margin-bottom:1rem;line-height:2;}
 /* VIDEO */
 .video-wrap{max-width:720px;margin-bottom:1.4rem;}
-.video-box{border-radius:12px;overflow:hidden;border:3px solid var(--gold);background:var(--bd);position:relative;}
-.video-box iframe{width:100%;height:405px;border:none;display:block;}
-.video-err{padding:2rem;text-align:center;color:var(--bl);}
-.video-link{display:inline-block;margin-top:10px;color:var(--gold);font-size:15px;text-decoration:underline;}
-
-/* LYRICS SEARCH */
+.video-btn{background:var(--bd);border-radius:12px;border:3px solid var(--gold);padding:2rem;text-align:center;}
+.video-btn-title{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.video-btn-sub{font-size:14px;color:var(--bl);margin-bottom:20px;}
+.video-btn a{display:inline-flex;align-items:center;gap:10px;background:var(--pm);color:#fff;padding:14px 32px;border-radius:30px;font-size:18px;font-weight:700;text-decoration:none;}
+/* LYRICS */
 .lyric-search-box{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.3rem;max-width:720px;margin-bottom:1.2rem;}
 .lsearch-row{display:flex;gap:10px;margin-bottom:1rem;}
 .lsearch-input{flex:1;border:2px solid var(--bp);border-radius:8px;padding:10px 14px;font-size:16px;font-family:var(--sans);background:var(--bpp);color:var(--ink);outline:none;}
 .lsearch-input:focus{border-color:var(--bm);}
-.lsearch-btn{background:var(--bm);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans);white-space:nowrap;}
-.lresult{background:var(--bpp);border-radius:8px;padding:1rem 1.2rem;min-height:60px;font-size:15px;display:none;}
+.lsearch-btn{background:var(--bm);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans);}
+.lresult{background:var(--bpp);border-radius:8px;padding:1rem 1.2rem;display:none;margin-top:4px;}
 .lresult.show{display:block;}
-.lresult-zh{font-family:var(--serif);font-size:19px;color:var(--ink);margin-bottom:6px;}
+.lresult-zh{font-family:var(--serif);font-size:19px;color:var(--ink);margin-bottom:5px;}
 .lresult-py{font-size:14px;color:var(--muted);margin-bottom:8px;}
-.lresult-tip{font-size:16px;color:var(--pm);line-height:1.65;padding:8px 12px;background:var(--pp);border-left:3px solid var(--pm);border-radius:0 6px 6px 0;}
+.lresult-tip{font-size:15px;color:var(--pm);line-height:1.65;padding:8px 12px;background:var(--pp);border-left:3px solid var(--pm);border-radius:0 6px 6px 0;}
 .speak-btn{display:inline-flex;align-items:center;gap:6px;background:var(--bm);color:#fff;border:none;padding:7px 14px;border-radius:20px;font-size:14px;cursor:pointer;margin-top:8px;font-family:var(--sans);}
-.speak-btn:hover{background:var(--bd);}
-
-/* LYRICS TABLE */
 .lyric-card{background:var(--card);border:2px solid var(--border);border-radius:12px;max-width:720px;overflow:hidden;margin-bottom:1.2rem;}
 .lyric-head{background:var(--bd);padding:12px 1.3rem;display:flex;align-items:center;justify-content:space-between;}
 .lyric-head-t{font-family:var(--serif);font-size:17px;color:var(--gold);}
 .lyric-head-hint{font-size:13px;color:var(--bl);}
 .lrow{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:9px 1.3rem;border-bottom:1px solid var(--bpp);cursor:pointer;transition:background .12s;}
 .lrow:last-child{border-bottom:none;}
-.lrow:hover{background:var(--bpp);}
-.lrow.open{background:var(--bpp);}
+.lrow:hover,.lrow.open{background:var(--bpp);}
 .lnum{font-size:13px;color:var(--bl);padding-top:2px;text-align:center;}
 .lmain{display:flex;flex-direction:column;gap:3px;}
 .lzh{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.5;}
-.lpy{font-size:13px;color:var(--muted);letter-spacing:.03em;}
+.lpy{font-size:13px;color:var(--muted);}
 .ltip{font-size:14px;color:var(--pm);margin-top:5px;padding:7px 10px;background:var(--pp);border-radius:6px;border-left:3px solid var(--pm);display:none;line-height:1.6;}
 .lrow.open .ltip{display:block;}
 .lspeak{background:none;border:1px solid var(--bl);color:var(--bl);border-radius:16px;padding:4px 10px;font-size:12px;cursor:pointer;white-space:nowrap;align-self:flex-start;margin-top:2px;}
 .lspeak:hover{background:var(--bm);border-color:var(--bm);color:#fff;}
 .tag-badge{display:inline-block;font-size:12px;color:var(--gold);background:rgba(201,162,39,.12);padding:2px 10px;border-radius:4px;margin:8px 1.3rem 0;font-style:italic;}
-
 /* WEEK NAV */
 .week-nav{display:flex;gap:8px;margin-bottom:1.4rem;flex-wrap:wrap;}
-.wnav{background:var(--card);border:2px solid var(--border);color:var(--bm);padding:7px 16px;border-radius:20px;font-size:15px;cursor:pointer;font-family:var(--sans);transition:all .18s;}
-.wnav:hover{border-color:var(--bm);}
+.wnav{background:var(--card);border:2px solid var(--border);color:var(--bm);padding:7px 16px;border-radius:20px;font-size:15px;cursor:pointer;font-family:var(--sans);}
 .wnav.on{background:var(--bd);border-color:var(--bd);color:#fff;font-weight:600;}
-
-/* DONE MSG */
-.done-msg{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:1.8rem 2rem;text-align:center;margin-top:1rem;}
-.done-msg h3{font-family:var(--serif);font-size:22px;margin-bottom:8px;}
-.done-msg p{font-size:16px;color:var(--muted);margin-bottom:1.2rem;}
-.score-compare{font-size:20px;font-weight:700;color:var(--bd);margin-bottom:1rem;}
+/* LOGOUT */
 
 /* TOAST */
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--bd);color:#fff;padding:13px 20px;border-radius:10px;font-size:15px;border-left:4px solid var(--gold);opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;z-index:9999;}
 .toast.show{opacity:1;transform:translateY(0);}
-
-.sb-toggle{display:none;width:100%;background:rgba(201,162,39,.15);border:none;border-bottom:2px solid rgba(201,162,39,.3);color:var(--gold);padding:11px 1rem;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);text-align:left;}
-
-/* ─── MOBILE ─── */
+/* MOBILE */
 @media(max-width:768px){
-  .body-wrap{flex-direction:column;}
-  .sidebar{width:100%;max-height:none;border-right:none;border-bottom:3px solid var(--gold);padding:0;display:block;overflow:visible;}
-  .sidebar .sb-sec,.sidebar .sb-user{display:none;}
-  .sidebar.sb-open .sb-sec,.sidebar.sb-open .sb-user{display:block;}
-  .sb-toggle{display:block!important;}
-  .content{padding:1rem;max-height:none;overflow-y:visible;}
+  
+  
+  .sidebar{display:none;}
+  .body-wrap{display:block;}
+  .content{padding:1rem;max-height:none;}
   .week-grid{grid-template-columns:1fr;}
   .fgrid{grid-template-columns:1fr;}
   .fg.full{grid-column:1;}
-  .quiz-hdr{flex-direction:column;gap:10px;padding:1rem;}
+  .quiz-hdr{padding:1rem;}
   .sec-head h2{font-size:20px;}
-  .flow{padding:.8rem;overflow-x:auto;}
-  .fc{width:34px;height:34px;font-size:11px;}
-  .fa{width:16px;}
-  .fl{font-size:10px;max-width:40px;}
-  .week-nav{flex-wrap:wrap;gap:5px;}
-  .wnav{font-size:13px;padding:6px 10px;}
   .btn-row{flex-direction:column;}
   .btn-p,.btn-s{width:100%;text-align:center;}
-  .wbanner{height:72px;}
-  .lrow{grid-template-columns:22px 1fr;}
-  .lzh{font-size:16px;}
-  .lspeak{font-size:11px;padding:3px 6px;}
   .form-card{padding:1rem;}
-  .lyric-search-box{padding:1rem;}
-  .qrow{padding:.8rem 1rem;}
-}
-@media(max-width:480px){
-  .hdr{padding:0 .8rem;min-height:60px;}
-  .hdr-nav{gap:3px;}
-  .hn{padding:5px 8px;font-size:11px;}
-  .logo-sub{display:none;}
+  .lrow{grid-template-columns:22px 1fr;}
+  .lspeak{display:none;}
+  .flow{overflow-x:auto;}
 }
 </style>
 </head>
 <body>
 <div class="app">
-
-<!-- HEADER -->
-<div class="hdr">
-  <div class="logo">
-    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;"><svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#1a3a6e" stroke="#c9a227" stroke-width="1.5"/><path d="M12 14 Q22 8 32 14" fill="none" stroke="#c9a227" stroke-width="1.2"/><ellipse cx="16" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="28" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="16" cy="20" rx="2" ry="1.5" fill="#fff"/><ellipse cx="28" cy="20" rx="2" ry="1.5" fill="#fff"/><path d="M11 16 Q16 12 21 15" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M23 15 Q28 12 33 16" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M20 24 Q22 22 24 24" fill="none" stroke="#c9a227" stroke-width="1"/><path d="M17 30 Q22 33 27 30" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M8 22 Q10 26 12 22" fill="none" stroke="#c9a227" stroke-width="1"/><path d="M32 22 Q34 26 36 22" fill="none" stroke="#c9a227" stroke-width="1"/></svg><svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#f5e8f0" stroke="#c9a227" stroke-width="1.5"/><path d="M5 18 Q22 6 39 18" fill="#2a1040" stroke="none"/><path d="M5 18 Q22 10 39 18 Q22 16 5 18" fill="#2a1040"/><path d="M13 22 Q16 19 19 22 Q16 24 13 22" fill="#2a1040"/><path d="M25 22 Q28 19 31 22 Q28 24 25 22" fill="#2a1040"/><path d="M12 19 Q16 17 20 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><path d="M24 19 Q28 17 32 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><ellipse cx="13" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="31" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="22" cy="31" rx="3.5" ry="2" fill="#c2457a"/><circle cx="22" cy="13" r="2" fill="#c9a227"/><circle cx="17" cy="15" r="1.2" fill="#c9a227"/><circle cx="27" cy="15" r="1.2" fill="#c9a227"/></svg></div>
-    <div>
-      <div class="logo-main" style="font-size:clamp(16px,2.5vw,26px);letter-spacing:.08em;">京劇華語教學平台</div>
-      <div class="logo-sub">霸王別姬 · Peking Opera Chinese · 四週課程</div>
-    </div>
-  </div>
-  <div class="hdr-nav">
-    <button class="hn on" onclick="nav('login',this)">學生登入</button>
-    <button class="hn" onclick="nav('overview',this)">總覽</button>
-    <button class="hn" onclick="nav('pretest',this)">前測</button>
-    <button class="hn" onclick="nav('course',this)">課程</button>
-    <button class="hn" onclick="nav('posttest',this)">後測</button>
+<!-- TOP BAR - logo only, no nav -->
+<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:0 2rem;height:80px;display:flex;align-items:center;flex-shrink:0;gap:16px;">
+  <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#1a3a6e" stroke="#c9a227" stroke-width="1.5"/><path d="M12 14 Q22 8 32 14" fill="none" stroke="#c9a227" stroke-width="1.2"/><ellipse cx="16" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="28" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="16" cy="20" rx="2" ry="1.5" fill="#fff"/><ellipse cx="28" cy="20" rx="2" ry="1.5" fill="#fff"/><path d="M11 16 Q16 12 21 15" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M23 15 Q28 12 33 16" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M17 30 Q22 33 27 30" fill="none" stroke="#c9a227" stroke-width="1.5"/></svg>
+  <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#f5e8f0" stroke="#c9a227" stroke-width="1.5"/><path d="M5 18 Q22 6 39 18 Q22 16 5 18" fill="#2a1040"/><path d="M13 22 Q16 19 19 22 Q16 24 13 22" fill="#2a1040"/><path d="M25 22 Q28 19 31 22 Q28 24 25 22" fill="#2a1040"/><path d="M12 19 Q16 17 20 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><path d="M24 19 Q28 17 32 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><ellipse cx="13" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="31" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="22" cy="31" rx="3.5" ry="2" fill="#c2457a"/><circle cx="22" cy="13" r="2" fill="#c9a227"/></svg>
+  <div>
+    <div style="font-family:var(--serif);font-size:28px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;">京劇華語教學平台</div>
+    <div style="font-size:16px;color:#c8e8f8;margin-top:5px;letter-spacing:.05em;font-weight:500;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
   </div>
 </div>
 
+<!-- MOBILE HEADER -->
+
+<button class="mob-toggle" id="mob-toggle" onclick="toggleMobSidebar()" style="display:none;top:84px;">
+  <span class="mob-toggle-title">☰ 京劇華語教學平台</span>
+  <span class="mob-toggle-icon" id="mob-icon">▼</span>
+</button>
 <div class="body-wrap">
 <!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <button onclick="toggleSidebar()" id="sb-toggle" class="sb-toggle">☰ 選單</button>
+<div class="sidebar">
   <div class="sb-sec">
-    <div class="sb-lbl">進入課程前</div>
-    <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>學生登入</div>
+    <div class="sb-item" id="sb-overview" onclick="show('overview')" style="background:rgba(201,162,39,.15);margin-bottom:8px;"><span class="sb-dot" style="background:var(--gold);"></span>總覽</div>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">進入課程前</div>
+    <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>登入</div>
     <div class="sb-item" id="sb-pretest" onclick="show('pretest')"><span class="sb-dot"></span>前測</div>
   </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">四週課程</div>
+  <div class="sb-sec"><div class="sb-lbl">四週課程</div>
     <div class="sb-item" id="sb-week1" onclick="show('course');switchWeek(1)"><span class="sb-dot"></span>第一週</div>
     <div class="sb-item" id="sb-week2" onclick="show('course');switchWeek(2)"><span class="sb-dot"></span>第二週</div>
     <div class="sb-item" id="sb-week3" onclick="show('course');switchWeek(3)"><span class="sb-dot"></span>第三週</div>
     <div class="sb-item" id="sb-week4" onclick="show('course');switchWeek(4)"><span class="sb-dot"></span>第四週</div>
   </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">課後評量</div>
+  <div class="sb-sec"><div class="sb-lbl">課後評量</div>
     <div class="sb-item" id="sb-posttest" onclick="show('posttest')"><span class="sb-dot"></span>後測</div>
   </div>
-  <div class="sb-user" id="sb-user" style="display:none">
-    <div class="sb-uid" id="sb-uid-t"></div>
-    <div class="sb-uname" id="sb-uname-t"></div>
-    <div class="sb-usub" id="sb-usub-t"></div>
-    <button id="logout-btn" onclick="showLogoutConfirm()" style="margin-top:12px;width:100%;background:rgba(194,69,122,.35);border:2px solid rgba(194,69,122,.6);color:#fff;border-radius:8px;padding:10px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出 Logout</button>
-    <div id="logout-confirm" style="display:none;margin-top:8px;background:rgba(0,0,0,.3);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:14px;color:#fff;margin-bottom:8px;">確定要登出嗎？</div>
-      <div style="display:flex;gap:6px;justify-content:center;">
-        <button onclick="doLogout()" style="background:var(--pm);border:none;color:#fff;padding:6px 16px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">確定</button>
-        <button onclick="hideLogoutConfirm()" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 16px;border-radius:6px;font-size:14px;cursor:pointer;">取消</button>
-      </div>
-    </div>
+  <div id="sb-user" style="display:none;padding:.8rem .9rem;">
+    <button onclick="doLogout()" style="width:100%;background:rgba(194,69,122,.35);border:2px solid rgba(194,69,122,.6);color:#fff;border-radius:8px;padding:11px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出 Logout</button>
+  </div>
 </div>
-
 <!-- CONTENT -->
 <div class="content">
 
@@ -354,7 +286,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
     <div class="fgrid">
       <div class="fg full">
         <label class="flabel">學號 Student ID <span style="font-weight:400;font-size:14px;color:var(--muted);">（自動轉大寫）</span></label>
-        <input class="finput" id="f-id" type="text" placeholder="例如 A123456" oninput="this.value=this.value.toUpperCase();autoFillStudent(this.value)" style="font-size:20px;font-weight:700;letter-spacing:.12em;" autocomplete="off">
+        <input class="finput" id="f-id" type="text" placeholder="例如 A123456" oninput="this.value=this.value.toUpperCase();autoFill(this.value)" style="font-size:20px;font-weight:700;letter-spacing:.12em;" autocomplete="off">
       </div>
       <div class="fg full"><label class="flabel">姓名 Name</label><input class="finput" id="f-name" type="text" placeholder="請輸入中文或英文姓名"></div>
       <div class="fg">
@@ -385,7 +317,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
     <hr class="fdiv">
     <div class="btn-row">
       <button class="btn-p" onclick="doLogin(true)">新生：送出並前往前測 →</button>
-      <button class="btn-s" onclick="doLogin(false)">舊生：直接進入課程</button>
+      <button class="btn-p blue" id="old-login-btn" style="font-size:17px;font-weight:900;transition:all .3s;" onclick="doLogin(false)">舊生：直接進入課程</button>
     </div>
     <div class="err-txt" id="login-err"></div>
   </div>
@@ -450,7 +382,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
   <!-- WEEK 1 -->
   <div id="wk-1">
     <div class="info">【西皮散板 xī pí sàn bǎn】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div style="max-width:720px;border-radius:12px;border:3px solid var(--gold);background:var(--bd);padding:2.5rem 2rem;text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700;letter-spacing:.12em;margin-bottom:8px;">第一週：天亡我楚</div><div style="font-size:15px;color:var(--bl);margin-bottom:24px;letter-spacing:.06em;">天亡我楚 tiān wáng wǒ chǔ</div><a href="https://youtu.be/Kq22flf0dhE" target="_blank" style="display:inline-flex;align-items:center;gap:12px;background:var(--pm);color:#fff;padding:16px 36px;border-radius:30px;font-size:20px;font-weight:700;text-decoration:none;font-family:var(--sans);transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a><div style="margin-top:14px;font-size:13px;color:rgba(74,159,212,.65);">開啟後請回到此頁繼續學習台詞</div></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第一週：天亡我楚</div><div class="video-btn-sub">天亡我楚 tiān wáng wǒ chǔ</div><a href="https://youtu.be/Kq22flf0dhE" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <!-- SEARCH BOX -->
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢 — 輸入不懂的台詞，查白話文解釋並朗讀</div>
@@ -471,7 +403,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
   <!-- WEEK 2 -->
   <div id="wk-2" style="display:none">
     <div class="info">點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div style="max-width:720px;border-radius:12px;border:3px solid var(--gold);background:var(--bd);padding:2.5rem 2rem;text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700;letter-spacing:.12em;margin-bottom:8px;">第二週：四面楚歌</div><div style="font-size:15px;color:var(--bl);margin-bottom:24px;letter-spacing:.06em;">四面楚歌 sì miàn chǔ gē</div><a href="https://youtu.be/eG-sdcJaSDM" target="_blank" style="display:inline-flex;align-items:center;gap:12px;background:var(--pm);color:#fff;padding:16px 36px;border-radius:30px;font-size:20px;font-weight:700;text-decoration:none;font-family:var(--sans);transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a><div style="margin-top:14px;font-size:13px;color:rgba(74,159,212,.65);">開啟後請回到此頁繼續學習台詞</div></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第二週：四面楚歌</div><div class="video-btn-sub">四面楚歌 sì miàn chǔ gē</div><a href="https://youtu.be/eG-sdcJaSDM" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -493,7 +425,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
   <!-- WEEK 3 -->
   <div id="wk-3" style="display:none">
     <div class="info">【垓下歌《史記》】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div style="max-width:720px;border-radius:12px;border:3px solid var(--gold);background:var(--bd);padding:2.5rem 2rem;text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700;letter-spacing:.12em;margin-bottom:8px;">第三週：力拔山兮氣蓋世</div><div style="font-size:15px;color:var(--bl);margin-bottom:24px;letter-spacing:.06em;">力拔山兮氣蓋世</div><a href="https://youtu.be/iHP6sTjgV64" target="_blank" style="display:inline-flex;align-items:center;gap:12px;background:var(--pm);color:#fff;padding:16px 36px;border-radius:30px;font-size:20px;font-weight:700;text-decoration:none;font-family:var(--sans);transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a><div style="margin-top:14px;font-size:13px;color:rgba(74,159,212,.65);">開啟後請回到此頁繼續學習台詞</div></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第三週：力拔山兮氣蓋世</div><div class="video-btn-sub">力拔山兮氣蓋世</div><a href="https://youtu.be/iHP6sTjgV64" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -516,7 +448,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
   <!-- WEEK 4 -->
   <div id="wk-4" style="display:none">
     <div class="info">【西皮二六 xī pí èr liù】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div style="max-width:720px;border-radius:12px;border:3px solid var(--gold);background:var(--bd);padding:2.5rem 2rem;text-align:center;"><div style="font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700;letter-spacing:.12em;margin-bottom:8px;">第四週：虞姬舞劍</div><div style="font-size:15px;color:var(--bl);margin-bottom:24px;letter-spacing:.06em;">虞姬舞劍 Yú Jī wǔ jiàn</div><a href="https://youtu.be/0NspuPmn0Is" target="_blank" style="display:inline-flex;align-items:center;gap:12px;background:var(--pm);color:#fff;padding:16px 36px;border-radius:30px;font-size:20px;font-weight:700;text-decoration:none;font-family:var(--sans);transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a><div style="margin-top:14px;font-size:13px;color:rgba(74,159,212,.65);">開啟後請回到此頁繼續學習台詞</div></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第四週：虞姬舞劍</div><div class="video-btn-sub">虞姬舞劍 Yú Jī wǔ jiàn</div><a href="https://youtu.be/0NspuPmn0Is" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -582,11 +514,9 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--i
 </div><!-- /body-wrap -->
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
-
 <script>
-// ══════════════════════════════════════
-// DATA
-// ══════════════════════════════════════
+var SHEETS_URL='';
+
 var LYRICS = {
   1:[
     {zh:'槍挑了漢營中數員上將',py:'qiāng tiāo le hàn yíng zhōng shù yuán shàng jiàng',tip:'白話：用槍刺殺了漢軍營中好幾位大將。「挑」有刺殺、擊敗之意。'},
@@ -646,7 +576,6 @@ var LYRICS = {
     {zh:'大王啊，此番出戰，倘能闖出重圍，且退往江東，再圖復興楚國，拯救黎民',py:'dà wáng a, cǐ fān chū zhàn, tǎng néng chuǎng chū chóng wéi, qiě tuì wǎng jiāng dōng, zài tú fù xīng chǔ guó, zhěng jiù lí mín',tip:'白話：大王啊，此番出戰，倘若能衝出重圍，先退到江東，再圖謀復興楚國、拯救百姓。（虞姬勸項羽先走）'}
   ]
 };
-
 var PRE_QS = {
   p1:[
     {q:'1. 林教授對學術倫理的要求非常 _______，如果發現學生抄襲，一定會給不及格。',opts:['(A) 嚴厲','(B) 憂悶','(C) 婆娑','(D) 驚慌'],ans:'A'},
@@ -685,7 +614,6 @@ var PRE_QS = {
     {q:'30. 古文「胡不歸」意思是「為什麼不回去？」。現代漢語中，「你去過美國嗎？」如果要加上「胡（為什麼）」，語氣會變成像下列哪一句？',opts:['(A) 你什麼時候去美國？','(B) 你何不（為什麼不）去美國看看呢？','(C) 你去美國做什麼？','(D) 你想去美國嗎？'],ans:'B'}
   ]
 };
-
 var POST_QS = {
   p1:[
     {q:'1. 為了交通安全，警察最近開始 _______ 取締酒後駕車的行為，罰金提高了很多。',opts:['(A) 寬心','(B) 嚴厲','(C) 婆娑','(D) 慈祥'],ans:'B'},
@@ -725,534 +653,328 @@ var POST_QS = {
   ]
 };
 
-// ══════════════════════════════════════
-// STATE & STORAGE
-// ══════════════════════════════════════
-var S={
-  loggedIn:false,
-  student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},
-  pre:{done:false,score:0},
-  post:{done:false,score:0},
-  weekSeen:[false,false,false,false]
-};
-var SHEETS_URL=''; /https://script.google.com/macros/s/AKfycbyKMEL9L41CHwaDROIebnXCRBzUDXq8Bi27yif5Hm_-452lsr3n4cBn1DmuFeowecOw/exec/ ← 貼入您的 Google Apps Script 網址
-function save(){try{localStorage.setItem('kj2_state',JSON.stringify(S));}catch(e){}}
-function load(){try{var d=localStorage.getItem('kj2_state');if(d){S=JSON.parse(d);}}catch(e){}}
 
-// ══════════════════════════════════════
-// RENDER QUESTIONS
-// ══════════════════════════════════════
-function renderQuestions(quiz){
+var S={loggedIn:false,student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},pre:{done:false,score:0,s1:0,s2:0,s3:0},post:{done:false,score:0,s1:0,s2:0,s3:0},weekSeen:[false,false,false,false]};
+function save(){try{localStorage.setItem('kj_s2',JSON.stringify(S));}catch(e){}}
+function load(){try{var d=localStorage.getItem('kj_s2');if(d)S=JSON.parse(d);}catch(e){}}
+
+// ══ TTS 終極版 ══
+if(window.speechSynthesis){
+  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+}
+function speakText(text){
+  if(!('speechSynthesis' in window)){alert('您的瀏覽器不支援語音，請用 Chrome。');return;}
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  u.lang='zh-TW';
+  u.rate=0.85;
+  var voices=window.speechSynthesis.getVoices();
+  var zh=voices.find(function(v){return v.lang.includes('zh')||v.name.includes('Chinese')||v.name.includes('Han');});
+  if(zh)u.voice=zh;
+  window.speechSynthesis.speak(u);
+}
+
+// ══ RENDER ══
+function renderQ(quiz){
   var data=(quiz==='pre')?PRE_QS:POST_QS;
-  var parts=['p1','p2','p3'];
-  parts.forEach(function(p){
-    var container=document.getElementById(quiz+'-'+p+'-qs');
+  ['p1','p2','p3'].forEach(function(p){
+    var el=document.getElementById(quiz+'-'+p+'-qs');if(!el)return;
     var html='';
     data[p].forEach(function(item,i){
-      var qnum=(p==='p1')?i+1:(p==='p2')?i+11:i+21;
-      var name=quiz+'_q'+qnum;
+      var base=(p==='p1')?1:(p==='p2')?11:21,qn=base+i,nm=quiz+'_q'+qn;
       html+='<div class="qrow"><div class="qt">'+item.q+'</div><div class="qopts">';
-      item.opts.forEach(function(opt){
-        var val=opt.charAt(1);
-        html+='<label class="qopt" id="opt-'+name+'-'+val+'"><input type="radio" name="'+name+'" value="'+val+'"> '+opt+'</label>';
-      });
+      item.opts.forEach(function(opt){var v=opt.charAt(1);html+='<label class="qopt" id="opt-'+nm+'-'+v+'"><input type="radio" name="'+nm+'" value="'+v+'"> '+opt+'</label>';});
       html+='</div></div>';
     });
-    container.innerHTML=html;
+    el.innerHTML=html;
   });
 }
-
-// ══════════════════════════════════════
-// SUBMIT QUIZ
-// ══════════════════════════════════════
-function submitQuiz(quiz){
-  var data=(quiz==='pre')?PRE_QS:POST_QS;
-  var totalScore=0;
-  var allAnswered=true;
-  var results=[];
-
-  var parts=['p1','p2','p3'];
-  parts.forEach(function(p){
-    data[p].forEach(function(item,i){
-      var base=(p==='p1')?1:(p==='p2')?11:21;
-      var qnum=base+i;
-      var name=quiz+'_q'+qnum;
-      var sel=document.querySelector('input[name="'+name+'"]:checked');
-      if(!sel){allAnswered=false;return;}
-      var correct=(sel.value===item.ans);
-      if(correct) totalScore++;
-      results.push({name:name,sel:sel.value,ans:item.ans,correct:correct});
-    });
-  });
-
-  if(!allAnswered){toast('請回答所有題目後再送出！');return;}
-
-  // Lock and show correct/wrong
-  results.forEach(function(r){
-    document.querySelectorAll('input[name="'+r.name+'"]').forEach(function(inp){
-      inp.disabled=true;
-      var lbl=document.getElementById('opt-'+r.name+'-'+inp.value);
-      if(!lbl) return;
-      if(inp.value===r.ans) lbl.classList.add('correct');
-      else if(inp.value===r.sel&&!r.correct) lbl.classList.add('wrong');
-    });
-  });
-
-  // Compute part scores
-  var ps1=0,ps2=0,ps3=0;
-  results.forEach(function(r){
-    var n=parseInt(r.name.replace(quiz+'_q',''));
-    if(n<=10&&r.correct) ps1++;
-    else if(n<=20&&r.correct) ps2++;
-    else if(r.correct) ps3++;
-  });
-
-  // Update state
-  S[quiz].done=true;
-  S[quiz].score=totalScore;
-  S[quiz].s1=ps1;S[quiz].s2=ps2;S[quiz].s3=ps3;
-  save();
-
-  // Update UI
-  document.getElementById(quiz+'-s1-disp').textContent=ps1+'/10';
-  document.getElementById(quiz+'-s2-disp').textContent=ps2+'/10';
-  document.getElementById(quiz+'-s3-disp').textContent=ps3+'/10';
-  document.getElementById(quiz+'-score-display').textContent='總分 '+totalScore+' / 30';
-  document.getElementById(quiz+'-submit-area').style.display='none';
-  var doneEl=document.getElementById(quiz+'-done-msg');
-  doneEl.style.display='block';
-
-  if(quiz==='pre'){
-    document.getElementById('pre-done-score').textContent='Part1: '+ps1+'/10　Part2: '+ps2+'/10　Part3: '+ps3+'/10　總分: '+totalScore+'/30';
-    document.getElementById('pre-info-bar').textContent='前測已完成，分數已儲存，題目已鎖定。';
-  } else {
-    var preScore=S.pre.done?S.pre.score:'-';
-    var diff=S.pre.done?'（進步 '+(totalScore-S.pre.score)+' 分）':'';
-    document.getElementById('post-compare').innerHTML=
-      '<div style="margin-bottom:8px;">前測：'+(S.pre.s1||0)+'/10 · '+(S.pre.s2||0)+'/10 · '+(S.pre.s3||0)+'/10　= <strong>'+(S.pre.score||0)+' 分</strong></div>'+
-      '<div>後測：'+ps1+'/10 · '+ps2+'/10 · '+ps3+'/10　= <strong>'+totalScore+' 分</strong>　'+diff+'</div>';
-    document.getElementById('post-info-bar').textContent='後測已完成，分數已儲存。';
-  }
-  updateProgress();
-  sendToSheets(quiz==='pre'?'pretest':'posttest');
-  toast((quiz==='pre'?'前':'後')+'測完成！得分：'+totalScore+' / 30');
-}
-
-// ══════════════════════════════════════
-// RESTORE LOCKED QUIZ
-// ══════════════════════════════════════
-function restoreQuiz(quiz){
-  if(!S[quiz].done) return;
-  var data=(quiz==='pre')?PRE_QS:POST_QS;
-  document.getElementById(quiz+'-score-display').textContent='總分 '+S[quiz].score+' / 30';
-  document.getElementById(quiz+'-submit-area').style.display='none';
-  document.getElementById(quiz+'-done-msg').style.display='block';
-  if(quiz==='pre'){
-    var ps1=S.pre.s1||0,ps2=S.pre.s2||0,ps3=S.pre.s3||0;
-    document.getElementById('pre-s1-disp').textContent=ps1+'/10';
-    document.getElementById('pre-s2-disp').textContent=ps2+'/10';
-    document.getElementById('pre-s3-disp').textContent=ps3+'/10';
-    document.getElementById('pre-score-display').textContent='總分 '+S.pre.score+' / 30';
-    document.getElementById('pre-done-score').textContent='Part1: '+ps1+'/10　Part2: '+ps2+'/10　Part3: '+ps3+'/10　總分: '+S.pre.score+'/30';
-    document.getElementById('pre-info-bar').textContent='前測已完成，分數已儲存，題目已鎖定。';
-    document.querySelectorAll('input[name^="pre_q"]').forEach(function(inp){inp.disabled=true;});
-  } else {
-    var pp1=S.post.s1||0,pp2=S.post.s2||0,pp3=S.post.s3||0;
-    document.getElementById('post-s1-disp').textContent=pp1+'/10';
-    document.getElementById('post-s2-disp').textContent=pp2+'/10';
-    document.getElementById('post-s3-disp').textContent=pp3+'/10';
-    document.getElementById('post-score-display').textContent='總分 '+S.post.score+' / 30';
-    var preScore=S.pre.done?S.pre.score:'-';
-    document.getElementById('post-compare').innerHTML=
-      '<div style="margin-bottom:8px;">前測：'+(S.pre.s1||0)+'/10 · '+(S.pre.s2||0)+'/10 · '+(S.pre.s3||0)+'/10　= <strong>'+(S.pre.score||0)+' 分</strong></div>'+
-      '<div>後測：'+pp1+'/10 · '+pp2+'/10 · '+pp3+'/10　= <strong>'+S.post.score+' 分</strong></div>';
-    document.getElementById('post-info-bar').textContent='後測已完成，分數已儲存。';
-    document.querySelectorAll('input[name^="post_q"]').forEach(function(inp){inp.disabled=true;});
-  }
-}
-
-// ══════════════════════════════════════
-// LOGIN
-// ══════════════════════════════════════
-function autoFillStudent(id){
-  if(!id||id.length<4) return;
-  try{
-    var d=localStorage.getItem('kj2_state');
-    if(d){
-      var saved=JSON.parse(d);
-      if(saved.student&&saved.student.id===id){
-        document.getElementById('f-name').value=saved.student.name||'';
-        document.getElementById('f-grade').value=saved.student.grade||'';
-        document.getElementById('f-tocfl').value=saved.student.tocfl||'';
-        document.getElementById('f-nation').value=saved.student.nation||'';
-        if(saved.student.gender){
-          document.querySelectorAll('input[name="gender"]').forEach(function(r){
-            r.checked=(r.value===saved.student.gender);
-          });
-        }
-      }
-    }
-  }catch(e){}
-}
-
-function doLogin(isNew){
-  var id=document.getElementById('f-id').value.trim();
-  var err=document.getElementById('login-err');
-  if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
-  // Check existing
-  try{
-    var d=localStorage.getItem('kj2_state');
-    if(d){
-      var saved=JSON.parse(d);
-      if(saved.student&&saved.student.id===id){
-        S=saved;S.loggedIn=true;save();
-        toast('歡迎回來，'+S.student.name+'！');
-        updateUI();
-initMobile();show('overview');return;
-      }
-    }
-  }catch(e){}
-  if(!isNew){err.style.display='block';err.textContent='查無此學號，請確認或以新生身份完整填寫資料。';return;}
-  var name=document.getElementById('f-name').value.trim();
-  var gender=document.querySelector('input[name="gender"]:checked');
-  var grade=document.getElementById('f-grade').value;
-  var tocfl=document.getElementById('f-tocfl').value;
-  var nation=document.getElementById('f-nation').value.trim();
-  if(!name||!gender||!grade||!tocfl||!nation){err.style.display='block';err.textContent='請填寫所有欄位。';return;}
-  err.style.display='none';
-  S.student={id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation};
-  S.loggedIn=true;save();
-  toast('歡迎 '+name+'！請先完成前測。');
-  sendToSheets('login');
-  updateUI();show('pretest');
-}
-
-// ══════════════════════════════════════
-// WEEK SWITCH
-// ══════════════════════════════════════
-function switchWeek(n){
-  for(var i=1;i<=4;i++){
-    document.getElementById('wk-'+i).style.display=(i===n)?'block':'none';
-    document.getElementById('wnav'+i).classList.toggle('on',i===n);
-  }
-  var titles=['第一週：天亡我楚','第二週：四面楚歌','第三週：力拔山兮氣蓋世','第四週：虞姬舞劍'];
-  document.getElementById('course-h2').textContent=titles[n-1];
-  S.weekSeen[n-1]=true;
-  save();updateProgress();
-}
-
-// ══════════════════════════════════════
-// LYRICS RENDER
-// ══════════════════════════════════════
 function renderLyrics(){
   [1,2,3,4].forEach(function(w){
-    var container=document.getElementById('w'+w+'-lyrics');
+    var el=document.getElementById('w'+w+'-lyrics');if(!el)return;
     var html='';
     LYRICS[w].forEach(function(item,i){
-      var spk='speak("'+item.zh.replace(/"/g,"'")+' '+item.py.replace(/"/g,"'")+'")'
+      var txt=item.zh.replace(/'/g,'\'').replace(/"/g,'\"')+' '+item.py.replace(/'/g,'\'').replace(/"/g,'\"');
       html+='<div class="lrow" onclick="toggleRow(this)">';
       html+='<span class="lnum">'+(i+1)+'</span>';
       html+='<div class="lmain"><span class="lzh">'+item.zh+'</span><span class="lpy">'+item.py+'</span>';
       html+='<div class="ltip">'+item.tip+'</div></div>';
-      html+='<button class="lspeak" onclick="event.stopPropagation();'+spk+'">&#9654; 朗讀</button>';
+      html+='<button class="lspeak" onclick="event.stopPropagation();speakAndShow(this)" data-t="'+item.zh+'" style="font-size:13px;padding:5px 12px;">&#9654; 白話 &amp; 朗讀</button>';
       html+='</div>';
     });
-    container.innerHTML=html;
+    el.innerHTML=html;
   });
 }
-
 function toggleRow(el){el.classList.toggle('open');}
-
-// ══════════════════════════════════════
-// TTS SPEAK
-// ══════════════════════════════════════
-function speak(text){
-  if(!window.speechSynthesis){toast('您的瀏覽器不支援語音朗讀');return;}
-  window.speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(text);
-  // Try to find best Chinese voice
-  var voices=window.speechSynthesis.getVoices();
-  var voice=voices.find(function(v){return v.lang==='zh-TW';})
-    ||voices.find(function(v){return v.lang==='zh-CN';})
-    ||voices.find(function(v){return v.lang.startsWith('zh');})
-    ||null;
-  if(voice) u.voice=voice;
-  u.lang='zh-TW';u.rate=0.82;u.pitch=1;
-  // iOS Safari needs a small delay
-  setTimeout(function(){window.speechSynthesis.speak(u);},100);
-}
-// Pre-load voices (required for some browsers)
-if(window.speechSynthesis){
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
-}
-
-// ══════════════════════════════════════
-// LYRIC SEARCH
-// ══════════════════════════════════════
 function searchLyric(w){
   var q=document.getElementById('search'+w).value.trim();
   var res=document.getElementById('lresult'+w);
   if(!q){res.className='lresult';return;}
   var found=null;
-  LYRICS[w].forEach(function(item){
-    if(!found&&item.zh.indexOf(q)>=0) found=item;
-  });
-  // also search other weeks
-  if(!found){
-    [1,2,3,4].forEach(function(ww){
-      LYRICS[ww].forEach(function(item){
-        if(!found&&item.zh.indexOf(q)>=0) found=item;
-      });
-    });
-  }
+  [1,2,3,4].forEach(function(ww){LYRICS[ww].forEach(function(item){if(!found&&item.zh.indexOf(q)>=0)found=item;});});
   if(found){
-    var spk='speak("'+found.zh.replace(/"/g,"'")+' '+found.py.replace(/"/g,"'")+'")'
-    res.innerHTML='<div class="lresult-zh">'+found.zh+'</div>'+
-      '<div class="lresult-py">'+found.py+'</div>'+
-      '<div class="lresult-tip">'+found.tip+'</div>'+
-      '<button class="speak-btn" onclick="'+spk+'">&#9654; 朗讀此句</button>';
+    res.innerHTML='<div class="lresult-zh">'+found.zh+'</div><div class="lresult-py">'+found.py+'</div><div class="lresult-tip">'+found.tip+'</div><button class="speak-btn" onclick="speakText(this.dataset.t)" data-t="'+found.zh+'" style="font-size:13px;">&#9654; 白話 &amp; 朗讀</button>';
     res.className='lresult show';
-  } else {
-    res.innerHTML='<span style="color:var(--muted)">找不到「'+q+'」，請確認台詞中的文字。</span>';
+  }else{
+    res.innerHTML='<span style="color:var(--muted)">找不到「'+q+'」</span>';
     res.className='lresult show';
   }
 }
-// Enter key search
-[1,2,3,4].forEach(function(w){
-  document.addEventListener('DOMContentLoaded',function(){
-    var inp=document.getElementById('search'+w);
-    if(inp) inp.addEventListener('keydown',function(e){if(e.key==='Enter')searchLyric(w);});
+
+// ══ QUIZ ══
+function submitQuiz(quiz){
+  var data=(quiz==='pre')?PRE_QS:POST_QS;
+  var total=0,s1=0,s2=0,s3=0,allOk=true;
+  var results=[];
+  var firstUnanswered=null;
+  var unansweredNums=[];
+
+  // 先清除舊的紅框
+  document.querySelectorAll('.qrow.unanswered').forEach(function(el){el.classList.remove('unanswered');});
+
+  ['p1','p2','p3'].forEach(function(p){
+    data[p].forEach(function(item,i){
+      var base=(p==='p1')?1:(p==='p2')?11:21,qn=base+i,nm=quiz+'_q'+qn;
+      var sel=document.querySelector('input[name="'+nm+'"]:checked');
+      if(!sel){
+        allOk=false;
+        unansweredNums.push(qn);
+        // 標示紅框
+        var opts=document.querySelector('input[name="'+nm+'"]');
+        if(opts){
+          var row=opts.closest('.qrow');
+          if(row){row.classList.add('unanswered');if(!firstUnanswered)firstUnanswered=row;}
+        }
+        return;
+      }
+      var ok=(sel.value===item.ans);
+      if(ok){total++;if(p==='p1')s1++;else if(p==='p2')s2++;else s3++;}
+      results.push({nm:nm,sel:sel.value,ans:item.ans,ok:ok});
+    });
   });
-});
+  if(!allOk){
+    toast('第 '+unansweredNums.join('、')+' 題尚未作答，請完成後再送出');
+    if(firstUnanswered){firstUnanswered.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
+  }
+  results.forEach(function(r){
+    document.querySelectorAll('input[name="'+r.nm+'"]').forEach(function(inp){
+      inp.disabled=true;
+      var lbl=document.getElementById('opt-'+r.nm+'-'+inp.value);
+      if(!lbl)return;
+      if(inp.value===r.ans)lbl.classList.add('correct');
+      else if(inp.value===r.sel&&!r.ok)lbl.classList.add('wrong');
+    });
+  });
+  S[quiz]={done:true,score:total,s1:s1,s2:s2,s3:s3};save();
+  var sd=document.getElementById(quiz+'-score-display');if(sd)sd.textContent='總分 '+total+' / 30';
+  ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
+  var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
+  var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
+  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+total+'/30';}
+  else{var el=document.getElementById('post-compare');if(el)el.innerHTML='前測：'+(S.pre.s1||0)+'/10·'+(S.pre.s2||0)+'/10·'+(S.pre.s3||0)+'/10 = <b>'+(S.pre.score||0)+'分</b><br>後測：'+s1+'/10·'+s2+'/10·'+s3+'/10 = <b>'+total+'分</b>（進步'+(total-(S.pre.score||0))+'分）';}
+  sendToSheets(quiz==='pre'?'pretest':'posttest');
+  updateProgress();toast((quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
+}
+function restoreQuiz(quiz){
+  if(!S[quiz].done)return;
+  var sc=S[quiz].score,s1=S[quiz].s1||0,s2=S[quiz].s2||0,s3=S[quiz].s3||0;
+  var sd=document.getElementById(quiz+'-score-display');if(sd)sd.textContent='總分 '+sc+' / 30';
+  ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
+  var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
+  var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
+  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+sc+'/30';}
+  document.querySelectorAll('input[name^="'+quiz+'_q"]').forEach(function(inp){inp.disabled=true;});
+}
 
-// ══════════════════════════════════════
-// PROGRESS / FLOW
-// ══════════════════════════════════════
+// ══ LOGIN ══
+function autoFill(id){
+  var btn=document.getElementById('old-login-btn');
+  try{
+    var d=localStorage.getItem('kj_s2');
+    if(d){
+      var s=JSON.parse(d);
+      if(s.student&&s.student.id===id){
+        document.getElementById('f-name').value=s.student.name||'';
+        document.getElementById('f-grade').value=s.student.grade||'';
+        document.getElementById('f-tocfl').value=s.student.tocfl||'';
+        document.getElementById('f-nation').value=s.student.nation||'';
+        if(s.student.gender)document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=(r.value===s.student.gender);});
+        // 找到舊資料，醒目顯示舊生按鈕
+        if(btn){
+          btn.style.background='#c9a227';
+          btn.style.border='3px solid #8a6a00';
+          btn.style.color='#0a1829';
+          btn.style.transform='scale(1.04)';
+          btn.textContent='✓ 找到您的資料！舊生：直接進入課程';
+        }
+        return;
+      }
+    }
+  }catch(e){}
+  // 沒找到資料，恢復按鈕原樣
+  if(btn){
+    btn.style.background='';btn.style.border='';btn.style.color='';
+    btn.style.transform='';
+    btn.textContent='舊生：直接進入課程';
+  }
+}
+function doLogin(isNew){
+  var id=document.getElementById('f-id').value.trim().toUpperCase();
+  var err=document.getElementById('login-err');
+  err.style.display='none';
+  if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
+
+  if(!isNew){
+    // 舊生：只需學號，查找已儲存資料
+    try{
+      var d=localStorage.getItem('kj_s2');
+      if(d){
+        var sv=JSON.parse(d);
+        if(sv.student&&sv.student.id===id){
+          S=sv;S.loggedIn=true;save();
+          toast('歡迎回來，'+S.student.name+'！');
+          updateUI();
+initMobToggle();show('overview');
+          sendToSheets('login_return');return;
+        }
+      }
+    }catch(e){}
+    err.style.display='block';
+    err.textContent='查無學號「'+id+'」，請確認學號，或以新生身份填寫完整資料後送出。';
+    return;
+  }
+
+  // 新生：需要完整填寫
+  var name=document.getElementById('f-name').value.trim();
+  var gender=document.querySelector('input[name="gender"]:checked');
+  var grade=document.getElementById('f-grade').value;
+  var tocfl=document.getElementById('f-tocfl').value;
+  var nation=document.getElementById('f-nation').value.trim();
+  if(!name||!gender||!grade||!tocfl||!nation){
+    err.style.display='block';err.textContent='請填寫所有欄位（姓名、性別、年級、程度、國籍）。';return;
+  }
+  S.student={id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation};
+  S.loggedIn=true;save();
+  toast('歡迎 '+name+'！請先完成前測。');
+  sendToSheets('login');updateUI();
+initMobToggle();show('pretest');
+}
+
+function doLogout(){
+  S.loggedIn=false;save();
+  ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+  var su=document.getElementById('sb-user');if(su)su.style.display='none';
+  document.querySelectorAll('.hn,.mhn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on','done');});
+  updateProgress();show('login');toast('已登出。');
+}
+
+// ══ EXPORT ══
+function exportMyData(){
+  if(!S.loggedIn){toast('請先登入。');return;}
+  var t=['=== 京劇華語教學平台 學習資料 ===','學號: '+S.student.id,'姓名: '+S.student.name,'性別: '+S.student.gender,'年級: '+S.student.grade,'TOCFL: '+S.student.tocfl,'國籍: '+S.student.nation,'','前測 Part1: '+(S.pre.s1||0)+'/10','前測 Part2: '+(S.pre.s2||0)+'/10','前測 Part3: '+(S.pre.s3||0)+'/10','前測總分: '+(S.pre.score||0)+'/30','','後測 Part1: '+(S.post.s1||0)+'/10','後測 Part2: '+(S.post.s2||0)+'/10','後測 Part3: '+(S.post.s3||0)+'/10','後測總分: '+(S.post.score||0)+'/30','','第一週: '+(S.weekSeen[0]?'已觀看':'未觀看'),'第二週: '+(S.weekSeen[1]?'已觀看':'未觀看'),'第三週: '+(S.weekSeen[2]?'已觀看':'未觀看'),'第四週: '+(S.weekSeen[3]?'已觀看':'未觀看')].join('\n');
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){toast('已複製！');});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已複製！');}
+}
+
+// ══ SHEETS ══
+function sendToSheets(ev){
+  if(!SHEETS_URL)return;
+  var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0})}).catch(function(){});
+}
+
+// ══ SWITCH WEEK ══
+function switchWeek(n){
+  for(var i=1;i<=4;i++){document.getElementById('wk-'+i).style.display=(i===n)?'block':'none';var nb=document.getElementById('wnav'+i);if(nb)nb.classList.toggle('on',i===n);}
+  var titles=['第一週：天亡我楚','第二週：四面楚歌','第三週：力拔山兮氣蓋世','第四週：虞姬舞劍'];
+  var h=document.getElementById('course-h2');if(h)h.textContent=titles[n-1];
+  S.weekSeen[n-1]=true;save();updateProgress();
+}
+
+// ══ PROGRESS ══
 function updateProgress(){
-  var steps=0;
-  if(S.loggedIn){steps++;}
-  if(S.pre.done){steps++;}
-  for(var i=0;i<4;i++) if(S.weekSeen[i]) steps++;
-  if(S.post.done) steps++;
+  var steps=0;if(S.loggedIn)steps++;if(S.pre.done)steps++;for(var i=0;i<4;i++)if(S.weekSeen[i])steps++;if(S.post.done)steps++;
   var pct=Math.round(steps/7*100);
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-pct').textContent=pct+'%';
-
-  function fc(id,faId,cls){
-    var el=document.getElementById(id);if(!el)return;
-    el.className='fc'+(cls?' '+cls:'');
-    if(faId){var fa=document.getElementById(faId);if(fa)fa.className='fa'+(cls==='done'?' done':'');}
-  }
-  if(S.loggedIn) fc('fc-lg','fa0','done');
-  if(S.pre.done) fc('fc-pt','fa1','done');
-  for(var w=1;w<=4;w++) if(S.weekSeen[w-1]) fc('fc-w'+w,'fa'+(w+1),'done');
-  if(S.post.done) fc('fc-po',null,'done');
+  var pf=document.getElementById('prog-fill');if(pf)pf.style.width=pct+'%';
+  var pp=document.getElementById('prog-pct');if(pp)pp.textContent=pct+'%';
+  function setFC(id,faId,cls){var el=document.getElementById(id);if(!el)return;el.className='fc'+(cls?' '+cls:'');if(faId){var fa=document.getElementById(faId);if(fa)fa.className='fa'+(cls==='done'?' done':'');}}
+  if(S.loggedIn)setFC('fc-lg','fa0','done');if(S.pre.done)setFC('fc-pt','fa1','done');
+  for(var w=1;w<=4;w++)if(S.weekSeen[w-1])setFC('fc-w'+w,'fa'+(w+1),'done');if(S.post.done)setFC('fc-po',null,'done');
 }
 
-function updateUI(){
-  if(S.loggedIn){
-    document.getElementById('sb-user').style.display='block';
-    document.getElementById('sb-uid-t').textContent='學號 '+S.student.id;
-    document.getElementById('sb-uname-t').textContent=S.student.name;
-    document.getElementById('sb-usub-t').textContent=S.student.tocfl+' · '+S.student.nation;
-  }
-  updateProgress();
-  if(S.pre.done) restoreQuiz('pre');
-  if(S.post.done) restoreQuiz('post');
-}
-
-// ══════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════
+// ══ SHOW / NAV ══
 function show(id){
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   var el=document.getElementById('p-'+id);if(el)el.classList.add('active');
-  var sbMap={'login':'sb-login','pretest':'sb-pretest','course':'sb-week1','posttest':'sb-posttest'};
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on');});
-  var sbId=sbMap[id];if(sbId){var s=document.getElementById(sbId);if(s)s.classList.add('on');}
-}
-function nav(id,btn){
-  document.querySelectorAll('.hn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on');
-  // When navigating to login while already logged in, pre-fill the student ID field
-  if(id==='login'){
-    if(!S.loggedIn){
-      // clear form
-      document.getElementById('f-id').value='';
-      document.getElementById('f-name').value='';
-      document.getElementById('f-grade').value='';
-      document.getElementById('f-tocfl').value='';
-      document.getElementById('f-nation').value='';
-      document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
-    } else {
-      // pre-fill for reference
-      document.getElementById('f-id').value=S.student.id||'';
-      document.getElementById('f-name').value=S.student.name||'';
-      document.getElementById('f-grade').value=S.student.grade||'';
-      document.getElementById('f-tocfl').value=S.student.tocfl||'';
-      document.getElementById('f-nation').value=S.student.nation||'';
-      if(S.student.gender){
-        document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=(r.value===S.student.gender);});
-      }
-    }
+  var m={overview:'sb-overview',login:'sb-login',pretest:'sb-pretest',posttest:'sb-posttest'};
+  if(m[id]){var s=document.getElementById(m[id]);if(s)s.classList.add('on');}
+  // 手機版點選後收合側欄
+  if(window.innerWidth<=768){
+    var sb=document.getElementById('sidebar');
+    var ic=document.getElementById('mob-icon');
+    if(sb)sb.classList.remove('mob-open');
+    if(ic)ic.textContent='▼';
   }
-  show(id==='course'?'course':id);
-  if(id==='course') switchWeek(1);
 }
 
-// ══════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},2800);
-}
 
-// ══════════════════════════════════════
-// LOGOUT
-// ══════════════════════════════════════
-function showLogoutConfirm(){
-  var el=document.getElementById('logout-confirm');
-  if(el) el.style.display='block';
-}
-function hideLogoutConfirm(){
-  var el=document.getElementById('logout-confirm');
-  if(el) el.style.display='none';
-}
-function doLogout(){
-  hideLogoutConfirm();
-  S.loggedIn=false;
-  save();
-  // Clear all form fields
-  document.getElementById('f-id').value='';
-  document.getElementById('f-name').value='';
-  document.getElementById('f-grade').value='';
-  document.getElementById('f-tocfl').value='';
-  document.getElementById('f-nation').value='';
-  document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
-  // Hide user panel
-  document.getElementById('sb-user').style.display='none';
-  // Reset nav buttons - highlight 學生登入
-  document.querySelectorAll('.hn').forEach(function(b){b.classList.remove('on');});
-  document.querySelectorAll('.hn')[1].classList.add('on');
-  // Reset sidebar items
-  document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on','done');});
-  document.getElementById('sb-login').classList.add('on');
-  // Go to login page
-  show('login');
+// ══ UI ══
+function updateUI(){
+  if(S.loggedIn){
+    var su=document.getElementById('sb-user');if(su)su.style.display='block';
+
+  }
   updateProgress();
-  toast('已登出。請重新輸入學號登入。');
+  if(S.pre.done)restoreQuiz('pre');
+  if(S.post.done)restoreQuiz('post');
 }
 
-// ══════════════════════════════════════
-// EXPORT DATA
-// ══════════════════════════════════════
-function exportMyData(){
-  if(!S.loggedIn){toast('請先登入後再匯出資料。');return;}
-  var lines=[
-    '=== 京劇華語教學平台 學習資料 ===',
-    '學號: '+S.student.id,
-    '姓名: '+S.student.name,
-    '性別: '+S.student.gender,
-    '年級: '+S.student.grade,
-    '中文程度(TOCFL): '+S.student.tocfl,
-    '國籍: '+S.student.nation,
-    '',
-    '--- 前測成績 ---',
-    '前測 Part1 詞彙: '+(S.pre.s1!==undefined?S.pre.s1:'未完成')+'/10',
-    '前測 Part2 成語: '+(S.pre.s2!==undefined?S.pre.s2:'未完成')+'/10',
-    '前測 Part3 語法: '+(S.pre.s3!==undefined?S.pre.s3:'未完成')+'/10',
-    '前測 總分: '+(S.pre.done?S.pre.score:'未完成')+'/30',
-    '',
-    '--- 後測成績 ---',
-    '後測 Part1 詞彙: '+(S.post.s1!==undefined?S.post.s1:'未完成')+'/10',
-    '後測 Part2 成語: '+(S.post.s2!==undefined?S.post.s2:'未完成')+'/10',
-    '後測 Part3 語法: '+(S.post.s3!==undefined?S.post.s3:'未完成')+'/10',
-    '後測 總分: '+(S.post.done?S.post.score:'未完成')+'/30',
-    '',
-    '--- 課程觀看 ---',
-    '第一週: '+(S.weekSeen[0]?'已觀看':'未觀看'),
-    '第二週: '+(S.weekSeen[1]?'已觀看':'未觀看'),
-    '第三週: '+(S.weekSeen[2]?'已觀看':'未觀看'),
-    '第四週: '+(S.weekSeen[3]?'已觀看':'未觀看'),
-  ];
-  var text=lines.join('\n');
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(function(){
-      toast('資料已複製到剪貼簿！請貼給老師。');
-    });
-  } else {
-    var ta=document.createElement('textarea');
-    ta.value=text;document.body.appendChild(ta);
-    ta.select();document.execCommand('copy');document.body.removeChild(ta);
-    toast('資料已複製到剪貼簿！請貼給老師。');
-  }
-}
+// ══ TOAST ══
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
 
-// ══════════════════════════════════════
-// MOBILE SIDEBAR TOGGLE
-// ══════════════════════════════════════
-function initMobile(){
+// ══ MOBILE TOGGLE ══
+function toggleMobSidebar(){
   var sb=document.getElementById('sidebar');
-  if(!sb) return;
-  // CSS handles show/hide via media query - just ensure sb-open is removed on desktop
-  if(window.innerWidth>768){
-    sb.classList.remove('sb-open');
-  }
+  var ic=document.getElementById('mob-icon');
+  if(!sb)return;
+  var open=sb.classList.contains('mob-open');
+  sb.classList.toggle('mob-open',!open);
+  if(ic)ic.textContent=open?'▼':'▲';
 }
-function toggleSidebar(){
-  var sb=document.getElementById('sidebar');
-  var btn=document.getElementById('sb-toggle');
-  if(!sb) return;
-  var isOpen=sb.classList.contains('sb-open');
-  if(isOpen){sb.classList.remove('sb-open');btn.textContent='☰ 選單';}
-  else{sb.classList.add('sb-open');btn.textContent='✕ 關閉選單';}
+function initMobToggle(){
+  var btn=document.getElementById('mob-toggle');
+  if(!btn)return;
+  if(window.innerWidth<=768){btn.style.display='flex';}
+  else{btn.style.display='none';}
 }
-window.addEventListener('resize',function(){
-  var toggle=document.getElementById('sb-toggle');
-  var sbContent=document.getElementById('sb-content');
-  if(!toggle||!sbContent) return;
-  var sb=document.getElementById('sidebar');
-  if(window.innerWidth>768 && sb){
-    sb.classList.remove('sb-open');
-  }
-});
+window.addEventListener('resize',initMobToggle);
 
-// ══════════════════════════════════════
-// GOOGLE SHEETS SYNC
-// ══════════════════════════════════════
-function sendToSheets(ev){
-  if(!SHEETS_URL) return;
-  var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
-  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({
-    event:ev,time:now,
-    id:S.student.id,name:S.student.name,gender:S.student.gender,
-    grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,
-    pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',
-    post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',
-    week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0
-  })}).catch(function(){});
+function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
+function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
+
+// ══ HELPERS ══
+function showLogout(){doLogout();}
+function hideLogout(){}
+function speakAndShow(btn){
+  var row=btn.closest('.lrow');
+  if(row) row.classList.add('open');
+  speakText(btn.dataset.t);
 }
 
-
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
-load();
-renderQuestions('pre');
-renderQuestions('post');
-renderLyrics();
-switchWeek(1);
-if(S.loggedIn){
-  show('overview');
-  document.querySelectorAll('.hn')[1].classList.add('on');
-} else {
-  show('login');
-  document.querySelectorAll('.hn')[0].classList.add('on');
-}
+// ══ INIT ══
+load();renderQ('pre');renderQ('post');renderLyrics();switchWeek(1);
+// 永遠先清空登入表單
+['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+if(S.loggedIn){show('overview');}
+else{show('login');}
 updateUI();
+initMobToggle();
+
 </script>
 </body>
 </html>
