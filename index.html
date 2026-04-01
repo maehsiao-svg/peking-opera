@@ -86,7 +86,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .btn-p{background:var(--pm);color:#fff;border:none;padding:11px 26px;border-radius:25px;font-size:16px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:background .18s;}
 .btn-p:hover{background:var(--pd);}
 .btn-p.blue{background:var(--bm);}.btn-p.blue:hover{background:var(--bd);}
-.btn-s{background:transparent;color:var(--bm);border:2px solid var(--bp);padding:11px 20px;border-radius:25px;font-size:16px;font-family:var(--sans);cursor:pointer;}
+.btn-s{background:transparent;color:var(--bm);border:2px solid var(--bp);padding:11px 20px;border-radius:25px;font-size:16px;font-family:var(--sans);cursor:pointer;font-weight:700;}
 .btn-s:hover{border-color:var(--bm);}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.4rem;}
 .err-txt{color:#c53030;font-size:15px;margin-top:10px;display:none;}
@@ -167,6 +167,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .toast.show{opacity:1;transform:translateY(0);}
 /* MOBILE */
 @media(max-width:768px){
+  #topbar{display:none;}
   
   
   .sidebar{display:none;}
@@ -200,10 +201,12 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
 <!-- MOBILE HEADER -->
 
-<button class="mob-toggle" id="mob-toggle" onclick="toggleMobSidebar()" style="display:none;top:84px;">
-  <span class="mob-toggle-title">☰ 京劇華語教學平台</span>
-  <span class="mob-toggle-icon" id="mob-icon">▼</span>
-</button>
+<div id="mob-bar" style="display:none;background:var(--bd);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;display:none;align-items:center;justify-content:space-between;padding:.7rem 1.2rem;">
+  <button onclick="toggleMobSidebar()" style="background:none;border:none;color:var(--gold);font-family:var(--serif);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+    <span id="mob-icon">☰</span> 京劇華語教學平台
+  </button>
+  <button id="mob-logout-btn" onclick="doLogout()" style="display:none;background:rgba(194,69,122,.4);border:1.5px solid var(--pm);color:#fff;border-radius:8px;padding:6px 14px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出</button>
+</div>
 <div class="body-wrap">
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -917,7 +920,7 @@ function show(id){
     var sb=document.getElementById('sidebar');
     var ic=document.getElementById('mob-icon');
     if(sb)sb.classList.remove('mob-open');
-    if(ic)ic.textContent='▼';
+    if(ic)ic.textContent='☰';
   }
 }
 
@@ -928,6 +931,7 @@ function updateUI(){
     var su=document.getElementById('sb-user');if(su)su.style.display='block';
 
   }
+  updateMobLogout();
   updateProgress();
   if(S.pre.done)restoreQuiz('pre');
   if(S.post.done)restoreQuiz('post');
@@ -943,7 +947,7 @@ function toggleMobSidebar(){
   if(!sb)return;
   var open=sb.classList.contains('mob-open');
   sb.classList.toggle('mob-open',!open);
-  if(ic)ic.textContent=open?'▼':'▲';
+  if(ic)ic.textContent=open?'☰':'✕';
 }
 function initMobToggle(){
   var btn=document.getElementById('mob-toggle');
@@ -952,6 +956,10 @@ function initMobToggle(){
   else{btn.style.display='none';}
 }
 window.addEventListener('resize',initMobToggle);
+function updateMobLogout(){
+  var btn=document.getElementById('mob-logout-btn');
+  if(btn)btn.style.display=S.loggedIn?'block':'none';
+}
 
 function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
 function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
@@ -972,6 +980,7 @@ load();renderQ('pre');renderQ('post');renderLyrics();switchWeek(1);
 document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
 show('login');
 updateUI();
+updateMobLogout();
 initMobToggle();
 
 </script>
