@@ -181,7 +181,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   .btn-p,.btn-s{width:100%;text-align:center;}
   .form-card{padding:1rem;}
   .lrow{grid-template-columns:22px 1fr;}
-  .lspeak{display:none;}
+  .lspeak{font-size:13px;padding:4px 10px;}
   .flow{overflow-x:auto;}
 }
 </style>
@@ -255,27 +255,24 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
   <div class="week-grid">
     <div class="wcard wk1" onclick="show('course');switchWeek(1)">
-      <div class="wbanner"><span class="wbnum">WEEK 01</span><span class="wbn">天亡我楚</span></div>
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第一週</span><span class="wbn">天亡我楚</span></div>
       <div class="wbody"><div class="wtitle">第一週 — 天亡我楚</div><div class="wdesc">項羽對天長嘆，感慨命運無奈。學習文言感嘆句型。</div><span class="wst st-on">點擊進入</span></div>
     </div>
     <div class="wcard wk2" onclick="show('course');switchWeek(2)">
-      <div class="wbanner"><span class="wbnum">WEEK 02</span><span class="wbn">四面楚歌</span></div>
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第二週</span><span class="wbn">四面楚歌</span></div>
       <div class="wbody"><div class="wtitle">第二週 — 四面楚歌</div><div class="wdesc">楚軍被圍，四面皆敵。學習古詩詞與場景詞彙。</div><span class="wst st-lock">點擊進入</span></div>
     </div>
     <div class="wcard wk3" onclick="show('course');switchWeek(3)">
-      <div class="wbanner"><span class="wbnum">WEEK 03</span><span class="wbn">力拔山兮</span></div>
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第三週</span><span class="wbn">力拔山兮</span></div>
       <div class="wbody"><div class="wtitle">第三週 — 力拔山兮氣蓋世</div><div class="wdesc">英雄氣概的語言表達，古代誇飾修辭手法。</div><span class="wst st-lock">點擊進入</span></div>
     </div>
     <div class="wcard wk4" onclick="show('course');switchWeek(4)">
-      <div class="wbanner"><span class="wbnum">WEEK 04</span><span class="wbn">虞姬舞劍</span></div>
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第四週</span><span class="wbn">虞姬舞劍</span></div>
       <div class="wbody"><div class="wtitle">第四週 — 虞姬舞劍</div><div class="wdesc">生離死別的情感表達，婉轉委婉語言藝術。</div><span class="wst st-lock">點擊進入</span></div>
     </div>
   </div>
 
-  <div style="background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.4rem 1.8rem;">
-    <div style="font-size:16px;color:var(--ink2);margin-bottom:12px;line-height:1.7;">完成所有課程與測驗後，請點下方按鈕將您的學習資料複製並傳給老師。</div>
-    <button class="btn-p blue" onclick="exportMyData()" style="font-size:16px;padding:11px 26px;">📋 匯出學習資料（複製給老師）</button>
-  </div>
+
 </div>
 
 <!-- ═══ LOGIN ═══ -->
@@ -382,7 +379,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <!-- WEEK 1 -->
   <div id="wk-1">
     <div class="info">【西皮散板 xī pí sàn bǎn】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第一週：天亡我楚</div><div class="video-btn-sub">天亡我楚 tiān wáng wǒ chǔ</div><a href="https://youtu.be/Kq22flf0dhE" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第一週：天亡我楚</div><a href="https://youtu.be/Kq22flf0dhE" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <!-- SEARCH BOX -->
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢 — 輸入不懂的台詞，查白話文解釋並朗讀</div>
@@ -397,13 +394,13 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div class="tag-badge">西皮散板 xī pí sàn bǎn</div>
       <div id="w1-lyrics"></div>
     </div>
-    <div class="btn-row"><button class="btn-p blue" onclick="switchWeek(2)">下一週：四面楚歌 →</button></div>
+    <div class="btn-row"><button class="btn-s" onclick="show('overview')">↩ 回到總覽</button><button class="btn-p blue" onclick="switchWeek(2)">下一週：四面楚歌 →</button></div>
   </div>
 
   <!-- WEEK 2 -->
   <div id="wk-2" style="display:none">
     <div class="info">點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第二週：四面楚歌</div><div class="video-btn-sub">四面楚歌 sì miàn chǔ gē</div><a href="https://youtu.be/eG-sdcJaSDM" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第二週：四面楚歌</div><a href="https://youtu.be/eG-sdcJaSDM" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -417,6 +414,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w2-lyrics"></div>
     </div>
     <div class="btn-row">
+      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
       <button class="btn-s" onclick="switchWeek(1)">← 第一週</button>
       <button class="btn-p blue" onclick="switchWeek(3)">下一週：力拔山兮 →</button>
     </div>
@@ -425,7 +423,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <!-- WEEK 3 -->
   <div id="wk-3" style="display:none">
     <div class="info">【垓下歌《史記》】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第三週：力拔山兮氣蓋世</div><div class="video-btn-sub">力拔山兮氣蓋世</div><a href="https://youtu.be/iHP6sTjgV64" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第三週：力拔山兮氣蓋世</div><a href="https://youtu.be/iHP6sTjgV64" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -440,6 +438,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w3-lyrics"></div>
     </div>
     <div class="btn-row">
+      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
       <button class="btn-s" onclick="switchWeek(2)">← 第二週</button>
       <button class="btn-p blue" onclick="switchWeek(4)">下一週：虞姬舞劍 →</button>
     </div>
@@ -448,7 +447,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <!-- WEEK 4 -->
   <div id="wk-4" style="display:none">
     <div class="info">【西皮二六 xī pí èr liù】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
-    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第四週：虞姬舞劍</div><div class="video-btn-sub">虞姬舞劍 Yú Jī wǔ jiàn</div><a href="https://youtu.be/0NspuPmn0Is" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第四週：虞姬舞劍</div><a href="https://youtu.be/0NspuPmn0Is" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
     <div class="lyric-search-box">
       <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
       <div class="lsearch-row">
@@ -463,6 +462,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w4-lyrics"></div>
     </div>
     <div class="btn-row">
+      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
       <button class="btn-s" onclick="switchWeek(3)">← 第三週</button>
       <button class="btn-p" onclick="show('posttest')">前往後測 →</button>
     </div>
@@ -515,7 +515,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
 <script>
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbw8zyW4-7-GVMNJ-_u-xHZ-juIq25N974XmcEiKDEILumZDR_WtuiXr5TBmniWi4H86/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbyVSbNy8Sa5oyftUsZgGVw4OrNLG1ydFoUZ0ZaNz558Fxl3qPdcVNMhZWzD2sbWX5Vg/exec';
 
 var LYRICS = {
   1:[
@@ -967,11 +967,10 @@ function speakAndShow(btn){
 
 // ══ INIT ══
 load();renderQ('pre');renderQ('post');renderLyrics();switchWeek(1);
-// 永遠先清空登入表單
+// 永遠清空登入表單，永遠先顯示登入頁
 ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
 document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
-if(S.loggedIn){show('overview');}
-else{show('login');}
+show('login');
 updateUI();
 initMobToggle();
 
