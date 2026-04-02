@@ -329,7 +329,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
 <!-- ═══ PRETEST ═══ -->
 <div id="p-pretest" class="panel">
-  <div class="sec-head"><div class="sec-bar"></div><h2>前測 Pre-test</h2></div>
+  
   <div class="info" id="pre-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出前測」一次計分。計分後題目鎖定，分數自動儲存。</div>
   <div class="quiz-hdr">
     <div><div class="qh-title">華語能力遷移前測</div><div class="qh-sub">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
@@ -371,7 +371,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-p blue" onclick="show('course');switchWeek(1)">前往第一週課程 →</button>
     </div>
   
-    <div style="margin-top:1rem;">
+    <div style="margin-top:1rem;display:flex;flex-direction:column;gap:10px;align-items:center;">
+      <a id="pre-survey-link" href="#" target="_blank"
+         style="display:inline-block;background:#1a6dbf;color:#fff;padding:11px 28px;border-radius:25px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
+        📋 京劇研究前測
+      </a>
       <button onclick="doLogout()" class="btn-s" style="font-weight:700;">暫時離開？登出 Logout</button>
     </div>
   </div>
@@ -405,7 +409,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div class="tag-badge">西皮散板 xī pí sàn bǎn</div>
       <div id="w1-lyrics"></div>
     </div>
-    <div class="btn-row"><button class="btn-s" onclick="show('overview')">↩ 回到總覽</button><button class="btn-p blue" onclick="switchWeek(2)">下一週：四面楚歌 →</button></div>
+    <div class="btn-row"><button class="btn-s" style="font-weight:700;" onclick="show('overview')">↩ 回到總覽</button><button class="btn-p blue" onclick="switchWeek(2)">下一週：四面楚歌 →</button></div>
 <div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
   <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
 </div>
@@ -428,8 +432,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w2-lyrics"></div>
     </div>
     <div class="btn-row">
-      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
-      <button class="btn-s" onclick="switchWeek(1)">← 第一週</button>
+      <button class="btn-s" style="font-weight:700;" onclick="show('overview')">↩ 回到總覽</button>
+      <button class="btn-s" style="font-weight:700;" onclick="switchWeek(1)">← 第一週</button>
       <button class="btn-p blue" onclick="switchWeek(3)">下一週：力拔山兮 →</button>
     </div>
 <div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
@@ -455,8 +459,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w3-lyrics"></div>
     </div>
     <div class="btn-row">
-      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
-      <button class="btn-s" onclick="switchWeek(2)">← 第二週</button>
+      <button class="btn-s" style="font-weight:700;" onclick="show('overview')">↩ 回到總覽</button>
+      <button class="btn-s" style="font-weight:700;" onclick="switchWeek(2)">← 第二週</button>
       <button class="btn-p blue" onclick="switchWeek(4)">下一週：虞姬舞劍 →</button>
     </div>
 <div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
@@ -482,9 +486,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <div id="w4-lyrics"></div>
     </div>
     <div class="btn-row">
-      <button class="btn-s" onclick="show('overview')">↩ 回到總覽</button>
-      <button class="btn-s" onclick="switchWeek(3)">← 第三週</button>
-      <button class="btn-p" onclick="show('posttest')">前往後測 →</button>
+      <button class="btn-s" onclick="show('overview')" style="font-weight:700;">↩ 回到總覽</button>
+      <button class="btn-s" onclick="switchWeek(3)" style="font-weight:700;">← 第三週</button>
+      <button class="btn-p" onclick="show('posttest')" style="font-weight:700;font-size:17px;">進入後測 →</button>
     </div>
 <div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
   <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
@@ -494,7 +498,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
 <!-- ═══ POSTTEST ═══ -->
 <div id="p-posttest" class="panel">
-  <div class="sec-head"><div class="sec-bar"></div><h2>後測 Post-test</h2></div>
+  
   <div class="info pink" id="post-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出後測」一次計分。完成後將與前測對照學習成效。</div>
   <div class="quiz-hdr pink">
     <div><div class="qh-title">《霸王別姬》華語能力遷移後測</div><div class="qh-sub" style="color:var(--pl);">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
@@ -530,7 +534,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <h3 style="color:var(--pd);">恭喜完成後測！</h3>
     <div class="score-compare" id="post-compare"></div>
     <p style="color:var(--muted);margin-bottom:1.2rem;">感謝您完成四週的學習課程！</p>
-    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;">完成學習，登出 Logout</button>
+    <a id="post-survey-link" href="#" target="_blank"
+       style="display:inline-block;background:#1a6dbf;color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:700;text-decoration:none;font-family:var(--sans);margin-bottom:12px;">
+      📋 京劇研究後測
+    </a><br>
+    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;margin-top:8px;">完成學習，登出 Logout</button>
   </div>
 </div>
 
@@ -812,6 +820,11 @@ function restoreQuiz(quiz){
   var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
   var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
   if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+sc+'/30';}
+  // 隱藏題目區塊
+  ['p1','p2','p3'].forEach(function(p){
+    var el=document.getElementById(quiz+'-'+p+'-qs');
+    if(el){var part=el.closest('.qpart');if(part)part.style.display='none';}
+  });
   document.querySelectorAll('input[name^="'+quiz+'_q"]').forEach(function(inp){inp.disabled=true;});
 }
 
@@ -951,12 +964,21 @@ function show(id){
 
 
 // ══ UI ══
+function updateSurveyLinks(){
+  var id=S.student.id||'';
+  var preLink=document.getElementById('pre-survey-link');
+  if(preLink) preLink.href='https://docs.google.com/forms/d/e/1FAIpQLSd82IpIS2kzDmcWJK8TTpY4cDYE4qjqU8mDsYv975ypeXYD4Q/viewform?usp=pp_url&entry.1821000575='+encodeURIComponent(id);
+  var postLink=document.getElementById('post-survey-link');
+  if(postLink) postLink.href='https://docs.google.com/forms/d/e/1FAIpQLScUJM673tXq0dp9OCKqYOPwAqvloLr5b3gVdN7AYAB0oghU5A/viewform?usp=pp_url&entry.705153980='+encodeURIComponent(id);
+}
+
 function updateUI(){
   if(S.loggedIn){
     var su=document.getElementById('sb-user');if(su)su.style.display='block';
 
   }
   updateMobLogout();
+  updateSurveyLinks();
   updateProgress();
   if(S.pre.done)restoreQuiz('pre');
   if(S.post.done)restoreQuiz('post');
