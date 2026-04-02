@@ -734,17 +734,34 @@ if(window.speechSynthesis){
 function speakText(text){
   if(!('speechSynthesis' in window)){alert('您的瀏覽器不支援語音，請用 Chrome。');return;}
   window.speechSynthesis.cancel();
-  // 多音字處理：替換容易讀錯的字
   var t=text
     .replace(/傳將令/g,'椽將令')
     .replace(/同行，豈/g,'同形，豈');
   var u=new SpeechSynthesisUtterance(t);
   u.lang='zh-TW';
   u.rate=0.82;
+  // 嘗試挑選中文語音，若語音清單尚未載入則直接播放
+  function doSpeak(){
+    var voices=window.speechSynthesis.getVoices();
+    if(voices.length>0){
+      var zh=voices.find(function(v){
+        return v.lang&&(v.lang.includes('zh')||v.lang.includes('ZH'));
+      })||voices.find(function(v){
+        return v.name&&(v.name.includes('Chinese')||v.name.includes('Mandarin')||v.name.includes('Taiwan'));
+      });
+      if(zh)u.voice=zh;
+    }
+    window.speechSynthesis.speak(u);
+  }
   var voices=window.speechSynthesis.getVoices();
-  var zh=voices.find(function(v){return v.lang.includes('zh')||v.name.includes('Chinese')||v.name.includes('Han');});
-  if(zh)u.voice=zh;
-  window.speechSynthesis.speak(u);
+  if(voices.length===0){
+    // 語音清單未載入，等待後再播
+    window.speechSynthesis.onvoiceschanged=function(){doSpeak();};
+    // 同時直接嘗試播放（某些瀏覽器不觸發 onvoiceschanged）
+    setTimeout(doSpeak,100);
+  } else {
+    doSpeak();
+  }
 }
 
 // ══ RENDER ══
