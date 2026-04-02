@@ -599,7 +599,8 @@ var LYRICS = {
     {zh:'月色雖好，只是四野俱是悲愁之聲，令人可慘',py:'yuè sè suī hǎo, zhǐ shì sì yě jù shì bēi chóu zhī shēng, lìng rén kě cǎn',tip:'白話：月色雖然美好，但四周田野都是悲傷哀愁的聲音，讓人感到淒慘。'},
     {zh:'只因秦王無道，兵戈四起，荼炭生靈',py:'zhǐ yīn qín wáng wú dào, bīng gē sì qǐ, tú tàn shēng líng',tip:'白話：都是因為秦王暴虐無道，四處戰爭，讓百姓遭受苦難。「荼炭生靈」意為使百姓受到水深火熱的苦難。'},
     {zh:'使那些無罪黎民，遠別爹娘，拋妻棄子',py:'shǐ nà xiē wú zuì lí mín, yuǎn bié diē niáng, pāo qī qì zǐ',tip:'白話：讓那些無辜的百姓，遠離父母，拋下妻兒。'},
-    {zh:'千古英雄爭何事，贏得沙場戰骨寒',py:'qiān gǔ yīng xióng zhēng hé shì, yíng dé shā chǎng zhàn gǔ hán',tip:'白話：千古英雄們爭的究竟是什麼？換來的不過是沙場上的累累白骨。'},
+    {    {zh:'怎的叫人不恨',py:'zěn de jiào rén bù hèn',tip:'白話：這怎能叫人不痛恨？對戰亂使百姓受苦的憤慨。'},
+    zh:'千古英雄爭何事，贏得沙場戰骨寒',py:'qiān gǔ yīng xióng zhēng hé shì, yíng dé shā chǎng zhàn gǔ hán',tip:'白話：千古英雄們爭的究竟是什麼？換來的不過是沙場上的累累白骨。'},
     {zh:'田園將蕪胡不歸，千里從軍為了誰',py:'tián yuán jiāng wú hú bù guī, qiān lǐ cóng jūn wèi le shuí',tip:'白話：田園將要荒蕪了，為何不回家？千里從軍到底是為了誰？（引自陶淵明，表達思鄉）'},
     {zh:'這四面敵軍所唱歌聲，跟咱們家鄉的腔調一個味兒',py:'zhè sì miàn dí jūn suǒ chàng gē shēng, gēn zán men jiā xiāng de qiāng diào yī gè wèir',tip:'白話：這四面敵軍所唱的歌，和我們家鄉的口音腔調是一樣的。'},
     {zh:'想是劉邦已得楚地，招來的兵都是咱們的鄉親',py:'xiǎng shì liú bāng yǐ dé chǔ dì, zhāo lái de bīng dōu shì zán men de xiāng qīn',tip:'白話：看來劉邦已經佔領了楚地，他招募的士兵都是我們的同鄉。'},
@@ -626,6 +627,7 @@ var LYRICS = {
 4:[
     {zh:'大王慷慨悲歌，令人淚下',py:'dà wáng kāng kǎi bēi gē, lìng rén lèi xià',tip:'白話：大王慷慨激昂地唱著悲歌，讓人忍不住落淚。'},
     {zh:'待妾妃歌舞一回，聊以解憂如何',py:'dài qiè fēi gē wǔ yī huí, liáo yǐ jiě yōu rú hé',tip:'白話：讓妾身為您歌舞一番，姑且用來排解憂愁，如何？（虞姬主動提議）'},
+    {zh:'自古常言不欺我，寬心飲酒寶帳坐',py:'zì gǔ cháng yán bù qī wǒ, kuān xīn yǐn jiǔ bǎo zhàng zuò',tip:'白話：古人的話從來不騙人，請大王放寬心，在帳中飲酒。虞姬安慰項羽不要憂慮。'},
     {zh:'勸君王飲酒聽虞歌',py:'quàn jūn wáng yǐn jiǔ tīng yú gē',tip:'白話：勸大王飲酒，聽虞姬為您唱歌。'},
     {zh:'解君憂悶舞婆娑',py:'jiě jūn yōu mèn wǔ pó suō',tip:'白話：為您排解憂悶，翩翩起舞。「婆娑」形容舞姿輕盈優美。'},
     {zh:'贏秦無道把江山破',py:'yíng qín wú dào bǎ jiāng shān pò',tip:'白話：嬴秦（秦朝）無道，毀壞了江山社稷。'},
@@ -876,7 +878,7 @@ function autoFill(id){
         document.getElementById('f-tocfl').value=s.student.tocfl||'';
         document.getElementById('f-nation').value=s.student.nation||'';
         if(s.student.gender)document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=(r.value===s.student.gender);});
-        // 找到舊資料，醒目顯示舊生按鈕，隱藏新生按鈕
+        // 找到舊資料，醒目顯示舊生按鈕，完全禁用新生按鈕
         if(btn){
           btn.style.background='#c9a227';
           btn.style.border='3px solid #8a6a00';
@@ -885,7 +887,10 @@ function autoFill(id){
           btn.textContent='✓ 找到您的資料！前往課程總覽';
         }
         var newBtn=document.getElementById('new-student-btn');
-        if(newBtn) newBtn.style.display='none';
+        if(newBtn){
+          newBtn.style.display='none';
+          newBtn.disabled=true;
+        }
         return;
       }
     }
@@ -1007,6 +1012,10 @@ function updateProgress(){
 
 // ══ SHOW / NAV ══
 function show(id){
+  // 若前測已完成，不允許進入前測頁（改去總覽）
+  if(id==='pretest' && S.loggedIn && S.pre.done){
+    id='overview';
+  }
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   var el=document.getElementById('p-'+id);if(el)el.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on');});
