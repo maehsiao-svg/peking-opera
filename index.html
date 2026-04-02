@@ -689,10 +689,13 @@ if(window.speechSynthesis){
 function speakText(text){
   if(!('speechSynthesis' in window)){alert('您的瀏覽器不支援語音，請用 Chrome。');return;}
   window.speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(text);
-  // 拼音是羅馬字，用中文語音引擎讀會更接近中文音調
+  // 多音字處理：替換容易讀錯的字
+  var t=text
+    .replace(/傳將令/g,'椽將令')
+    .replace(/同行，豈/g,'同形，豈');
+  var u=new SpeechSynthesisUtterance(t);
   u.lang='zh-TW';
-  u.rate=0.8;
+  u.rate=0.82;
   var voices=window.speechSynthesis.getVoices();
   var zh=voices.find(function(v){return v.lang.includes('zh')||v.name.includes('Chinese')||v.name.includes('Han');});
   if(zh)u.voice=zh;
@@ -724,7 +727,7 @@ function renderLyrics(){
       html+='<span class="lnum">'+(i+1)+'</span>';
       html+='<div class="lmain"><span class="lzh">'+item.zh+'</span><span class="lpy">'+item.py+'</span>';
       html+='<div class="ltip">'+item.tip+'</div></div>';
-      html+='<button class="lspeak" onclick="event.stopPropagation();speakAndShow(this)" data-t="'+item.py+'" style="font-size:13px;padding:5px 12px;">&#9654; 白話 &amp; 朗讀</button>';
+      html+='<button class="lspeak" onclick="event.stopPropagation();speakAndShow(this)" data-t="'+item.zh+'" style="font-size:13px;padding:5px 12px;">&#9654; 白話 &amp; 朗讀</button>';
       html+='</div>';
     });
     el.innerHTML=html;
@@ -992,7 +995,14 @@ function hideLogout(){}
 function speakAndShow(btn){
   var row=btn.closest('.lrow');
   if(row) row.classList.add('open');
-  speakText(btn.dataset.t);
+  var text=btn.dataset.t;
+  // 多音字修正：替換成正確讀音的同音字讓 TTS 正確發音
+  // 「傳將令」的「傳」讀 chuán（傳遞），TTS 容易讀成 zhuàn
+  // 用零寬空格技巧或替換字解決
+  text=text.replace('傳將令', '川將令');
+  // 「同行」的「行」讀 xíng（行走），TTS 容易讀成 háng
+  text=text.replace('同行，', '同型，');
+  speakText(text);
 }
 
 // ══ INIT ══
