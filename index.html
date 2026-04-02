@@ -934,8 +934,15 @@ initMobToggle();show('overview');
   if(!name||!gender||!grade||!tocfl||!nation){
     err.style.display='block';err.textContent='請填寫所有欄位（姓名、性別、年級、程度、國籍）。';return;
   }
+  // 新生：強制重置所有測驗資料，避免舊資料干擾
   S.student={id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation};
-  S.loggedIn=true;save();
+  S.pre={done:false,score:0,s1:0,s2:0,s3:0};
+  S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  S.weekSeen=[false,false,false,false];
+  S.qpreDone=false;S.qpostDone=false;
+  S.loggedIn=true;
+  renderQ('pre');renderQ('post'); // 重新渲染題目，解除任何鎖定
+  save();
   toast('歡迎 '+name+'！請先完成前測。');
   sendToSheets('login');updateUI();
 initMobToggle();show('pretest');
