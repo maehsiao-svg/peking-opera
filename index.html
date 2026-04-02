@@ -276,7 +276,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
 
 
-<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;">
+  <a id="post-survey-link2" href="#" target="_blank"
+     style="display:block;background:#1a6dbf;color:#fff;padding:11px 28px;border-radius:25px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);width:fit-content;">
+    📋 京劇研究後測
+  </a>
   <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
 </div>
 </div>
@@ -289,7 +293,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="fgrid">
       <div class="fg full">
         <label class="flabel">學號 Student ID <span style="font-weight:400;font-size:14px;color:var(--muted);">（自動轉大寫）</span></label>
-        <input class="finput" id="f-id" type="text" placeholder="例如 A123456" oninput="this.value=this.value.toUpperCase();autoFill(this.value)" style="font-size:20px;font-weight:700;letter-spacing:.12em;" autocomplete="off">
+        <input class="finput" id="f-id" type="text" placeholder="例如 A123456" oninput="this.value=this.value.toUpperCase();autoFill(this.value);if(!this.value){var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';var ob=document.getElementById('old-login-btn');if(ob){ob.style.background='';ob.style.border='';ob.style.color='';ob.style.transform='';ob.textContent='舊生：直接進入課程';}}" style="font-size:20px;font-weight:700;letter-spacing:.12em;" autocomplete="off">
       </div>
       <div class="fg full"><label class="flabel">姓名 Name</label><input class="finput" id="f-name" type="text" placeholder="請輸入中文或英文姓名"></div>
       <div class="fg">
@@ -367,14 +371,14 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <button class="btn-p blue" onclick="submitQuiz('pre')" style="font-size:17px;padding:13px 32px;">送出前測（共30題）</button>
   </div>
   <div class="done-msg" id="pre-done-msg" style="display:none">
-    <p id="pre-done-score" style="font-size:18px;color:var(--pm);font-weight:700;margin-bottom:8px;"></p>
+    <p id="pre-done-score" style="display:none;"></p>
     <div style="margin-top:1rem;display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;">
       <a id="pre-survey-link" href="#" target="_blank"
          style="display:block;background:var(--pm);color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;text-decoration:none;font-family:var(--sans);text-align:center;">
         📋 京劇研究前測（請先完成）
       </a>
-      <button class="btn-p blue" onclick="show('course');switchWeek(1)" style="font-weight:700;width:100%;">前往第一週課程 →</button>
-      <button onclick="doLogout()" class="btn-s" style="font-weight:700;">暫時離開？登出 Logout</button>
+      <button class="btn-p blue" onclick="show('course');switchWeek(1)" style="font-weight:700;width:100%;">華文前測完成，前往課程 →</button>
+      <button onclick="doLogout()" class="btn-s" style="font-weight:700;">登出 Logout</button>
     </div>
   </div>
 </div>
@@ -839,24 +843,28 @@ function autoFill(id){
         document.getElementById('f-tocfl').value=s.student.tocfl||'';
         document.getElementById('f-nation').value=s.student.nation||'';
         if(s.student.gender)document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=(r.value===s.student.gender);});
-        // 找到舊資料，醒目顯示舊生按鈕
+        // 找到舊資料，醒目顯示舊生按鈕，隱藏新生按鈕
         if(btn){
           btn.style.background='#c9a227';
           btn.style.border='3px solid #8a6a00';
           btn.style.color='#0a1829';
           btn.style.transform='scale(1.04)';
-          btn.textContent='✓ 找到您的資料！舊生：直接進入課程';
+          btn.textContent='✓ 找到您的資料！點此進入課程';
         }
+        var newBtn=document.getElementById('new-student-btn');
+        if(newBtn) newBtn.style.display='none';
         return;
       }
     }
   }catch(e){}
-  // 沒找到資料，恢復按鈕原樣
+  // 沒找到資料，恢復按鈕原樣，顯示新生按鈕
   if(btn){
     btn.style.background='';btn.style.border='';btn.style.color='';
     btn.style.transform='';
     btn.textContent='舊生：直接進入課程';
   }
+  var newBtn=document.getElementById('new-student-btn');
+  if(newBtn) newBtn.style.display='block';
 }
 function doLogin(isNew){
   var id=document.getElementById('f-id').value.trim().toUpperCase();
@@ -968,6 +976,8 @@ function updateSurveyLinks(){
   if(preLink) preLink.href='https://docs.google.com/forms/d/e/1FAIpQLSd82IpIS2kzDmcWJK8TTpY4cDYE4qjqU8mDsYv975ypeXYD4Q/viewform?usp=pp_url&entry.1821000575='+encodeURIComponent(id);
   var postLink=document.getElementById('post-survey-link');
   if(postLink) postLink.href='https://docs.google.com/forms/d/e/1FAIpQLScUJM673tXq0dp9OCKqYOPwAqvloLr5b3gVdN7AYAB0oghU5A/viewform?usp=pp_url&entry.705153980='+encodeURIComponent(id);
+  var postLink2=document.getElementById('post-survey-link2');
+  if(postLink2) postLink2.href='https://docs.google.com/forms/d/e/1FAIpQLScUJM673tXq0dp9OCKqYOPwAqvloLr5b3gVdN7AYAB0oghU5A/viewform?usp=pp_url&entry.705153980='+encodeURIComponent(id);
 }
 
 function updateUI(){
