@@ -263,12 +263,12 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <!-- 京劇研究前測（可勾選） -->
   <div style="background:var(--pp);border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
     <a id="pre-survey-link2" href="#" target="_blank"
-       style="background:var(--pm);color:#fff;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
+       style="background:var(--bm);color:#fff;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
       📋 京劇研究前測
     </a>
-    <label style="display:flex;align-items:center;gap:8px;font-size:15px;color:var(--pd);font-weight:600;cursor:pointer;">
+    <label style="display:flex;align-items:center;gap:8px;font-size:15px;color:var(--bm);font-weight:600;cursor:pointer;">
       <input type="checkbox" id="chk-qpre" onchange="toggleQProgress('qpre',this.checked)"
-             style="width:20px;height:20px;accent-color:var(--pm);cursor:pointer;">
+             style="width:20px;height:20px;accent-color:var(--bm);cursor:pointer;">
       已完成，打勾記錄進度
     </label>
   </div>
@@ -297,7 +297,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <div style="background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-top:.5rem;">
     <div style="font-size:16px;font-weight:700;color:var(--bd);margin-bottom:12px;">完成四週課程後：</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button class="btn-p" onclick="show('posttest')" style="font-weight:700;font-size:17px;">📝 華文後測</button>
+      <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文後測</button>
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--bpp);border:2px solid var(--bl);border-radius:10px;padding:.8rem 1rem;">
         <a id="post-survey-link2" href="#" target="_blank"
            style="background:var(--bm);color:#fff;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
@@ -737,31 +737,15 @@ function speakText(text){
   var t=text
     .replace(/傳將令/g,'椽將令')
     .replace(/同行，豈/g,'同形，豈');
-  var u=new SpeechSynthesisUtterance(t);
-  u.lang='zh-TW';
-  u.rate=0.82;
-  // 嘗試挑選中文語音，若語音清單尚未載入則直接播放
-  function doSpeak(){
-    var voices=window.speechSynthesis.getVoices();
-    if(voices.length>0){
-      var zh=voices.find(function(v){
-        return v.lang&&(v.lang.includes('zh')||v.lang.includes('ZH'));
-      })||voices.find(function(v){
-        return v.name&&(v.name.includes('Chinese')||v.name.includes('Mandarin')||v.name.includes('Taiwan'));
-      });
-      if(zh)u.voice=zh;
-    }
-    window.speechSynthesis.speak(u);
-  }
+  var utterance=new SpeechSynthesisUtterance(t);
+  utterance.lang='zh-TW';
+  utterance.rate=0.85;
   var voices=window.speechSynthesis.getVoices();
-  if(voices.length===0){
-    // 語音清單未載入，等待後再播
-    window.speechSynthesis.onvoiceschanged=function(){doSpeak();};
-    // 同時直接嘗試播放（某些瀏覽器不觸發 onvoiceschanged）
-    setTimeout(doSpeak,100);
-  } else {
-    doSpeak();
-  }
+  var zhVoice=voices.find(function(v){
+    return v.lang.includes('zh')||v.name.includes('Chinese')||v.name.includes('Han');
+  });
+  if(zhVoice) utterance.voice=zhVoice;
+  window.speechSynthesis.speak(utterance);
 }
 
 // ══ RENDER ══
