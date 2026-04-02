@@ -404,7 +404,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <button class="btn-p blue" onclick="submitQuiz('pre')" style="font-size:17px;padding:13px 32px;">送出前測（共30題）</button>
   </div>
   <div class="done-msg" id="pre-done-msg" style="display:none">
-    <div id="pre-done-score" style="font-size:17px;color:var(--pm);font-weight:700;margin-bottom:1rem;text-align:center;"></div>
+    <div id="pre-done-score" style="display:none;"></div>
     <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:10px;align-items:center;width:100%;">
       <a id="pre-survey-link" href="#" target="_blank"
          style="display:block;background:var(--pm);color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;text-decoration:none;font-family:var(--sans);text-align:center;width:100%;">
@@ -856,7 +856,7 @@ function restoreQuiz(quiz){
   ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
   var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
   var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
-  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='華文前測：Part1 '+s1+'/10 ‧ Part2 '+s2+'/10 ‧ Part3 '+s3+'/10 ‧ 總分 '+sc+'/30';}
+  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='華文前測：Part1 '+s1+'分 ‧ Part2 '+s2+'分 ‧ Part3 '+s3+'分 ‧ 總分 '+sc+'/30';}
   // 隱藏題目區塊
   ['p1','p2','p3'].forEach(function(p){
     var el=document.getElementById(quiz+'-'+p+'-qs');
@@ -919,8 +919,9 @@ function doLogin(isNew){
         if(sv.student&&sv.student.id===id){
           S=sv;S.loggedIn=true;save();
           toast('歡迎回來，'+S.student.name+'！');
-          updateUI();
-initMobToggle();show('overview');
+          var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='none';
+          updateUI();updateSurveyLinks();
+          initMobToggle();show('overview');
           sendToSheets('login_return');return;
         }
       }
@@ -939,18 +940,39 @@ initMobToggle();show('overview');
   if(!name||!gender||!grade||!tocfl||!nation){
     err.style.display='block';err.textContent='請填寫所有欄位（姓名、性別、年級、程度、國籍）。';return;
   }
-  // 新生：強制重置所有測驗資料，避免舊資料干擾
-  S.student={id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation};
-  S.pre={done:false,score:0,s1:0,s2:0,s3:0};
-  S.post={done:false,score:0,s1:0,s2:0,s3:0};
-  S.weekSeen=[false,false,false,false];
-  S.qpreDone=false;S.qpostDone=false;
-  S.loggedIn=true;
-  renderQ('pre');renderQ('post'); // 重新渲染題目，解除任何鎖定
+
+  // 檢查 localStorage：同一學號回來 → 進總覽；不同學號 → 全新重置
+  try{
+    var d=localStorage.getItem('kj_s2');
+    if(d){
+      var sv=JSON.parse(d);
+      if(sv.student&&sv.student.id===id&&sv.pre&&sv.pre.done){
+        // 同一學號且已完成前測 → 進總覽
+        S=sv;S.loggedIn=true;
+        S.student.name=name;S.student.gender=gender.value;
+        S.student.grade=grade;S.student.tocfl=tocfl;S.student.nation=nation;
+        save();
+        toast('歡迎回來，'+name+'！您已完成前測。');
+        updateUI();updateSurveyLinks();
+        initMobToggle();show('overview');
+        return;
+      }
+    }
+  }catch(e){}
+
+  // 全新學生 或 不同學號 → 完全清除，重新開始
+  localStorage.removeItem('kj_s2');
+  S={loggedIn:true,
+     student:{id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation},
+     pre:{done:false,score:0,s1:0,s2:0,s3:0},
+     post:{done:false,score:0,s1:0,s2:0,s3:0},
+     weekSeen:[false,false,false,false],
+     qpreDone:false,qpostDone:false};
+  renderQ('pre');renderQ('post');
   save();
-  toast('歡迎 '+name+'！請先完成前測。');
-  sendToSheets('login');updateUI();
-initMobToggle();show('pretest');
+  toast('歡迎 '+name+'！請先完成華文前測。');
+  sendToSheets('login');updateUI();updateSurveyLinks();
+  initMobToggle();show('pretest');
 }
 
 function doLogout(){
