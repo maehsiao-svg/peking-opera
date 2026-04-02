@@ -298,16 +298,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div style="font-size:16px;font-weight:700;color:var(--bd);margin-bottom:12px;">完成四週課程後：</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文後測</button>
-      <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;">
         <a id="post-survey-link2" href="#" target="_blank"
-           style="background:var(--pm);color:#fff;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
+           style="display:block;text-align:center;background:var(--pm);color:#fff;padding:11px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
           📋 京劇研究後測
         </a>
-        <label style="display:flex;align-items:center;gap:8px;font-size:15px;color:var(--pm);font-weight:600;cursor:pointer;">
-          <input type="checkbox" id="chk-qpost" onchange="toggleQProgress('qpost',this.checked)"
-                 style="width:20px;height:20px;accent-color:var(--pm);cursor:pointer;">
-          已完成，打勾記錄進度
-        </label>
       </div>
     </div>
   </div>
@@ -1044,6 +1039,10 @@ function show(id){
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on');});
   var m={overview:'sb-overview',login:'sb-login',pretest:'sb-pretest',posttest:'sb-posttest'};
   if(m[id]){var s=document.getElementById(m[id]);if(s)s.classList.add('on');}
+  // 捲到最上方
+  var content=document.querySelector('.content');
+  if(content) content.scrollTop=0;
+  window.scrollTo(0,0);
   // 手機版點選後收合側欄
   if(window.innerWidth<=768){
     var sb=document.getElementById('sidebar');
