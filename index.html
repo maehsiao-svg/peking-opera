@@ -323,6 +323,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-p blue" id="old-login-btn" style="font-size:17px;font-weight:900;transition:all .3s;" onclick="doLogin(false)">舊生：直接進入課程</button>
     </div>
     <div class="err-txt" id="login-err"></div>
+    <div style="margin-top:2rem;padding-top:1rem;border-top:1px dashed var(--border);text-align:center;">
+      <button onclick="clearAllData()" style="background:transparent;border:1px solid #ccc;color:#aaa;border-radius:6px;padding:5px 14px;font-size:13px;cursor:pointer;font-family:var(--sans);">清除瀏覽器資料</button>
+    </div>
 
   </div>
 </div>
@@ -364,18 +367,13 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <button class="btn-p blue" onclick="submitQuiz('pre')" style="font-size:17px;padding:13px 32px;">送出前測（共30題）</button>
   </div>
   <div class="done-msg" id="pre-done-msg" style="display:none">
-    <h3 style="color:var(--bd);">前測已完成並儲存！</h3>
     <p id="pre-done-score" style="font-size:18px;color:var(--pm);font-weight:700;margin-bottom:8px;"></p>
-    <p>您可以開始觀看四週課程了。</p>
-    <div class="btn-row" style="justify-content:center;margin-top:1rem;">
-      <button class="btn-p blue" onclick="show('course');switchWeek(1)">前往第一週課程 →</button>
-    </div>
-  
-    <div style="margin-top:1rem;display:flex;flex-direction:column;gap:10px;align-items:center;">
+    <div style="margin-top:1rem;display:flex;flex-direction:column;gap:12px;align-items:center;width:100%;">
       <a id="pre-survey-link" href="#" target="_blank"
-         style="display:inline-block;background:#1a6dbf;color:#fff;padding:11px 28px;border-radius:25px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
-        📋 京劇研究前測
+         style="display:block;background:var(--pm);color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;text-decoration:none;font-family:var(--sans);text-align:center;">
+        📋 京劇研究前測（請先完成）
       </a>
+      <button class="btn-p blue" onclick="show('course');switchWeek(1)" style="font-weight:700;width:100%;">前往第一週課程 →</button>
       <button onclick="doLogout()" class="btn-s" style="font-weight:700;">暫時離開？登出 Logout</button>
     </div>
   </div>
@@ -1012,6 +1010,19 @@ function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.clas
 function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
 
 // ══ HELPERS ══
+function clearAllData(){
+  localStorage.removeItem('kj_s2');
+  S={loggedIn:false,student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},
+     pre:{done:false,score:0,s1:0,s2:0,s3:0},
+     post:{done:false,score:0,s1:0,s2:0,s3:0},
+     weekSeen:[false,false,false,false]};
+  renderQ('pre');renderQ('post');
+  ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+  var sb=document.getElementById('sb-user');if(sb)sb.style.display='none';
+  updateProgress();show('login');
+  toast('✓ 瀏覽器資料已清除');
+}
 function showLogout(){doLogout();}
 function hideLogout(){}
 function speakAndShow(btn){
