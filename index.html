@@ -1046,6 +1046,17 @@ function show(id){
   if(id==='pretest' && S.loggedIn && S.pre.done){
     id='overview';
   }
+  // 若前測未完成，清除舊的分數顯示（避免殘留舊帳號資料）
+  if(id==='pretest' && (!S.loggedIn || !S.pre.done)){
+    var sd=document.getElementById('pre-score-display');if(sd)sd.textContent='尚未送出';
+    ['1','2','3'].forEach(function(n){var el=document.getElementById('pre-s'+n+'-disp');if(el)el.textContent='0/10';});
+    var sa=document.getElementById('pre-submit-area');if(sa)sa.style.display='block';
+    var dm=document.getElementById('pre-done-msg');if(dm)dm.style.display='none';
+    ['p1','p2','p3'].forEach(function(p){
+      var el=document.getElementById('pre-'+p+'-qs');
+      if(el){var part=el.closest('.qpart');if(part)part.style.display='block';}
+    });
+  }
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
   var el=document.getElementById('p-'+id);if(el)el.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on');});
