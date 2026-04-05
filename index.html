@@ -236,10 +236,18 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 <!-- ═══ OVERVIEW ═══ -->
 <div id="p-overview" class="panel">
 
-  <!-- 華文前測入口（未完成時顯示）-->
-  <div id="pre-entry-box" style="display:none;background:#fff;border:2px solid var(--bm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:center;">
-    <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">尚未完成華文前測</div>
-    <button onclick="show('pretest')" style="background:var(--bm);color:#fff;border:none;padding:11px 28px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">📝 前往華文前測</button>
+  <!-- 華文前測入口（永遠顯示，狀態不同）-->
+  <div id="pre-entry-box" style="background:#fff;border:2px solid var(--bm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:center;">
+    <!-- 未完成：藍色按鈕 -->
+    <div id="pre-entry-todo" style="display:none;">
+      <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">尚未完成華文前測</div>
+      <button onclick="show('pretest')" style="background:var(--bm);color:#fff;border:none;padding:11px 28px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">📝 前往華文前測</button>
+    </div>
+    <!-- 已完成：顯示分數 -->
+    <div id="pre-entry-done" style="display:none;">
+      <div style="font-size:14px;color:#3B6D11;font-weight:700;margin-bottom:4px;">✓ 華文前測已完成</div>
+      <div id="pre-entry-score" style="font-size:15px;color:var(--pm);font-weight:700;"></div>
+    </div>
   </div>
 
   <!-- 進度條 8格 -->
@@ -1079,8 +1087,23 @@ function updateUI(){
   updateMobLogout();
   updateSurveyLinks();
   updateProgress();
-  var preEntry=document.getElementById('pre-entry-box');
-  if(preEntry) preEntry.style.display=(S.loggedIn&&!S.pre.done)?'block':'none';
+  // 華文前測入口狀態控制
+  var preTodo=document.getElementById('pre-entry-todo');
+  var preDone=document.getElementById('pre-entry-done');
+  var preScore=document.getElementById('pre-entry-score');
+  if(S.loggedIn){
+    if(S.pre.done){
+      if(preTodo) preTodo.style.display='none';
+      if(preDone) preDone.style.display='block';
+      if(preScore) preScore.textContent='Part1 '+( S.pre.s1||0)+'分 ‧ Part2 '+(S.pre.s2||0)+'分 ‧ Part3 '+(S.pre.s3||0)+'分 ‧ 總分 '+(S.pre.score||0)+'/30';
+    } else {
+      if(preTodo) preTodo.style.display='block';
+      if(preDone) preDone.style.display='none';
+    }
+  } else {
+    if(preTodo) preTodo.style.display='none';
+    if(preDone) preDone.style.display='none';
+  }
   if(S.pre.done)restoreQuiz('pre');
   if(S.post.done)restoreQuiz('post');
 }
