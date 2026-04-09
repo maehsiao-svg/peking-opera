@@ -1037,29 +1037,37 @@ function doLoginOld(){
   var nation=document.getElementById('f-nation-old').value.trim();
   var err=document.getElementById('login-err-old');
   err.style.display='none';
-  if(!name||!gender||!grade||!tocfl||!nation){
-    err.style.display='block';err.textContent='請確認所有欄位都已填寫。';return;
-  }
-  // 載入舊資料，更新基本資料
+  if(!name){err.style.display='block';err.textContent='請填寫姓名。';return;}
+  if(!gender){err.style.display='block';err.textContent='請選擇性別。';return;}
+  if(!grade){err.style.display='block';err.textContent='請選擇年級。';return;}
+  if(!tocfl){err.style.display='block';err.textContent='請選擇中文程度。';return;}
+  if(!nation){err.style.display='block';err.textContent='請填寫國籍。';return;}
+
   try{
     var d=localStorage.getItem('kj_s2');
     if(d){var sv=JSON.parse(d);S=sv;}
   }catch(e){}
+
   S.loggedIn=true;
-  S.student=S.student||{};
-  S.student.id=id;S.student.name=name;
-  S.student.gender=gender.value;S.student.grade=grade;
-  S.student.tocfl=tocfl;S.student.nation=nation;
+  if(!S.student)S.student={};
+  S.student.id=id;
+  S.student.name=name;
+  S.student.gender=gender.value;
+  S.student.grade=grade;
+  S.student.tocfl=tocfl;
+  S.student.nation=nation;
   if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.weekSeen)S.weekSeen=[false,false,false,false];
-  if(S.qpreDone===undefined)S.qpreDone=false;
-  if(S.qpostDone===undefined)S.qpostDone=false;
+  if(!S.qpreDone)S.qpreDone=false;
+  if(!S.qpostDone)S.qpostDone=false;
   save();
-  sendToSheets('login_return');
+  try{sendToSheets('login_return');}catch(e){}
   toast('歡迎回來，'+name+'！');
-  updateUI();updateSurveyLinks();
-  initMobToggle();show('overview');
+  try{updateUI();}catch(e){}
+  try{updateSurveyLinks();}catch(e){}
+  try{initMobToggle();}catch(e){}
+  show('overview');
 }
 
 // 新生送出
