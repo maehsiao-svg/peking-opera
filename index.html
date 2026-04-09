@@ -18,7 +18,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .app{display:flex;flex-direction:column;min-height:100vh;}
 /* LAYOUT */
 .body-wrap{display:flex;flex:1;}
-.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 96px);overflow-y:auto;}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 100px);overflow-y:auto;}
 .sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
 .sb-lbl{font-size:19px;color:var(--gold);font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:3px;transition:all .18s;}
@@ -31,7 +31,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .sb-uid{font-size:14px;color:var(--gold);margin-bottom:4px;font-weight:700;}
 .sb-uname{font-size:19px;color:#fff;font-weight:900;}
 .sb-usub{font-size:14px;color:#e8f4ff;margin-top:3px;font-weight:600;}
-.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 96px);}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 100px);}
 .panel{display:none;animation:fadeIn .2s ease;}
 .panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -190,61 +190,75 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 <body>
 <div class="app">
 <!-- TOP BAR - logo only, no nav -->
-<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:0 2rem;height:92px;display:flex;align-items:center;flex-shrink:0;gap:16px;">
-  <svg width="60" height="60" viewBox="0 0 80 88">
-  <!-- 霸王臉譜：藍黑底，金色紋飾 -->
-  <ellipse cx="40" cy="46" rx="32" ry="38" fill="#0d2550" stroke="#c9a227" stroke-width="2"/>
-  <!-- 額頭金色裝飾 -->
-  <path d="M24 20 Q40 8 56 20" fill="none" stroke="#c9a227" stroke-width="2.5"/>
-  <path d="M30 14 Q40 6 50 14" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-  <!-- 眉毛（粗黑上挑） -->
-  <path d="M14 32 Q22 22 30 28" fill="#c9a227" stroke="#c9a227" stroke-width="1"/>
-  <path d="M50 28 Q58 22 66 32" fill="#c9a227" stroke="#c9a227" stroke-width="1"/>
-  <!-- 眼睛 -->
-  <ellipse cx="26" cy="36" rx="8" ry="6" fill="#0a0a1a"/>
-  <ellipse cx="54" cy="36" rx="8" ry="6" fill="#0a0a1a"/>
-  <ellipse cx="26" cy="36" rx="4" ry="3" fill="#fff"/>
-  <ellipse cx="54" cy="36" rx="4" ry="3" fill="#fff"/>
-  <circle cx="26" cy="36" r="2" fill="#1a1a6e"/>
-  <circle cx="54" cy="36" r="2" fill="#1a1a6e"/>
-  <!-- 鼻子 -->
-  <path d="M36 44 Q40 50 44 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-  <!-- 嘴巴 -->
-  <path d="M28 62 Q40 70 52 62" fill="none" stroke="#c9a227" stroke-width="2"/>
-  <path d="M32 60 Q40 56 48 60" fill="#8b1a1a" stroke="none"/>
-  <!-- 臉頰金色紋路 -->
-  <path d="M10 40 Q16 36 14 48" fill="none" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="2,1"/>
-  <path d="M70 40 Q64 36 66 48" fill="none" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="2,1"/>
-</svg>
-  <svg width="60" height="60" viewBox="0 0 80 88">
-  <!-- 虞姬臉譜：白底，粉色腮紅，精緻妝容 -->
-  <ellipse cx="40" cy="46" rx="32" ry="38" fill="#fdf0f5" stroke="#c9a227" stroke-width="2"/>
-  <!-- 髮髻（深紫） -->
-  <path d="M8 30 Q20 4 40 8 Q60 4 72 30 Q60 18 40 16 Q20 18 8 30" fill="#2a1040"/>
-  <!-- 髮飾金點 -->
-  <circle cx="40" cy="10" r="3.5" fill="#c9a227"/>
-  <circle cx="28" cy="16" r="2" fill="#c9a227"/>
-  <circle cx="52" cy="16" r="2" fill="#c9a227"/>
-  <!-- 眉毛（細彎） -->
-  <path d="M18 32 Q26 26 34 30" fill="none" stroke="#2a1040" stroke-width="1.8"/>
-  <path d="M46 30 Q54 26 62 32" fill="none" stroke="#2a1040" stroke-width="1.8"/>
-  <!-- 眼睛（杏仁形） -->
-  <path d="M18 38 Q26 32 34 38 Q26 44 18 38" fill="#2a1040"/>
-  <path d="M46 38 Q54 32 62 38 Q54 44 46 38" fill="#2a1040"/>
-  <ellipse cx="26" cy="38" rx="3" ry="2.5" fill="#fff"/>
-  <ellipse cx="54" cy="38" rx="3" ry="2.5" fill="#fff"/>
-  <!-- 腮紅 -->
-  <ellipse cx="18" cy="52" rx="8" ry="5" fill="rgba(220,100,140,0.3)"/>
-  <ellipse cx="62" cy="52" rx="8" ry="5" fill="rgba(220,100,140,0.3)"/>
-  <!-- 鼻子 -->
-  <ellipse cx="40" cy="50" rx="3" ry="2" fill="rgba(200,80,100,0.3)"/>
-  <!-- 嘴唇 -->
-  <path d="M30 62 Q40 58 50 62 Q40 70 30 62" fill="#c2457a"/>
-  <path d="M30 62 Q40 66 50 62" fill="none" stroke="#a03060" stroke-width="1"/>
-</svg>
-  <div>
-    <div style="font-family:var(--serif);font-size:34px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
-    <div style="font-size:16px;color:#c8e8f8;margin-top:5px;letter-spacing:.05em;font-weight:500;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
+<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:.8rem 1.2rem;min-height:80px;display:flex;align-items:center;flex-shrink:0;gap:14px;">
+  <!-- 霸王臉譜 -->
+  <svg width="58" height="68" viewBox="0 0 58 68" style="flex-shrink:0;">
+    <!-- 臉型 -->
+    <ellipse cx="29" cy="37" rx="25" ry="29" fill="#0d2550"/>
+    <ellipse cx="29" cy="37" rx="25" ry="29" fill="none" stroke="#c9a227" stroke-width="2"/>
+    <!-- 額頭裝飾 -->
+    <path d="M10 22 Q29 8 48 22" fill="none" stroke="#c9a227" stroke-width="2"/>
+    <path d="M16 16 Q29 6 42 16" fill="none" stroke="#c9a227" stroke-width="1.2"/>
+    <!-- 眼眶白底 -->
+    <ellipse cx="19" cy="32" rx="9" ry="7" fill="white"/>
+    <ellipse cx="39" cy="32" rx="9" ry="7" fill="white"/>
+    <!-- 眼珠 -->
+    <ellipse cx="19" cy="32" rx="5" ry="4.5" fill="#1a0a3e"/>
+    <ellipse cx="39" cy="32" rx="5" ry="4.5" fill="#1a0a3e"/>
+    <circle cx="20" cy="31" r="1.5" fill="white"/>
+    <circle cx="40" cy="31" r="1.5" fill="white"/>
+    <!-- 眉毛粗黑上挑 -->
+    <path d="M8 26 Q14 18 24 24" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+    <path d="M34 24 Q44 18 50 26" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+    <!-- 鼻子 -->
+    <path d="M25 42 Q29 46 33 42" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+    <!-- 嘴 -->
+    <path d="M18 55 Q29 50 40 55" fill="#8b1a1a" stroke="none"/>
+    <path d="M18 55 Q29 62 40 55" fill="#6b1010" stroke="none"/>
+    <path d="M18 55 Q29 50 40 55" fill="none" stroke="#c9a227" stroke-width="1"/>
+    <!-- 臉頰紋路 -->
+    <path d="M5 38 Q10 32 8 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+    <path d="M53 38 Q48 32 50 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  </svg>
+
+  <!-- 虞姬臉譜 -->
+  <svg width="58" height="68" viewBox="0 0 58 68" style="flex-shrink:0;">
+    <!-- 臉型白底 -->
+    <ellipse cx="29" cy="40" rx="25" ry="27" fill="#fef6f8"/>
+    <ellipse cx="29" cy="40" rx="25" ry="27" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+    <!-- 髮髻 -->
+    <path d="M4 28 Q10 4 29 8 Q48 4 54 28 Q48 16 29 14 Q10 16 4 28" fill="#1e0a30"/>
+    <!-- 髮飾 -->
+    <circle cx="29" cy="9" r="4" fill="#c9a227"/>
+    <circle cx="18" cy="15" r="2.5" fill="#c9a227"/>
+    <circle cx="40" cy="15" r="2.5" fill="#c9a227"/>
+    <circle cx="11" cy="24" r="2" fill="#c9a227"/>
+    <circle cx="47" cy="24" r="2" fill="#c9a227"/>
+    <!-- 眉毛細彎 -->
+    <path d="M13 30 Q21 24 28 28" fill="none" stroke="#2a1040" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M30 28 Q37 24 45 30" fill="none" stroke="#2a1040" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- 眼睛杏仁形 -->
+    <path d="M13 36 Q21 30 28 36 Q21 42 13 36" fill="#2a1040"/>
+    <path d="M30 36 Q37 30 45 36 Q37 42 30 36" fill="#2a1040"/>
+    <ellipse cx="20" cy="36" rx="3.5" ry="2.8" fill="white"/>
+    <ellipse cx="37" cy="36" rx="3.5" ry="2.8" fill="white"/>
+    <circle cx="20" cy="36" r="1.8" fill="#1a0a30"/>
+    <circle cx="37" cy="36" r="1.8" fill="#1a0a30"/>
+    <!-- 腮紅 -->
+    <ellipse cx="11" cy="48" rx="7" ry="4.5" fill="rgba(220,80,120,0.25)"/>
+    <ellipse cx="47" cy="48" rx="7" ry="4.5" fill="rgba(220,80,120,0.25)"/>
+    <!-- 鼻子 -->
+    <circle cx="29" cy="48" r="2" fill="rgba(200,80,100,0.2)"/>
+    <!-- 嘴唇 -->
+    <path d="M20 58 Q29 54 38 58 Q29 65 20 58" fill="#c2457a"/>
+    <path d="M20 58 Q29 62 38 58" fill="none" stroke="#943060" stroke-width="0.8"/>
+    <path d="M22 58 Q29 56 36 58" fill="#e06090" stroke="none"/>
+  </svg>
+
+  <!-- 文字 -->
+  <div style="flex:1;min-width:0;">
+    <div style="font-family:var(--serif);font-size:clamp(18px,5vw,30px);color:var(--gold);font-weight:700;letter-spacing:.08em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
+    <div style="font-size:clamp(11px,3vw,14px);color:#c8e8f8;margin-top:4px;letter-spacing:.03em;font-weight:500;line-height:1.4;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
   </div>
 </div>
 
