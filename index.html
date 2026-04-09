@@ -194,7 +194,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#1a3a6e" stroke="#c9a227" stroke-width="1.5"/><path d="M12 14 Q22 8 32 14" fill="none" stroke="#c9a227" stroke-width="1.2"/><ellipse cx="16" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="28" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="16" cy="20" rx="2" ry="1.5" fill="#fff"/><ellipse cx="28" cy="20" rx="2" ry="1.5" fill="#fff"/><path d="M11 16 Q16 12 21 15" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M23 15 Q28 12 33 16" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M17 30 Q22 33 27 30" fill="none" stroke="#c9a227" stroke-width="1.5"/></svg>
   <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#f5e8f0" stroke="#c9a227" stroke-width="1.5"/><path d="M5 18 Q22 6 39 18 Q22 16 5 18" fill="#2a1040"/><path d="M13 22 Q16 19 19 22 Q16 24 13 22" fill="#2a1040"/><path d="M25 22 Q28 19 31 22 Q28 24 25 22" fill="#2a1040"/><path d="M12 19 Q16 17 20 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><path d="M24 19 Q28 17 32 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><ellipse cx="13" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="31" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="22" cy="31" rx="3.5" ry="2" fill="#c2457a"/><circle cx="22" cy="13" r="2" fill="#c9a227"/></svg>
   <div>
-    <div style="font-family:var(--serif);font-size:28px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;">京劇華語教學平台</div>
+    <div style="font-family:var(--serif);font-size:28px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
     <div style="font-size:16px;color:#c8e8f8;margin-top:5px;letter-spacing:.05em;font-weight:500;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
   </div>
 </div>
@@ -328,51 +328,152 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div>
 <!-- ═══ LOGIN ═══ -->
 <div id="p-login" class="panel">
-  <div class="sec-head"><div class="sec-bar"></div><h2>學生登入 / 新生註冊</h2></div>
-  <div class="info">舊生請輸入學號後點「舊生登入」，系統自動帶出資料。新生請填寫完整資訊後點「送出並前往前測」。</div>
-  <div class="form-card">
+  <div class="sec-head"><div class="sec-bar"></div><h2>登入</h2></div>
+
+  <!-- STEP 1: 輸入學號 -->
+  <div id="login-step1" class="form-card">
+    <div class="info" style="font-size:15px;margin-bottom:1rem;">請輸入您的學號，系統將自動識別新生或舊生。</div>
     <div class="fgrid">
       <div class="fg full">
-        <label class="flabel">學號 Student ID <span style="font-weight:400;font-size:14px;color:var(--muted);">（自動轉大寫）</span></label>
-        <input class="finput" id="f-id" type="text" placeholder="例如 A123456" oninput="this.value=this.value.toUpperCase();autoFill(this.value);if(!this.value){var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';var ob=document.getElementById('old-login-btn');if(ob){ob.style.background='';ob.style.border='';ob.style.color='';ob.style.transform='';ob.textContent='舊生：直接進入課程';}}" style="font-size:20px;font-weight:700;letter-spacing:.12em;" autocomplete="off">
+        <label class="flbl">學號 Student ID</label>
+        <input class="finput" id="f-id" type="text" placeholder="例如 M11456023"
+               oninput="this.value=this.value.toUpperCase();checkStudentId(this.value)"
+               style="font-size:18px;font-weight:700;letter-spacing:.05em;">
       </div>
-      <div class="fg full"><label class="flabel">姓名 Name</label><input class="finput" id="f-name" type="text" placeholder="請輸入中文或英文姓名"></div>
-      <div class="fg">
-        <label class="flabel">性別 Gender</label>
-        <div class="rrow">
-          <label class="ri"><input type="radio" name="gender" value="男"> 男 Male</label>
-          <label class="ri"><input type="radio" name="gender" value="女"> 女 Female</label>
+    </div>
+    <div class="err-txt" id="login-err-step1"></div>
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn-p blue" id="btn-check-id" onclick="submitStudentId()" style="font-weight:700;font-size:16px;width:100%;">確認學號 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2a: 舊生確認/修改資料 -->
+  <div id="login-step2-old" class="form-card" style="display:none;">
+    <div style="background:#EAF3DE;border-left:3px solid #276749;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#276749;font-weight:700;margin-bottom:1rem;">
+      ✓ 找到您的資料，請確認或修改後登入
+    </div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">學號</label>
+        <input class="finput" id="f-id-old" type="text" disabled style="background:#f0f0f0;font-weight:700;">
+      </div>
+      <div class="fg full">
+        <label class="flbl">姓名 Name</label>
+        <input class="finput" id="f-name-old" type="text" placeholder="您的中文或英文姓名">
+      </div>
+      <div class="fg full">
+        <label class="flbl">性別 Gender</label>
+        <div class="radio-group">
+          <label class="rlbl"><input type="radio" name="gender-old" value="男"> 男 Male</label>
+          <label class="rlbl"><input type="radio" name="gender-old" value="女"> 女 Female</label>
+          <label class="rlbl"><input type="radio" name="gender-old" value="其他"> 其他 Other</label>
         </div>
       </div>
       <div class="fg">
-        <label class="flabel">年級 Grade</label>
-        <select class="fsel" id="f-grade">
+        <label class="flbl">年級 Grade</label>
+        <select class="finput" id="f-grade-old">
           <option value="">請選擇</option>
-          <option>一年級</option><option>二年級</option><option>三年級</option><option>四年級以上</option>
+          <option value="一年級">一年級</option>
+          <option value="二年級">二年級</option>
+          <option value="三年級">三年級</option>
+          <option value="四年級">四年級</option>
+          <option value="研究生">研究生</option>
         </select>
       </div>
       <div class="fg">
-        <label class="flabel">中文程度 TOCFL<br><small style="font-weight:400;color:var(--muted);">聽讀測驗</small></label>
-        <select class="fsel" id="f-tocfl">
+        <label class="flbl">中文程度 TOCFL</label>
+        <select class="finput" id="f-tocfl-old">
           <option value="">請選擇</option>
-          <option>A1（入門基礎）</option><option>A2（基礎）</option>
-          <option>B1（進階基礎）</option><option>B2（進階）</option>
-          <option>C1（流利）</option><option>C2（精通）</option>
+          <option value="A1（入門）">A1（入門）</option>
+          <option value="A2（基礎）">A2（基礎）</option>
+          <option value="B1（進階）">B1（進階）</option>
+          <option value="B2（高階）">B2（高階）</option>
+          <option value="C1（流利）">C1（流利）</option>
+          <option value="C2（精通）">C2（精通）</option>
         </select>
       </div>
-      <div class="fg"><label class="flabel">國籍 Nationality</label><input class="finput" id="f-nation" type="text" placeholder="請輸入國籍"></div>
+      <div class="fg full">
+        <label class="flbl">國籍 Nationality</label>
+        <input class="finput" id="f-nation-old" type="text" placeholder="例如 Japan、Korea">
+      </div>
     </div>
-    <hr class="fdiv">
-    <div class="btn-row">
-      <button class="btn-p" onclick="doLogin(true)">新生：送出並前往前測 →</button>
-      <button class="btn-p blue" id="old-login-btn" style="font-size:17px;font-weight:900;transition:all .3s;" onclick="doLogin(false)">舊生：直接進入課程</button>
+    <div class="err-txt" id="login-err-old"></div>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="old-login-btn" onclick="doLoginOld()" style="font-weight:700;font-size:16px;">✓ 確認資料，進入課程總覽</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
     </div>
-    <div class="err-txt" id="login-err"></div>
-    <div style="margin-top:2rem;padding-top:1rem;border-top:1px dashed var(--border);text-align:center;">
-      <button onclick="clearAllData()" style="background:transparent;border:1px solid #ccc;color:#aaa;border-radius:6px;padding:5px 14px;font-size:13px;cursor:pointer;font-family:var(--sans);">清除瀏覽器資料</button>
+  </div>
+
+  <!-- STEP 2b: 新生填寫資料 -->
+  <div id="login-step2-new" class="form-card" style="display:none;">
+    <div style="background:#E6F1FB;border-left:3px solid #185FA5;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#185FA5;font-weight:700;margin-bottom:1rem;">
+      新生，請填寫基本資料
+    </div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">再次確認學號（防止輸入錯誤）</label>
+        <input class="finput" id="f-id-confirm" type="text" placeholder="請再次輸入學號"
+               oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg full">
+        <label class="flbl">姓名 Name</label>
+        <input class="finput" id="f-name" type="text" placeholder="您的中文或英文姓名">
+      </div>
+      <div class="fg full">
+        <label class="flbl">性別 Gender</label>
+        <div class="radio-group">
+          <label class="rlbl"><input type="radio" name="gender" value="男"> 男 Male</label>
+          <label class="rlbl"><input type="radio" name="gender" value="女"> 女 Female</label>
+          <label class="rlbl"><input type="radio" name="gender" value="其他"> 其他 Other</label>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="flbl">年級 Grade</label>
+        <select class="finput" id="f-grade">
+          <option value="">請選擇</option>
+          <option value="一年級">一年級</option>
+          <option value="二年級">二年級</option>
+          <option value="三年級">三年級</option>
+          <option value="四年級">四年級</option>
+          <option value="研究生">研究生</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">中文程度 TOCFL</label>
+        <select class="finput" id="f-tocfl">
+          <option value="">請選擇</option>
+          <option value="A1（入門）">A1（入門）</option>
+          <option value="A2（基礎）">A2（基礎）</option>
+          <option value="B1（進階）">B1（進階）</option>
+          <option value="B2（高階）">B2（高階）</option>
+          <option value="C1（流利）">C1（流利）</option>
+          <option value="C2（精通）">C2（精通）</option>
+        </select>
+      </div>
+      <div class="fg full">
+        <label class="flbl">國籍 Nationality</label>
+        <input class="finput" id="f-nation" type="text" placeholder="例如 Japan、Korea">
+      </div>
     </div>
 
+    <!-- 倫理宣言 -->
+    <div style="background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;">
+      <div style="font-size:14px;color:#78350f;line-height:1.8;margin-bottom:10px;">
+        本研究旨在探討將「戲劇教育」融入華語教學的成效。您的個人填答內容將予以保密且不對外公開，分析時將去識別化處理。
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;color:#92400e;font-weight:600;">
+        <input type="checkbox" id="chk-ethics" style="width:20px;height:20px;margin-top:2px;accent-color:#f59e0b;flex-shrink:0;">
+        <span>我已閱讀並同意將去識別化後的資料用於學術研究</span>
+      </label>
+    </div>
+
+    <div class="err-txt" id="login-err-new"></div>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="new-student-btn" onclick="doLoginNew()" style="font-weight:700;font-size:16px;">新生：儲存，前往華文前測 →</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
   </div>
+
 </div>
 
 <!-- ═══ PRETEST ═══ -->
@@ -874,101 +975,112 @@ function restoreQuiz(quiz){
 }
 
 // ══ LOGIN ══
-function autoFill(id){
-  var btn=document.getElementById('old-login-btn');
+
+// ══ 登入流程 ══
+// Step1: 輸入學號後按確認
+function submitStudentId(){
+  var id=document.getElementById('f-id').value.trim().toUpperCase();
+  var err=document.getElementById('login-err-step1');
+  err.style.display='none';
+  if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
+  if(id.length<3){err.style.display='block';err.textContent='學號格式不正確，請重新確認。';return;}
+
+  // 查找 localStorage
   try{
     var d=localStorage.getItem('kj_s2');
     if(d){
-      var s=JSON.parse(d);
-      if(s.student&&s.student.id===id){
-        document.getElementById('f-name').value=s.student.name||'';
-        document.getElementById('f-grade').value=s.student.grade||'';
-        document.getElementById('f-tocfl').value=s.student.tocfl||'';
-        document.getElementById('f-nation').value=s.student.nation||'';
-        if(s.student.gender)document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=(r.value===s.student.gender);});
-        // 找到舊資料，醒目顯示舊生按鈕，完全禁用新生按鈕
-        if(btn){
-          btn.style.background='#c9a227';
-          btn.style.border='3px solid #8a6a00';
-          btn.style.color='#0a1829';
-          btn.style.transform='scale(1.04)';
-          btn.textContent='✓ 找到您的資料！前往課程總覽';
-        }
-        var newBtn=document.getElementById('new-student-btn');
-        if(newBtn){
-          newBtn.style.display='none';
-          newBtn.disabled=true;
-        }
+      var sv=JSON.parse(d);
+      if(sv.student&&sv.student.id===id){
+        // 舊生：帶出資料
+        showOldStudentForm(sv.student);
         return;
       }
     }
   }catch(e){}
-  // 沒找到資料，恢復按鈕原樣，顯示新生按鈕
-  if(btn){
-    btn.style.background='';btn.style.border='';btn.style.color='';
-    btn.style.transform='';
-    btn.textContent='舊生：直接進入課程';
-  }
-  var newBtn=document.getElementById('new-student-btn');
-  if(newBtn) newBtn.style.display='block';
+
+  // 新生：顯示新生表單
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-step2-new').style.display='block';
+  document.getElementById('f-id-confirm').value='';
+  document.getElementById('chk-ethics').checked=false;
 }
-function doLogin(isNew){
-  var id=document.getElementById('f-id').value.trim().toUpperCase();
-  var err=document.getElementById('login-err');
+
+function checkStudentId(val){
+  // 即時格式提示（可選）
+}
+
+function showOldStudentForm(stu){
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-step2-old').style.display='block';
+  document.getElementById('f-id-old').value=stu.id||'';
+  document.getElementById('f-name-old').value=stu.name||'';
+  document.getElementById('f-grade-old').value=stu.grade||'';
+  document.getElementById('f-tocfl-old').value=stu.tocfl||'';
+  document.getElementById('f-nation-old').value=stu.nation||'';
+  if(stu.gender) document.querySelectorAll('input[name="gender-old"]').forEach(function(r){r.checked=(r.value===stu.gender);});
+}
+
+function resetLoginStep(){
+  document.getElementById('login-step1').style.display='block';
+  document.getElementById('login-step2-old').style.display='none';
+  document.getElementById('login-step2-new').style.display='none';
+  document.getElementById('login-err-step1').style.display='none';
+}
+
+// 舊生確認/修改送出
+function doLoginOld(){
+  var id=document.getElementById('f-id-old').value.trim();
+  var name=document.getElementById('f-name-old').value.trim();
+  var gender=document.querySelector('input[name="gender-old"]:checked');
+  var grade=document.getElementById('f-grade-old').value;
+  var tocfl=document.getElementById('f-tocfl-old').value;
+  var nation=document.getElementById('f-nation-old').value.trim();
+  var err=document.getElementById('login-err-old');
   err.style.display='none';
-  if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
-
-  if(!isNew){
-    // 舊生：只需學號，查找已儲存資料
-    try{
-      var d=localStorage.getItem('kj_s2');
-      if(d){
-        var sv=JSON.parse(d);
-        if(sv.student&&sv.student.id===id){
-          S=sv;S.loggedIn=true;save();
-          toast('歡迎回來，'+S.student.name+'！');
-          var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='none';
-          updateUI();updateSurveyLinks();
-          initMobToggle();show('overview');
-          sendToSheets('login_return');return;
-        }
-      }
-    }catch(e){}
-    err.style.display='block';
-    err.textContent='查無學號「'+id+'」，請確認學號，或以新生身份填寫完整資料後送出。';
-    return;
+  if(!name||!gender||!grade||!tocfl||!nation){
+    err.style.display='block';err.textContent='請確認所有欄位都已填寫。';return;
   }
+  // 載入舊資料，更新基本資料
+  try{
+    var d=localStorage.getItem('kj_s2');
+    if(d){var sv=JSON.parse(d);S=sv;}
+  }catch(e){}
+  S.loggedIn=true;
+  S.student=S.student||{};
+  S.student.id=id;S.student.name=name;
+  S.student.gender=gender.value;S.student.grade=grade;
+  S.student.tocfl=tocfl;S.student.nation=nation;
+  if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
+  if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  if(!S.weekSeen)S.weekSeen=[false,false,false,false];
+  if(S.qpreDone===undefined)S.qpreDone=false;
+  if(S.qpostDone===undefined)S.qpostDone=false;
+  save();
+  sendToSheets('login_return');
+  toast('歡迎回來，'+name+'！');
+  updateUI();updateSurveyLinks();
+  initMobToggle();show('overview');
+}
 
-  // 新生：需要完整填寫
+// 新生送出
+function doLoginNew(){
+  var id=document.getElementById('f-id').value.trim().toUpperCase();
+  var idConfirm=document.getElementById('f-id-confirm').value.trim().toUpperCase();
   var name=document.getElementById('f-name').value.trim();
   var gender=document.querySelector('input[name="gender"]:checked');
   var grade=document.getElementById('f-grade').value;
   var tocfl=document.getElementById('f-tocfl').value;
   var nation=document.getElementById('f-nation').value.trim();
-  if(!name||!gender||!grade||!tocfl||!nation){
-    err.style.display='block';err.textContent='請填寫所有欄位（姓名、性別、年級、程度、國籍）。';return;
-  }
+  var ethics=document.getElementById('chk-ethics').checked;
+  var err=document.getElementById('login-err-new');
+  err.style.display='none';
 
-  // 檢查 localStorage：同一學號回來 → 進總覽；不同學號 → 全新重置
-  try{
-    var d=localStorage.getItem('kj_s2');
-    if(d){
-      var sv=JSON.parse(d);
-      if(sv.student&&sv.student.id===id&&sv.pre&&sv.pre.done){
-        // 同一學號且已完成前測 → 進總覽
-        S=sv;S.loggedIn=true;
-        S.student.name=name;S.student.gender=gender.value;
-        S.student.grade=grade;S.student.tocfl=tocfl;S.student.nation=nation;
-        save();
-        toast('歡迎回來，'+name+'！您已完成前測。');
-        updateUI();updateSurveyLinks();
-        initMobToggle();show('overview');
-        return;
-      }
-    }
-  }catch(e){}
+  if(!idConfirm){err.style.display='block';err.textContent='請再次輸入學號確認。';return;}
+  if(id!==idConfirm){err.style.display='block';err.textContent='兩次輸入的學號不一致，請確認。';return;}
+  if(!name||!gender||!grade||!tocfl||!nation){err.style.display='block';err.textContent='請填寫所有欄位。';return;}
+  if(!ethics){err.style.display='block';err.textContent='請勾選同意倫理宣言後再送出。';return;}
 
-  // 全新學生 或 不同學號 → 完全清除，重新開始
+  // 全新學生：清除舊資料
   localStorage.removeItem('kj_s2');
   S={loggedIn:true,
      student:{id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation},
@@ -983,6 +1095,12 @@ function doLogin(isNew){
   initMobToggle();show('pretest');
 }
 
+// 舊版相容（保留空函式避免 HTML 舊按鈕呼叫錯誤）
+function doLogin(isNew){}
+function autoFill(id){}
+
+
+
 function doLogout(){
   var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';
   S.loggedIn=false;save();
@@ -991,7 +1109,7 @@ function doLogout(){
   var su=document.getElementById('sb-user');if(su)su.style.display='none';
   document.querySelectorAll('.hn,.mhn').forEach(function(b){b.classList.remove('on');});
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on','done');});
-  updateProgress();show('login');toast('已登出。');
+  updateProgress();resetLoginStep();show('login');toast('已登出。');
 }
 
 // ══ EXPORT ══
@@ -1146,6 +1264,18 @@ function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.clas
 function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
 
 // ══ HELPERS ══
+var _secretClicks=0,_secretTimer=null;
+function secretClear(){
+  _secretClicks++;
+  if(_secretTimer) clearTimeout(_secretTimer);
+  _secretTimer=setTimeout(function(){_secretClicks=0;},3000);
+  if(_secretClicks>=5){
+    _secretClicks=0;
+    if(confirm('確定要清除所有暫存資料？')){
+      clearAllData();
+    }
+  }
+}
 function toggleQProgress(which, checked){
   if(which==='qpre') S.qpreDone=checked;
   else if(which==='qpost') S.qpostDone=checked;
