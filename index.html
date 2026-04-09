@@ -18,7 +18,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .app{display:flex;flex-direction:column;min-height:100vh;}
 /* LAYOUT */
 .body-wrap{display:flex;flex:1;}
-.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 100px);overflow-y:auto;}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 88px);overflow-y:auto;}
 .sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
 .sb-lbl{font-size:19px;color:var(--gold);font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:3px;transition:all .18s;}
@@ -31,7 +31,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .sb-uid{font-size:14px;color:var(--gold);margin-bottom:4px;font-weight:700;}
 .sb-uname{font-size:19px;color:#fff;font-weight:900;}
 .sb-usub{font-size:14px;color:#e8f4ff;margin-top:3px;font-weight:600;}
-.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 100px);}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 88px);}
 .panel{display:none;animation:fadeIn .2s ease;}
 .panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -190,75 +190,93 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 <body>
 <div class="app">
 <!-- TOP BAR - logo only, no nav -->
-<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:.8rem 1.2rem;min-height:80px;display:flex;align-items:center;flex-shrink:0;gap:14px;">
+<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:10px 16px;display:flex;align-items:center;flex-shrink:0;gap:12px;">
+
   <!-- 霸王臉譜 -->
-  <svg width="58" height="68" viewBox="0 0 58 68" style="flex-shrink:0;">
-    <!-- 臉型 -->
-    <ellipse cx="29" cy="37" rx="25" ry="29" fill="#0d2550"/>
-    <ellipse cx="29" cy="37" rx="25" ry="29" fill="none" stroke="#c9a227" stroke-width="2"/>
-    <!-- 額頭裝飾 -->
-    <path d="M10 22 Q29 8 48 22" fill="none" stroke="#c9a227" stroke-width="2"/>
-    <path d="M16 16 Q29 6 42 16" fill="none" stroke="#c9a227" stroke-width="1.2"/>
-    <!-- 眼眶白底 -->
-    <ellipse cx="19" cy="32" rx="9" ry="7" fill="white"/>
-    <ellipse cx="39" cy="32" rx="9" ry="7" fill="white"/>
-    <!-- 眼珠 -->
-    <ellipse cx="19" cy="32" rx="5" ry="4.5" fill="#1a0a3e"/>
-    <ellipse cx="39" cy="32" rx="5" ry="4.5" fill="#1a0a3e"/>
-    <circle cx="20" cy="31" r="1.5" fill="white"/>
-    <circle cx="40" cy="31" r="1.5" fill="white"/>
-    <!-- 眉毛粗黑上挑 -->
-    <path d="M8 26 Q14 18 24 24" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
-    <path d="M34 24 Q44 18 50 26" fill="none" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
-    <!-- 鼻子 -->
-    <path d="M25 42 Q29 46 33 42" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-    <!-- 嘴 -->
-    <path d="M18 55 Q29 50 40 55" fill="#8b1a1a" stroke="none"/>
-    <path d="M18 55 Q29 62 40 55" fill="#6b1010" stroke="none"/>
-    <path d="M18 55 Q29 50 40 55" fill="none" stroke="#c9a227" stroke-width="1"/>
-    <!-- 臉頰紋路 -->
-    <path d="M5 38 Q10 32 8 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-    <path d="M53 38 Q48 32 50 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <svg width="52" height="60" viewBox="0 0 120 138" style="flex-shrink:0;">
+    <ellipse cx="60" cy="74" rx="50" ry="58" fill="white" stroke="#c9a227" stroke-width="2"/>
+    <path d="M14 46 Q22 14 60 12 Q98 14 106 46 Q90 26 60 22 Q30 26 14 46" fill="#111"/>
+    <path d="M10 44 Q16 28 36 36 Q46 46 44 64 Q32 72 12 64 Q6 56 10 44" fill="#111"/>
+    <path d="M110 44 Q104 28 84 36 Q74 46 76 64 Q88 72 108 64 Q114 56 110 44" fill="#111"/>
+    <path d="M36 36 Q60 28 84 36 Q60 40 36 36" fill="#111"/>
+    <ellipse cx="30" cy="50" rx="5" ry="4" fill="#222"/>
+    <ellipse cx="90" cy="50" rx="5" ry="4" fill="#222"/>
+    <circle cx="30" cy="50" r="2" fill="#1a0050"/>
+    <circle cx="90" cy="50" r="2" fill="#1a0050"/>
+    <circle cx="31" cy="49" r="0.9" fill="white"/>
+    <circle cx="91" cy="49" r="0.9" fill="white"/>
+    <path d="M40 68 Q60 62 80 68 Q78 80 60 78 Q42 80 40 68" fill="#111"/>
+    <path d="M40 80 Q60 76 80 80 Q78 96 60 94 Q42 96 40 80" fill="#111"/>
+    <path d="M12 56 Q20 50 18 62 Q16 72 24 78" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M10 68 Q18 64 16 74" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M108 56 Q100 50 102 62 Q104 72 96 78" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M110 68 Q102 64 104 74" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+    <ellipse cx="60" cy="74" rx="7" ry="8" fill="white"/>
+    <path d="M56 70 Q60 67 64 70" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M55 75 Q60 72 65 75" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M56 80 Q60 77 64 80" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M40 98 Q60 94 80 98 Q60 102 40 98" fill="#8b1a1a"/>
+    <path d="M40 100 Q60 120 80 100 Q66 114 60 116 Q54 114 40 100" fill="#111"/>
+    <path d="M22 40 Q60 10 98 40" fill="none" stroke="#c9a227" stroke-width="1.2"/>
   </svg>
 
   <!-- 虞姬臉譜 -->
-  <svg width="58" height="68" viewBox="0 0 58 68" style="flex-shrink:0;">
-    <!-- 臉型白底 -->
-    <ellipse cx="29" cy="40" rx="25" ry="27" fill="#fef6f8"/>
-    <ellipse cx="29" cy="40" rx="25" ry="27" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-    <!-- 髮髻 -->
-    <path d="M4 28 Q10 4 29 8 Q48 4 54 28 Q48 16 29 14 Q10 16 4 28" fill="#1e0a30"/>
-    <!-- 髮飾 -->
-    <circle cx="29" cy="9" r="4" fill="#c9a227"/>
-    <circle cx="18" cy="15" r="2.5" fill="#c9a227"/>
-    <circle cx="40" cy="15" r="2.5" fill="#c9a227"/>
-    <circle cx="11" cy="24" r="2" fill="#c9a227"/>
-    <circle cx="47" cy="24" r="2" fill="#c9a227"/>
-    <!-- 眉毛細彎 -->
-    <path d="M13 30 Q21 24 28 28" fill="none" stroke="#2a1040" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M30 28 Q37 24 45 30" fill="none" stroke="#2a1040" stroke-width="1.8" stroke-linecap="round"/>
-    <!-- 眼睛杏仁形 -->
-    <path d="M13 36 Q21 30 28 36 Q21 42 13 36" fill="#2a1040"/>
-    <path d="M30 36 Q37 30 45 36 Q37 42 30 36" fill="#2a1040"/>
-    <ellipse cx="20" cy="36" rx="3.5" ry="2.8" fill="white"/>
-    <ellipse cx="37" cy="36" rx="3.5" ry="2.8" fill="white"/>
-    <circle cx="20" cy="36" r="1.8" fill="#1a0a30"/>
-    <circle cx="37" cy="36" r="1.8" fill="#1a0a30"/>
-    <!-- 腮紅 -->
-    <ellipse cx="11" cy="48" rx="7" ry="4.5" fill="rgba(220,80,120,0.25)"/>
-    <ellipse cx="47" cy="48" rx="7" ry="4.5" fill="rgba(220,80,120,0.25)"/>
-    <!-- 鼻子 -->
-    <circle cx="29" cy="48" r="2" fill="rgba(200,80,100,0.2)"/>
-    <!-- 嘴唇 -->
-    <path d="M20 58 Q29 54 38 58 Q29 65 20 58" fill="#c2457a"/>
-    <path d="M20 58 Q29 62 38 58" fill="none" stroke="#943060" stroke-width="0.8"/>
-    <path d="M22 58 Q29 56 36 58" fill="#e06090" stroke="none"/>
+  <svg width="52" height="60" viewBox="0 0 120 138" style="flex-shrink:0;">
+    <defs>
+      <linearGradient id="uL" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c04060" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#8b1a2e" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="uR" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c04060" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#8b1a2e" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="dL" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b1a2e" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#d06080" stop-opacity="0.05"/>
+      </linearGradient>
+      <linearGradient id="dR" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b1a2e" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#d06080" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="60" cy="82" rx="46" ry="52" fill="#f5e8ec" stroke="#c9a227" stroke-width="1.8"/>
+    <path d="M12 58 Q22 8 60 10 Q98 8 108 58 Q92 24 60 20 Q28 24 12 58" fill="#180028"/>
+    <circle cx="60" cy="12" r="9" fill="#0e7090"/><circle cx="60" cy="12" r="6" fill="#5dcfea"/><circle cx="60" cy="12" r="3" fill="white"/>
+    <circle cx="38" cy="18" r="6" fill="#0e7090"/><circle cx="38" cy="18" r="4" fill="#5dcfea"/>
+    <circle cx="82" cy="18" r="6" fill="#0e7090"/><circle cx="82" cy="18" r="4" fill="#5dcfea"/>
+    <circle cx="22" cy="30" r="5" fill="#0e7090"/><circle cx="22" cy="30" r="3" fill="#5dcfea"/>
+    <circle cx="98" cy="30" r="5" fill="#0e7090"/><circle cx="98" cy="30" r="3" fill="#5dcfea"/>
+    <circle cx="14" cy="44" r="3" fill="#5dcfea"/>
+    <circle cx="10" cy="56" r="3" fill="#5dcfea"/>
+    <circle cx="8"  cy="68" r="3" fill="#5dcfea"/>
+    <circle cx="106" cy="44" r="3" fill="#5dcfea"/>
+    <circle cx="110" cy="56" r="3" fill="#5dcfea"/>
+    <circle cx="112" cy="68" r="3" fill="#5dcfea"/>
+    <path d="M20 62 Q34 50 50 57" fill="none" stroke="#1a0020" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M70 57 Q86 50 100 62" fill="none" stroke="#1a0020" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M34 72 Q20 72 18 62 Q20 50 34 50 Q50 50 52 62 Q50 72 34 72" fill="url(#uL)"/>
+    <path d="M86 72 Q100 72 102 62 Q100 50 86 50 Q70 50 68 62 Q70 72 86 72" fill="url(#uR)"/>
+    <path d="M20 72 Q34 65 52 72 Q34 78 20 72" fill="#1a0020"/>
+    <path d="M68 72 Q86 65 100 72 Q86 78 68 72" fill="#1a0020"/>
+    <ellipse cx="34" cy="72" rx="6" ry="3.8" fill="white"/>
+    <ellipse cx="86" cy="72" rx="6" ry="3.8" fill="white"/>
+    <circle cx="34" cy="72" r="2.4" fill="#1a0020"/>
+    <circle cx="86" cy="72" r="2.4" fill="#1a0020"/>
+    <circle cx="35" cy="71" r="1" fill="white"/>
+    <circle cx="87" cy="71" r="1" fill="white"/>
+    <path d="M34 74 Q20 74 18 82 Q20 96 34 96 Q50 96 52 82 Q50 74 34 74" fill="url(#dL)"/>
+    <path d="M86 74 Q100 74 102 82 Q100 96 86 96 Q70 96 68 82 Q70 74 86 74" fill="url(#dR)"/>
+    <ellipse cx="22" cy="96" rx="11" ry="7" fill="rgba(140,30,60,0.15)"/>
+    <ellipse cx="98" cy="96" rx="11" ry="7" fill="rgba(140,30,60,0.15)"/>
+    <path d="M48 114 Q60 108 72 114 Q60 122 48 114" fill="#9b1a3a"/>
+    <path d="M50 114 Q60 110 70 114" fill="#c0304a" stroke="none"/>
   </svg>
 
   <!-- 文字 -->
   <div style="flex:1;min-width:0;">
-    <div style="font-family:var(--serif);font-size:clamp(18px,5vw,30px);color:var(--gold);font-weight:700;letter-spacing:.08em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
-    <div style="font-size:clamp(11px,3vw,14px);color:#c8e8f8;margin-top:4px;letter-spacing:.03em;font-weight:500;line-height:1.4;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
+    <div id="topbar-title" onclick="secretClear()" style="font-family:var(--serif);font-size:clamp(20px,6vw,34px);color:var(--gold);font-weight:700;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;">京劇華語教學平台</div>
+    <div style="font-size:clamp(11px,3vw,14px);color:#c8e8f8;margin-top:3px;letter-spacing:.02em;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
   </div>
 </div>
 
