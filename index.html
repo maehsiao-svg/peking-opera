@@ -18,7 +18,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .app{display:flex;flex-direction:column;min-height:100vh;}
 /* LAYOUT */
 .body-wrap{display:flex;flex:1;}
-.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 84px);overflow-y:auto;}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 96px);overflow-y:auto;}
 .sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
 .sb-lbl{font-size:19px;color:var(--gold);font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
 .sb-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:3px;transition:all .18s;}
@@ -31,7 +31,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .sb-uid{font-size:14px;color:var(--gold);margin-bottom:4px;font-weight:700;}
 .sb-uname{font-size:19px;color:#fff;font-weight:900;}
 .sb-usub{font-size:14px;color:#e8f4ff;margin-top:3px;font-weight:600;}
-.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 84px);}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 96px);}
 .panel{display:none;animation:fadeIn .2s ease;}
 .panel.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -190,11 +190,60 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 <body>
 <div class="app">
 <!-- TOP BAR - logo only, no nav -->
-<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:0 2rem;height:80px;display:flex;align-items:center;flex-shrink:0;gap:16px;">
-  <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#1a3a6e" stroke="#c9a227" stroke-width="1.5"/><path d="M12 14 Q22 8 32 14" fill="none" stroke="#c9a227" stroke-width="1.2"/><ellipse cx="16" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="28" cy="20" rx="4" ry="3" fill="#0a0a1a"/><ellipse cx="16" cy="20" rx="2" ry="1.5" fill="#fff"/><ellipse cx="28" cy="20" rx="2" ry="1.5" fill="#fff"/><path d="M11 16 Q16 12 21 15" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M23 15 Q28 12 33 16" fill="none" stroke="#c9a227" stroke-width="1.5"/><path d="M17 30 Q22 33 27 30" fill="none" stroke="#c9a227" stroke-width="1.5"/></svg>
-  <svg width="56" height="56" viewBox="0 0 44 44"><ellipse cx="22" cy="23" rx="17" ry="19" fill="#f5e8f0" stroke="#c9a227" stroke-width="1.5"/><path d="M5 18 Q22 6 39 18 Q22 16 5 18" fill="#2a1040"/><path d="M13 22 Q16 19 19 22 Q16 24 13 22" fill="#2a1040"/><path d="M25 22 Q28 19 31 22 Q28 24 25 22" fill="#2a1040"/><path d="M12 19 Q16 17 20 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><path d="M24 19 Q28 17 32 19" fill="none" stroke="#2a1040" stroke-width="1.2"/><ellipse cx="13" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="31" cy="27" rx="4" ry="2.5" fill="rgba(210,80,120,.25)"/><ellipse cx="22" cy="31" rx="3.5" ry="2" fill="#c2457a"/><circle cx="22" cy="13" r="2" fill="#c9a227"/></svg>
+<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:0 2rem;height:92px;display:flex;align-items:center;flex-shrink:0;gap:16px;">
+  <svg width="60" height="60" viewBox="0 0 80 88">
+  <!-- 霸王臉譜：藍黑底，金色紋飾 -->
+  <ellipse cx="40" cy="46" rx="32" ry="38" fill="#0d2550" stroke="#c9a227" stroke-width="2"/>
+  <!-- 額頭金色裝飾 -->
+  <path d="M24 20 Q40 8 56 20" fill="none" stroke="#c9a227" stroke-width="2.5"/>
+  <path d="M30 14 Q40 6 50 14" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- 眉毛（粗黑上挑） -->
+  <path d="M14 32 Q22 22 30 28" fill="#c9a227" stroke="#c9a227" stroke-width="1"/>
+  <path d="M50 28 Q58 22 66 32" fill="#c9a227" stroke="#c9a227" stroke-width="1"/>
+  <!-- 眼睛 -->
+  <ellipse cx="26" cy="36" rx="8" ry="6" fill="#0a0a1a"/>
+  <ellipse cx="54" cy="36" rx="8" ry="6" fill="#0a0a1a"/>
+  <ellipse cx="26" cy="36" rx="4" ry="3" fill="#fff"/>
+  <ellipse cx="54" cy="36" rx="4" ry="3" fill="#fff"/>
+  <circle cx="26" cy="36" r="2" fill="#1a1a6e"/>
+  <circle cx="54" cy="36" r="2" fill="#1a1a6e"/>
+  <!-- 鼻子 -->
+  <path d="M36 44 Q40 50 44 44" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- 嘴巴 -->
+  <path d="M28 62 Q40 70 52 62" fill="none" stroke="#c9a227" stroke-width="2"/>
+  <path d="M32 60 Q40 56 48 60" fill="#8b1a1a" stroke="none"/>
+  <!-- 臉頰金色紋路 -->
+  <path d="M10 40 Q16 36 14 48" fill="none" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="2,1"/>
+  <path d="M70 40 Q64 36 66 48" fill="none" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="2,1"/>
+</svg>
+  <svg width="60" height="60" viewBox="0 0 80 88">
+  <!-- 虞姬臉譜：白底，粉色腮紅，精緻妝容 -->
+  <ellipse cx="40" cy="46" rx="32" ry="38" fill="#fdf0f5" stroke="#c9a227" stroke-width="2"/>
+  <!-- 髮髻（深紫） -->
+  <path d="M8 30 Q20 4 40 8 Q60 4 72 30 Q60 18 40 16 Q20 18 8 30" fill="#2a1040"/>
+  <!-- 髮飾金點 -->
+  <circle cx="40" cy="10" r="3.5" fill="#c9a227"/>
+  <circle cx="28" cy="16" r="2" fill="#c9a227"/>
+  <circle cx="52" cy="16" r="2" fill="#c9a227"/>
+  <!-- 眉毛（細彎） -->
+  <path d="M18 32 Q26 26 34 30" fill="none" stroke="#2a1040" stroke-width="1.8"/>
+  <path d="M46 30 Q54 26 62 32" fill="none" stroke="#2a1040" stroke-width="1.8"/>
+  <!-- 眼睛（杏仁形） -->
+  <path d="M18 38 Q26 32 34 38 Q26 44 18 38" fill="#2a1040"/>
+  <path d="M46 38 Q54 32 62 38 Q54 44 46 38" fill="#2a1040"/>
+  <ellipse cx="26" cy="38" rx="3" ry="2.5" fill="#fff"/>
+  <ellipse cx="54" cy="38" rx="3" ry="2.5" fill="#fff"/>
+  <!-- 腮紅 -->
+  <ellipse cx="18" cy="52" rx="8" ry="5" fill="rgba(220,100,140,0.3)"/>
+  <ellipse cx="62" cy="52" rx="8" ry="5" fill="rgba(220,100,140,0.3)"/>
+  <!-- 鼻子 -->
+  <ellipse cx="40" cy="50" rx="3" ry="2" fill="rgba(200,80,100,0.3)"/>
+  <!-- 嘴唇 -->
+  <path d="M30 62 Q40 58 50 62 Q40 70 30 62" fill="#c2457a"/>
+  <path d="M30 62 Q40 66 50 62" fill="none" stroke="#a03060" stroke-width="1"/>
+</svg>
   <div>
-    <div style="font-family:var(--serif);font-size:28px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
+    <div style="font-family:var(--serif);font-size:34px;color:var(--gold);font-weight:700;letter-spacing:.1em;line-height:1.2;" id="topbar-title" onclick="secretClear()">京劇華語教學平台</div>
     <div style="font-size:16px;color:#c8e8f8;margin-top:5px;letter-spacing:.05em;font-weight:500;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
   </div>
 </div>
