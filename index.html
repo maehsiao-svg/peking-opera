@@ -16,6 +16,16 @@
 }
 html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;}
 .app{display:flex;flex-direction:column;min-height:100vh;}
+/* ITP 修復：載入中 + 連線失敗 */
+.login-loading{text-align:center;padding:30px 20px;color:var(--bd)}
+.login-loading .spinner{display:inline-block;width:32px;height:32px;border:3px solid #e0e8f0;border-top-color:var(--bd);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.login-error-box{background:#fff5f5;border:2px solid #c53030;border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center}
+.login-error-box .err-icon{font-size:32px;margin-bottom:8px}
+.login-error-box .err-title{font-size:16px;font-weight:700;color:#c53030;margin-bottom:8px}
+.login-error-box .err-text{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.login-error-box .btn-retry{background:#c53030;color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.version-tag{position:fixed;bottom:6px;left:6px;font-size:11px;color:#fff;background:var(--bd);padding:3px 8px;border-radius:6px;opacity:0.85;pointer-events:none;z-index:999;font-weight:700;letter-spacing:0.3px}
 /* LAYOUT */
 .body-wrap{display:flex;flex:1;}
 .sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 88px);overflow-y:auto;}
@@ -428,6 +438,23 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     </div>
   </div>
 
+  <!-- 載入中 -->
+  <div id="login-loading-card" class="form-card" style="display:none;">
+    <div class="login-loading">
+      <div class="spinner"></div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px">正在載入您的進度...</div>
+      <div style="font-size:13px;color:var(--muted)">請稍候，正在從伺服器恢復您之前做過的內容</div>
+    </div>
+  </div>
+  <!-- 連線失敗 -->
+  <div id="login-error-card" class="form-card" style="display:none;">
+    <div class="login-error-box">
+      <div class="err-icon">⚠️</div>
+      <div class="err-title">連線失敗</div>
+      <div class="err-text" id="login-err-detail">無法連接到伺服器，請按下方按鈕重試。</div>
+      <button class="btn-retry" onclick="retryLogin()">重新嘗試</button>
+    </div>
+  </div>
   <!-- STEP 2a: 舊生確認/修改資料 -->
   <div id="login-step2-old" class="form-card" style="display:none;">
     <div style="background:#EAF3DE;border-left:3px solid #276749;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#276749;font-weight:700;margin-bottom:1rem;">
@@ -1065,27 +1092,68 @@ function submitStudentId(){
   err.style.display='none';
   if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
   if(id.length<3){err.style.display='block';err.textContent='學號格式不正確，請重新確認。';return;}
-
-  // 查找 localStorage
+  // 先查 localStorage
   try{
     var d=localStorage.getItem('kj_s2');
     if(d){
       var sv=JSON.parse(d);
       if(sv.student&&sv.student.id===id){
-        // 舊生：帶出資料
         showOldStudentForm(sv.student);
         return;
       }
     }
   }catch(e){}
-
-  // 新生：顯示新生表單
-  document.getElementById('login-step1').style.display='none';
-  document.getElementById('login-step2-new').style.display='block';
-  document.getElementById('f-id-confirm').value='';
-  document.getElementById('chk-ethics').checked=false;
+  // localStorage 沒有 → 去 Sheet 查（ITP 修復）
+  fetchStudentFromSheet(id);
 }
 
+function fetchStudentFromSheet(id){
+  pendingLoginId=id;
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-loading-card').style.display='block';
+  document.getElementById('login-error-card').style.display='none';
+  var getUrl=SHEETS_URL+'?action=load&studentId='+encodeURIComponent(id);
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',getUrl,true);
+  xhr.timeout=15000;
+  xhr.onload=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    try{
+      var res=JSON.parse(xhr.responseText);
+      if(res.status==='ok'&&res.state){
+        S=res.state;
+        S.loggedIn=false;
+        localStorage.setItem('kj_s2',JSON.stringify(S));
+        showOldStudentForm(res.state.student);
+      } else if(res.status==='not_found'){
+        document.getElementById('login-step1').style.display='none';
+        document.getElementById('login-step2-new').style.display='block';
+        document.getElementById('f-id-confirm').value='';
+        document.getElementById('chk-ethics').checked=false;
+      } else {
+        showLoginError('伺服器回應異常，請重試。');
+      }
+    }catch(e){
+      showLoginError('資料解析失敗，請重試。');
+    }
+  };
+  xhr.onerror=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    showLoginError('無法連接到伺服器，可能是網路不穩定，請按下方按鈕重試。');
+  };
+  xhr.ontimeout=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    showLoginError('連線逾時，請確認網路後重試。');
+  };
+  xhr.send();
+}
+function showLoginError(msg){
+  document.getElementById('login-error-card').style.display='block';
+  document.getElementById('login-err-detail').textContent=msg||'請按下方按鈕重試。';
+}
+function retryLogin(){
+  if(pendingLoginId) fetchStudentFromSheet(pendingLoginId);
+}
 function checkStudentId(val){
   // 即時格式提示（可選）
 }
@@ -1198,7 +1266,11 @@ function doLogout(){
   var su=document.getElementById('sb-user');if(su)su.style.display='none';
   document.querySelectorAll('.hn,.mhn').forEach(function(b){b.classList.remove('on');});
   document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on','done');});
-  updateProgress();resetLoginStep();show('login');toast('已登出。');
+  updateProgress();pendingLoginId='';
+  document.getElementById('login-step1').style.display='block';
+  document.getElementById('login-loading-card').style.display='none';
+  document.getElementById('login-error-card').style.display='none';
+  resetLoginStep();show('login');toast('已登出。');
 }
 
 // ══ EXPORT ══
@@ -1353,6 +1425,7 @@ function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.clas
 function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
 
 // ══ HELPERS ══
+var pendingLoginId='';
 var _secretClicks=0,_secretTimer=null;
 function secretClear(){
   _secretClicks++;
@@ -1411,5 +1484,6 @@ updateMobLogout();
 initMobToggle();
 
 </script>
+<div class="version-tag">v2.1-20260429</div>
 </body>
 </html>
