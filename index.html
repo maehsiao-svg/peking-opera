@@ -26,6 +26,33 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 .login-error-box .err-text{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6}
 .login-error-box .btn-retry{background:#c53030;color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--sans)}
 .version-tag{position:fixed;bottom:6px;left:6px;font-size:11px;color:#fff;background:var(--bd);padding:3px 8px;border-radius:6px;opacity:0.85;pointer-events:none;z-index:999;font-weight:700;letter-spacing:0.3px}
+/* ── 內建問卷（v3.0）── */
+.sv-block{background:#fff;border:2px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem}
+.sv-block h4{margin:0 0 4px;color:var(--bd);font-size:17px}
+.sv-anchor{font-size:13px;color:var(--muted);margin-bottom:10px}
+.sv-item{padding:10px 0;border-bottom:1px dashed var(--border)}
+.sv-item:last-child{border-bottom:none}
+.sv-item.sv-missing{background:#fff5f5;border-radius:8px;padding-left:8px;padding-right:8px}
+.sv-q{font-size:15.5px;font-weight:600;margin-bottom:8px;line-height:1.55}
+.sv-scale{display:flex;gap:4px;flex-wrap:wrap}
+.sv-scale label{flex:1;min-width:34px;text-align:center;border:1.5px solid var(--border);border-radius:8px;padding:8px 2px;font-size:15px;font-weight:700;cursor:pointer;background:#fafafa;user-select:none}
+.sv-scale input{display:none}
+.sv-scale input:checked+span{display:block;background:var(--pm);color:#fff;border-radius:6px}
+.sv-scale label:has(input:checked){background:var(--pm);border-color:var(--pm)}
+.sv-scale label:has(input:checked) span{color:#fff}
+.sv-open textarea{width:100%;min-height:90px;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:15px;font-family:var(--sans);box-sizing:border-box}
+.sv-open .sv-q{font-weight:600}
+.sv-sel,.sv-radio-row{margin-bottom:14px}
+.sv-sel select{width:100%;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:var(--sans)}
+.sv-radio-row .opts{display:flex;flex-direction:column;gap:8px}
+.sv-radio-row .opts label{display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:15.5px;cursor:pointer;background:#fafafa}
+.sv-radio-row .opts label:has(input:checked){background:var(--pm);color:#fff;border-color:var(--pm)}
+.sv-radio-row .opts input{width:18px;height:18px;accent-color:#fff}
+.save-status{margin:10px 0;padding:10px 14px;border-radius:10px;font-size:15px;font-weight:700;display:none}
+.save-status.saving{display:block;background:#fffbe8;color:#8a6d00;border:1.5px solid #e0c860}
+.save-status.ok{display:block;background:#eaf7e6;color:#276749;border:1.5px solid #68d391}
+.save-status.fail{display:block;background:#fff5f5;color:#c53030;border:1.5px solid #c53030}
+.btn-retry-save{background:#c53030;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-left:10px}
 /* LAYOUT */
 .body-wrap{display:flex;flex:1;}
 .sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 88px);overflow-y:auto;}
@@ -307,6 +334,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <div class="sb-sec"><div class="sb-lbl">進入課程前</div>
     <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>登入</div>
     <div class="sb-item" id="sb-pretest" onclick="show('pretest')"><span class="sb-dot"></span>前測</div>
+    <div class="sb-item" id="sb-qpre" onclick="show('qpre')"><span class="sb-dot"></span>研究前測問卷</div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">四週課程</div>
     <div class="sb-item" id="sb-week1" onclick="show('course');switchWeek(1)"><span class="sb-dot"></span>第一週</div>
@@ -316,6 +344,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
   <div class="sb-sec"><div class="sb-lbl">課後評量</div>
     <div class="sb-item" id="sb-posttest" onclick="show('posttest')"><span class="sb-dot"></span>後測</div>
+    <div class="sb-item" id="sb-qpost" onclick="show('qpost')"><span class="sb-dot"></span>研究後測問卷</div>
   </div>
   <div id="sb-user" style="display:none;padding:.8rem .9rem;">
     <button onclick="doLogout()" style="width:100%;background:rgba(194,69,122,.35);border:2px solid rgba(194,69,122,.6);color:#fff;border-radius:8px;padding:11px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出 Logout</button>
@@ -364,17 +393,13 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="prog-pct" id="prog-pct">0%</div>
   </div>
 
-  <!-- 京劇研究前測（可勾選） -->
+  <!-- 京劇研究前測（內建問卷，v3.0）-->
   <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-    <a id="pre-survey-link2" href="#" target="_blank"
-       style="background:var(--pm);color:#fff;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
-      📋 京劇研究前測
-    </a>
-    <label style="display:flex;align-items:center;gap:8px;font-size:15px;color:var(--pm);font-weight:600;cursor:pointer;">
-      <input type="checkbox" id="chk-qpre" onchange="toggleQProgress('qpre',this.checked)"
-             style="width:20px;height:20px;accent-color:var(--pm);cursor:pointer;">
-      已完成，打勾記錄進度
-    </label>
+    <button onclick="show('qpre')"
+       style="background:var(--pm);color:#fff;border:none;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
+      📋 京劇研究前測問卷
+    </button>
+    <span id="ov-qpre-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
   </div>
 
   <!-- 四週課程卡片 -->
@@ -402,11 +427,12 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div style="font-size:16px;font-weight:700;color:var(--bd);margin-bottom:12px;">完成四週課程後：</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文後測</button>
-      <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;">
-        <a id="post-survey-link2" href="#" target="_blank"
-           style="display:block;text-align:center;background:var(--pm);color:#fff;padding:11px 22px;border-radius:22px;font-size:16px;font-weight:700;text-decoration:none;font-family:var(--sans);">
-          📋 京劇研究後測
-        </a>
+      <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <button onclick="show('qpost')"
+           style="background:var(--pm);color:#fff;border:none;padding:11px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
+          📋 京劇研究後測問卷
+        </button>
+        <span id="ov-qpost-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
       </div>
     </div>
   </div>
@@ -622,11 +648,12 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
   <div class="done-msg" id="pre-done-msg" style="display:none">
     <div id="pre-done-score" style="display:none;"></div>
+    <div class="save-status" id="pre-save-status"></div>
     <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:10px;align-items:center;width:100%;">
-      <a id="pre-survey-link" href="#" target="_blank"
-         style="display:block;background:var(--pm);color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;text-decoration:none;font-family:var(--sans);text-align:center;width:100%;">
-        📋 京劇研究前測（請先完成）
-      </a>
+      <button onclick="show('qpre')"
+         style="display:block;background:var(--pm);color:#fff;border:none;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;cursor:pointer;font-family:var(--sans);text-align:center;width:100%;">
+        📋 京劇研究前測問卷（請接著完成）
+      </button>
       <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;width:100%;font-size:16px;">↩ 回到總覽</button>
       <button onclick="doLogout()" class="btn-s" style="font-weight:700;font-size:15px;">登出 Logout</button>
     </div>
@@ -779,12 +806,90 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <div class="done-msg" id="post-done-msg" style="display:none">
     <h3 style="color:var(--pd);">恭喜完成後測！</h3>
     <div class="score-compare" id="post-compare"></div>
+    <div class="save-status" id="post-save-status"></div>
     <p style="color:var(--muted);margin-bottom:1.2rem;">感謝您完成四週的學習課程！</p>
-    <a id="post-survey-link" href="#" target="_blank"
-       style="display:inline-block;background:#1a6dbf;color:#fff;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:700;text-decoration:none;font-family:var(--sans);margin-bottom:12px;">
-      📋 京劇研究後測
-    </a><br>
-    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;margin-top:8px;">完成學習，登出 Logout</button>
+    <button onclick="show('qpost')"
+       style="display:inline-block;background:#1a6dbf;color:#fff;border:none;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-bottom:12px;">
+      📋 京劇研究後測問卷（請接著完成）
+    </button><br>
+    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;margin-top:8px;">完成學習，登出 Logout</button><br>
+    <button onclick="unlockPosttest()" class="btn-s" style="font-size:13px;margin-top:14px;opacity:.75;">🔓 重新作答（教師解鎖）</button>
+  </div>
+</div>
+
+<!-- ═══ 研究前測問卷（內建，v3.0）═══ -->
+<div id="p-qpre" class="panel">
+  <div class="info">京劇研究前測問卷：基本資料共 4 題，約 1 分鐘。學號僅用於配對華語能力前後測成績，分析時將轉化為代碼，不呈現個人身分。</div>
+  <div class="sv-block">
+    <h4>一、基本資料</h4>
+    <div class="sv-sel">
+      <div class="sv-q">1. 出生年份：</div>
+      <select id="qpre-birth"><option value="">請選擇</option></select>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">2. 您學習華語（中文）多久了？</div>
+      <div class="opts" id="qpre-years"></div>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">3. 京劇認知程度：參與本課程前，您對京劇的了解程度？</div>
+      <div class="opts" id="qpre-opera"></div>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">4. 華語學習動機：您學習華語最主要的原因？</div>
+      <div class="opts" id="qpre-motive"></div>
+    </div>
+  </div>
+  <div class="save-status" id="qpre-save-status"></div>
+  <div class="submit-area" id="qpre-submit-area">
+    <button class="btn-p" id="qpre-submit-btn" onclick="submitSurveyPre()" style="font-size:17px;padding:13px 32px;">送出前測問卷</button>
+  </div>
+  <div class="done-msg" id="qpre-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 前測問卷已完成並儲存</h3>
+    <button class="btn-p blue" onclick="if(!SURVEY_ONLY)show('overview')" id="qpre-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
+  </div>
+</div>
+
+<!-- ═══ 研究後測問卷（內建，v3.0）═══ -->
+<div id="p-qpost" class="panel">
+  <div class="info pink">京劇研究後測問卷：量表題請依您的同意程度作答（1=非常不同意 ～ 7=非常同意），最後 3 題開放題為選填。學號僅用於配對成績，分析時去識別化處理。</div>
+  <div id="qpost-blocks"></div>
+  <div class="sv-block sv-open" id="qpost-open-block">
+    <h4>開放式問題（選填）</h4>
+    <div class="sv-anchor">建議用自己最熟悉的語言回答（中、英、越文均可）；回答無對錯之分，鼓勵具體描述個人經驗與感受；資料將去識別化處理，僅用於學術分析。<br>You may answer in the language you are most comfortable with (Chinese, English, or Vietnamese). / Bạn có thể trả lời bằng ngôn ngữ mà bạn cảm thấy thoải mái nhất (tiếng Trung, tiếng Anh hoặc tiếng Việt).</div>
+    <div style="margin-bottom:16px;">
+      <div class="sv-q">Q1. 透過學習京劇《霸王別姬》，您對哪個中國文化面向感受最深或最受感動？請描述一個具體的時刻。<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: Through learning Peking Opera (Farewell My Concubine), what aspects of Chinese culture did you feel most connected to or moved by? Please describe a specific moment.<br>VI: Thông qua việc học Kinh kịch (Bá Vương Biệt Cơ), bạn cảm thấy kết nối hoặc xúc động nhất với khía cạnh nào của văn hóa Trung Hoa? Hãy mô tả một khoảnh khắc cụ thể.</span></div>
+      <textarea id="qpost-q1"></textarea>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div class="sv-q">Q2. 這門課的學習方式如何影響您繼續學習華語的動機？您認為有什麼可以改進的地方？<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: How did the learning experience in this course influence your motivation to continue learning Mandarin? What would you improve?<br>VI: Trải nghiệm học tập trong khóa học này đã ảnh hưởng như thế nào đến động lực tiếp tục học tiếng Hoa của bạn? Bạn nghĩ có điều gì có thể cải thiện không?</span></div>
+      <textarea id="qpost-q2"></textarea>
+    </div>
+    <div>
+      <div class="sv-q">Q3. 與您過去的華語學習經驗相比，透過京劇內容學習有什麼特別或不同之處？什麼最有幫助或最具挑戰性？<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: Compared to your previous Mandarin learning experiences, what was unique or different about learning through Peking Opera content? What was most helpful or challenging?<br>VI: So với những trải nghiệm học tiếng Hoa trước đây của bạn, việc học qua nội dung Kinh kịch có gì đặc biệt hoặc khác biệt? Điều gì hữu ích nhất hoặc khó khăn nhất?</span></div>
+      <textarea id="qpost-q3"></textarea>
+    </div>
+  </div>
+  <div class="save-status" id="qpost-save-status"></div>
+  <div class="submit-area" id="qpost-submit-area">
+    <button class="btn-p" id="qpost-submit-btn" onclick="submitSurveyPost()" style="font-size:17px;padding:13px 32px;">送出後測問卷</button>
+  </div>
+  <div class="done-msg" id="qpost-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 後測問卷已完成並儲存，感謝您的填答！</h3>
+    <button class="btn-p blue" onclick="if(!SURVEY_ONLY)show('overview')" id="qpost-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
+  </div>
+</div>
+
+<!-- ═══ 真人組問卷入口（?mode=survey）═══ -->
+<div id="p-svlogin" class="panel">
+  <div class="form-card" style="max-width:480px;margin:0 auto;">
+    <h3 style="color:var(--bd);margin-top:0;">京劇華語課程 研究問卷</h3>
+    <p style="font-size:14.5px;color:var(--muted);">請輸入您的學號後選擇要填寫的問卷。學號僅用於配對前後測成績，分析時將轉化為代碼，不呈現個人身分。</p>
+    <input id="sv-id" placeholder="請輸入學號" style="width:100%;padding:13px;border:2px solid var(--border);border-radius:10px;font-size:17px;font-family:var(--sans);box-sizing:border-box;margin-bottom:8px;">
+    <div id="sv-err" style="display:none;color:#c53030;font-size:14px;font-weight:700;margin-bottom:8px;">請輸入學號。</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
+      <button class="btn-p" onclick="svEnter('qpre')" style="font-size:16px;font-weight:700;">📋 填寫前測問卷</button>
+      <button class="btn-p" onclick="svEnter('qpost')" style="font-size:16px;font-weight:700;background:#1a6dbf;">📋 填寫後測問卷</button>
+    </div>
   </div>
 </div>
 
@@ -793,7 +898,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
 <script>
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbylOhAxeUe0TKQshfKOlZkvaWVKAgyrzQNCI28AVhyCJrVWCvw1w4dn4_4qkZboPvgl/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbzkRMXSv3K56h4wsyOuJoW5JV0sD1JV-SAriE5rbp0uQIq_U6V73xQ5xEC1Vc35Ij4L/exec';
 
 var LYRICS = {
   1:[
@@ -1013,6 +1118,7 @@ function searchLyric(w){
 
 // ══ QUIZ ══
 function submitQuiz(quiz){
+  if(S[quiz]&&S[quiz].done)return; // 防雙擊／重複送出
   var data=(quiz==='pre')?PRE_QS:POST_QS;
   var total=0,s1=0,s2=0,s3=0,allOk=true;
   var results=[];
@@ -1063,7 +1169,7 @@ function submitQuiz(quiz){
   var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
   if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+total+'/30';}
   else{var el=document.getElementById('post-compare');if(el)el.innerHTML='前測：'+(S.pre.s1||0)+'/10·'+(S.pre.s2||0)+'/10·'+(S.pre.s3||0)+'/10 = <b>'+(S.pre.score||0)+'分</b><br>後測：'+s1+'/10·'+s2+'/10·'+s3+'/10 = <b>'+total+'分</b>（進步'+(total-(S.pre.score||0))+'分）';}
-  sendToSheets(quiz==='pre'?'pretest':'posttest');
+  saveQuizToServer(quiz); // v3.0：確認式儲存，成功才顯示 ✓
   updateProgress();toast((quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
 }
 function restoreQuiz(quiz){
@@ -1281,11 +1387,52 @@ function exportMyData(){
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已複製！');}
 }
 
-// ══ SHEETS ══
+// ══ SHEETS（v3.0：確認式送出 + 雙保險）══
+function buildScorePayload(ev){
+  var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
+  return {event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0};
+}
+// 確認式送出：text/plain 不觸發 CORS preflight，可讀取伺服器回應
+// onOk / onFail 為回呼函式；逾時 20 秒視為失敗
+function sendConfirm(payload,onOk,onFail){
+  var ctrl=new AbortController();
+  var timer=setTimeout(function(){ctrl.abort();},20000);
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),signal:ctrl.signal})
+    .then(function(r){return r.json();})
+    .then(function(res){
+      clearTimeout(timer);
+      if(res&&res.status==='ok'){if(onOk)onOk();}
+      else{if(onFail)onFail(res&&res.message);}
+    })
+    .catch(function(){clearTimeout(timer);if(onFail)onFail();});
+}
+// 低風險事件（登入紀錄）維持射後不理
 function sendToSheets(ev){
   if(!SHEETS_URL)return;
-  var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
-  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0})}).catch(function(){});
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(buildScorePayload(ev))}).catch(function(){});
+}
+// 測驗成績：確認式儲存（含失敗重試）
+function setSaveStatus(elId,cls,html){
+  var el=document.getElementById(elId);if(!el)return;
+  el.className='save-status '+cls;el.innerHTML=html;
+}
+function saveQuizToServer(quiz){
+  var stId=quiz+'-save-status';
+  setSaveStatus(stId,'saving','⏳ 正在將分數儲存到伺服器，請勿關閉頁面…');
+  sendConfirm(buildScorePayload(quiz==='pre'?'pretest':'posttest'),
+    function(){setSaveStatus(stId,'ok','✓ 分數已成功儲存');},
+    function(){setSaveStatus(stId,'fail','⚠ 分數儲存失敗（可能是網路不穩）。您的作答仍保留在此裝置，請按重試。<button class="btn-retry-save" onclick="saveQuizToServer(\''+quiz+'\')">重試</button>');}
+  );
+}
+// 後測教師解鎖：輸入教師密碼後清除後測紀錄並重新載入
+function unlockPosttest(){
+  var pw=prompt('請由教師輸入解鎖密碼：');
+  if(pw===null)return;
+  if(pw!=='opera2026'){toast('密碼錯誤。');return;}
+  S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  save();
+  toast('後測已解鎖，頁面即將重新載入…');
+  setTimeout(function(){location.reload();},800);
 }
 
 // ══ SWITCH WEEK ══
@@ -1317,10 +1464,16 @@ function updateProgress(){
   for(var w=1;w<=4;w++) if(S.weekSeen[w-1]) setFC('fc-w'+w,'fa'+(w+1),'done');
   if(S.post.done) setFC('fc-post','fa6','done'); else setFC('fc-post','fa6','');
   if(S.qpostDone){setFC('fc-qpost',null,'done');var cb2=document.getElementById('chk-qpost');if(cb2)cb2.checked=true;}
+  if(!SURVEY_ONLY){setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);} // v3.0 同步問卷完成狀態
 }
 
 // ══ SHOW / NAV ══
 function show(id){
+  // v3.0：內建問卷需先登入（真人組模式需先輸入學號）
+  if((id==='qpre'||id==='qpost')){
+    if(SURVEY_ONLY){if(!SV.id){id='svlogin';}}
+    else if(!S.loggedIn){toast('請先登入。');id='login';}
+  }
   // 若前測已完成，不允許進入前測頁（改去總覽）
   if(id==='pretest' && S.loggedIn && S.pre.done){
     id='overview';
@@ -1473,8 +1626,193 @@ function speakAndShow(btn){
   speakText(text);
 }
 
+// ══ 內建研究問卷（v3.0）══
+// 真人組入口：網址加 ?mode=survey（group 自動標記「真人」，且不顯示 SP 題組）
+var SURVEY_ONLY=(function(){try{return new URLSearchParams(location.search).get('mode')==='survey';}catch(e){return false;}})();
+var SV={id:''}; // 真人組填答者學號
+
+// 前測問卷選項
+var QPRE_OPTS={
+  years:['少於 1 年','1～2 年','2～3 年','3～5 年','5 年以上'],
+  opera:['完全不了解（從未接觸過京劇）','略有耳聞（聽過但不熟悉）','稍有了解（看過或讀過相關內容）','非常了解（深入了解京劇文化與表演）'],
+  motive:['個人興趣','工作或職涯發展','學業要求（課程必修）','與華語使用者溝通']
+};
+
+// 後測量表（順序對應後端「後測問卷」分頁欄位；SP 為平台組限定）
+var QPOST_SCALE=[
+  {key:'PCR',title:'知覺文化相關性',items:[
+    'PCR1. 學習京劇相關內容，可以幫助我建立中文學習目標。',
+    'PCR2. 以京劇作為學習素材，符合我的中文學習需求。',
+    'PCR3. 京劇相關知識，能幫助我連結我自身的中文學習經驗。']},
+  {key:'SP',title:'社會臨場感',platformOnly:true,items:[
+    'SP1. 在這個AI輔助京劇華語學習平台中，與AI系統及其他學習者互動時，我感到很自在。',
+    'SP2. 我覺得在這個AI輔助京劇學習環境中，我的學習回應與進度得到了認可。',
+    'SP3. 我覺得透過這個AI輔助京劇華語平台參與學習活動，感到很舒適。',
+    'SP4. 這個AI輔助京劇華語學習平台，營造了一種線上學習社群的感覺。']},
+  {key:'PDQ',title:'知覺課程設計品質',items:[
+    'PDQ1. 這個京劇課程設計良好。',
+    'PDQ2. 教師能有效地引導這個京劇課程。',
+    'PDQ3. 這個京劇課程可以創造一個高效率的學習環境。',
+    'PDQ4. 這個京劇課程幫助我更快地學習中文。']},
+  {key:'IM',title:'跨文化共情',items:[
+    'IM1. 對於那些與我文化背景不同的人（如劇中的中國歷史人物），我能理解他們的內心感受。',
+    'IM2. 我能夠設身處地，站在與我不同文化背景的人（如項羽、虞姬）的角度去思考。',
+    'IM3. 我能體會劇中人物在特定文化情境下（如四面楚歌），身為孤立無援者的那種獨特感受。',
+    'IM4. 當我看見劇中人物遭受壓迫或掙扎時，我能感同身受地分享他們的挫折感。',
+    'IM5. 當我接觸不同種族或文化背景的故事（如《霸王別姬》的劇情）時，我會產生共鳴與連結。']},
+  {key:'PC',title:'知覺能力',items:[
+    'PC1. 我對自己學習京劇相關中文內容的能力感到有信心。',
+    'PC2. 我有能力學會京劇相關的中文內容。',
+    'PC3. 我能夠達成京劇中文學習的目標。',
+    'PC4. 我覺得自己有能力應對京劇中文學習的挑戰，並表現出色。']},
+  {key:'PP',title:'知覺學習成效',items:[
+    'PP1. 這個京劇課程強化我對華語的理解能力。',
+    'PP2. 這個京劇課程可以激發我的學習潛能。',
+    'PP3. 這個京劇課程幫助我培養規劃個人學習任務的能力。',
+    'PP4. 這個京劇課程激勵我對華語文化的興趣。',
+    'PP5. 這個京劇課程提升了我的華語溝通能力。',
+    'PP6. 透過參與這個京劇課程，讓我更有信心去應對不熟悉的字詞。']},
+  {key:'SA',title:'學習滿意度',items:[
+    'SA1. 我覺得這個京劇課程很有價值。',
+    'SA2. 學習這門京劇課程增加了我對華語與京劇文化的興趣。',
+    'SA3. 這個京劇課程增加我對《霸王別姬》文本內容的理解。',
+    'SA4. 整體而言，我對這個京劇課程的品質感到滿意。',
+    'SA5. 整體而言，這次的學習活動是我曾經歷過很好的學習體驗。']},
+  {key:'CI',title:'持續學習意願',items:[
+    'CI1. 我打算在未來繼續學習華語。',
+    'CI2. 我會持續地學習華語語言與文化。',
+    'CI3. 我打算將在這個京劇課程學到的文化知識，應用於未來的華語學習中。',
+    'CI4. 如果可能，我願意參加其他結合戲劇或文化的華語課程。']}
+];
+
+// 渲染前測問卷選項
+function renderSurveyPre(){
+  var sel=document.getElementById('qpre-birth');
+  if(sel&&sel.options.length<=1){
+    for(var y=2012;y>=1975;y--){var o=document.createElement('option');o.value=String(y);o.textContent=y+' 年';sel.appendChild(o);}
+  }
+  function fill(boxId,name,opts){
+    var box=document.getElementById(boxId);if(!box||box.children.length)return;
+    opts.forEach(function(t){
+      var lbl=document.createElement('label');
+      lbl.innerHTML='<input type="radio" name="'+name+'" value="'+t+'"><span>'+t+'</span>';
+      box.appendChild(lbl);
+    });
+  }
+  fill('qpre-years','qpre_years',QPRE_OPTS.years);
+  fill('qpre-opera','qpre_opera',QPRE_OPTS.opera);
+  fill('qpre-motive','qpre_motive',QPRE_OPTS.motive);
+}
+
+// 渲染後測量表（真人組略過 SP 題組）
+function renderSurveyPost(){
+  var wrap=document.getElementById('qpost-blocks');if(!wrap)return;
+  wrap.innerHTML='';
+  QPOST_SCALE.forEach(function(blk){
+    if(blk.platformOnly&&SURVEY_ONLY)return; // 真人組不顯示 SP
+    var div=document.createElement('div');div.className='sv-block';
+    var h='<h4>'+blk.key+'　'+blk.title+'</h4><div class="sv-anchor">1 = 非常不同意　～　7 = 非常同意</div>';
+    blk.items.forEach(function(txt,i){
+      var nm='sv_'+blk.key+'_'+(i+1);
+      h+='<div class="sv-item" id="row-'+nm+'"><div class="sv-q">'+txt+'</div><div class="sv-scale">';
+      for(var v=1;v<=7;v++){h+='<label><input type="radio" name="'+nm+'" value="'+v+'"><span>'+v+'</span></label>';}
+      h+='</div></div>';
+    });
+    div.innerHTML=h;wrap.appendChild(div);
+  });
+}
+
+// 已完成狀態切換
+function setSurveyDoneUI(which,done){
+  var sub=document.getElementById(which+'-submit-area');
+  var dm=document.getElementById(which+'-done-msg');
+  if(sub)sub.style.display=done?'none':'block';
+  if(dm)dm.style.display=done?'block':'none';
+  var ov=document.getElementById('ov-'+which+'-status');
+  if(ov){ov.textContent=done?'✓ 已完成':'尚未填寫';ov.style.color=done?'#276749':'';}
+}
+
+// 送出前測問卷
+function submitSurveyPre(){
+  var id=SURVEY_ONLY?SV.id:(S.loggedIn?S.student.id:'');
+  if(!id){toast('請先登入。');return;}
+  var birth=document.getElementById('qpre-birth').value;
+  function val(n){var c=document.querySelector('input[name="'+n+'"]:checked');return c?c.value:'';}
+  var years=val('qpre_years'),opera=val('qpre_opera'),motive=val('qpre_motive');
+  if(!birth||!years||!opera||!motive){toast('尚有題目未作答，請完成後再送出。');return;}
+  var btn=document.getElementById('qpre-submit-btn');if(btn)btn.disabled=true;
+  setSaveStatus('qpre-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
+  sendConfirm({event:'survey_pre',id:id,group:SURVEY_ONLY?'真人':'平台',birth:birth,years:years,opera:opera,motive:motive},
+    function(){
+      setSaveStatus('qpre-save-status','ok','✓ 問卷已成功儲存');
+      if(!SURVEY_ONLY){S.qpreDone=true;save();updateProgress();}
+      setSurveyDoneUI('qpre',true);
+    },
+    function(){
+      if(btn)btn.disabled=false;
+      setSaveStatus('qpre-save-status','fail','⚠ 儲存失敗（可能是網路不穩），您的作答仍在頁面上，請再按一次送出。');
+    });
+}
+
+// 送出後測問卷
+function submitSurveyPost(){
+  var id=SURVEY_ONLY?SV.id:(S.loggedIn?S.student.id:'');
+  if(!id){toast('請先登入。');return;}
+  var items=[];var missing=null;
+  document.querySelectorAll('.sv-item.sv-missing').forEach(function(el){el.classList.remove('sv-missing');});
+  QPOST_SCALE.forEach(function(blk){
+    blk.items.forEach(function(_,i){
+      var nm='sv_'+blk.key+'_'+(i+1);
+      if(blk.platformOnly&&SURVEY_ONLY){items.push('');return;} // 真人組 SP 補空，欄位對齊
+      var c=document.querySelector('input[name="'+nm+'"]:checked');
+      if(!c){
+        var row=document.getElementById('row-'+nm);
+        if(row){row.classList.add('sv-missing');if(!missing)missing=row;}
+        items.push(null);
+      }else{items.push(Number(c.value));}
+    });
+  });
+  if(missing){toast('尚有量表題未作答（已標示紅底），請完成後再送出。');missing.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  var btn=document.getElementById('qpost-submit-btn');if(btn)btn.disabled=true;
+  setSaveStatus('qpost-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
+  sendConfirm({event:'survey_post',id:id,group:SURVEY_ONLY?'真人':'平台',items:items,
+               q1:document.getElementById('qpost-q1').value.trim(),
+               q2:document.getElementById('qpost-q2').value.trim(),
+               q3:document.getElementById('qpost-q3').value.trim()},
+    function(){
+      setSaveStatus('qpost-save-status','ok','✓ 問卷已成功儲存');
+      if(!SURVEY_ONLY){S.qpostDone=true;save();updateProgress();}
+      setSurveyDoneUI('qpost',true);
+    },
+    function(){
+      if(btn)btn.disabled=false;
+      setSaveStatus('qpost-save-status','fail','⚠ 儲存失敗（可能是網路不穩），您的作答仍在頁面上，請再按一次送出。');
+    });
+}
+
+// 真人組入口：輸入學號後進入指定問卷
+function svEnter(which){
+  var id=document.getElementById('sv-id').value.trim().toUpperCase();
+  var err=document.getElementById('sv-err');
+  if(!id||id.length<3){if(err)err.style.display='block';return;}
+  if(err)err.style.display='none';
+  SV.id=id;
+  show(which);
+}
+
+// 啟用真人組純問卷模式：隱藏側欄與導覽，只留問卷
+function initSurveyOnly(){
+  if(!SURVEY_ONLY)return;
+  var sb=document.querySelector('.sidebar');if(sb)sb.style.display='none';
+  document.querySelectorAll('.hn,.mhn').forEach(function(b){b.style.display='none';});
+  var bk1=document.getElementById('qpre-back-btn');if(bk1)bk1.style.display='none';
+  var bk2=document.getElementById('qpost-back-btn');if(bk2)bk2.style.display='none';
+  show('svlogin');
+}
+
 // ══ INIT ══
 load();renderQ('pre');renderQ('post');renderLyrics();switchWeek(1);
+renderSurveyPre();renderSurveyPost(); // v3.0 內建問卷
 // 永遠清空登入表單，永遠先顯示登入頁
 ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
 document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
@@ -1482,8 +1820,10 @@ show('login');
 updateUI();
 updateMobLogout();
 initMobToggle();
+initSurveyOnly(); // ?mode=survey → 真人組純問卷模式
+if(!SURVEY_ONLY){setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);}
 
 </script>
-<div class="version-tag">v2.1-20260429</div>
+<div class="version-tag">v3.0-20260612</div>
 </body>
 </html>
