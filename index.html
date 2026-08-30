@@ -333,8 +333,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
   <div class="sb-sec"><div class="sb-lbl">進入課程前</div>
     <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>登入</div>
-    <div class="sb-item" id="sb-pretest" onclick="show('pretest')"><span class="sb-dot"></span>前測</div>
-    <div class="sb-item" id="sb-qpre" onclick="show('qpre')"><span class="sb-dot"></span>研究前測問卷</div>
+    <div class="sb-item" id="sb-pretest" onclick="show('pretest')"><span class="sb-dot"></span>華文能力前測</div>
+    <div class="sb-item" id="sb-qpre" onclick="show('qpre')"><span class="sb-dot"></span>基本資料</div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">四週課程</div>
     <div class="sb-item" id="sb-week1" onclick="show('course');switchWeek(1)"><span class="sb-dot"></span>第一週</div>
@@ -343,8 +343,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="sb-item" id="sb-week4" onclick="show('course');switchWeek(4)"><span class="sb-dot"></span>第四週</div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">課後評量</div>
-    <div class="sb-item" id="sb-posttest" onclick="show('posttest')"><span class="sb-dot"></span>後測</div>
-    <div class="sb-item" id="sb-qpost" onclick="show('qpost')"><span class="sb-dot"></span>研究後測問卷</div>
+    <div class="sb-item" id="sb-posttest" onclick="show('posttest')"><span class="sb-dot"></span>華文能力後測</div>
+    <div class="sb-item" id="sb-qpost" onclick="show('qpost')"><span class="sb-dot"></span>京劇研究問卷</div>
   </div>
   <div id="sb-user" style="display:none;padding:.8rem .9rem;">
     <button onclick="doLogout()" style="width:100%;background:rgba(194,69,122,.35);border:2px solid rgba(194,69,122,.6);color:#fff;border-radius:8px;padding:11px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出 Logout</button>
@@ -358,9 +358,9 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
   <!-- 進度條 8格 -->
   <div class="flow" style="overflow-x:auto;gap:0;">
-    <div class="fs"><div class="fc lock" id="fc-pre">測</div><div class="fl">華文<br>前測</div></div>
+    <div class="fs"><div class="fc lock" id="fc-pre">測</div><div class="fl">華文<br>能力前測</div></div>
     <div class="fa" id="fa0"></div>
-    <div class="fs"><div class="fc lock" id="fc-qpre">問</div><div class="fl">研究<br>前測</div></div>
+    <div class="fs"><div class="fc lock" id="fc-qpre">問</div><div class="fl">基本<br>資料</div></div>
     <div class="fa" id="fa1"></div>
     <div class="fs"><div class="fc lock" id="fc-w1">1</div><div class="fl">第一<br>週</div></div>
     <div class="fa" id="fa2"></div>
@@ -370,19 +370,19 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="fa" id="fa4"></div>
     <div class="fs"><div class="fc lock" id="fc-w4">4</div><div class="fl">第四<br>週</div></div>
     <div class="fa" id="fa5"></div>
-    <div class="fs"><div class="fc lock" id="fc-post">測</div><div class="fl">華文<br>後測</div></div>
+    <div class="fs"><div class="fc lock" id="fc-post">測</div><div class="fl">華文<br>能力後測</div></div>
     <div class="fa" id="fa6"></div>
-    <div class="fs"><div class="fc lock" id="fc-qpost">問</div><div class="fl">研究<br>後測</div></div>
+    <div class="fs"><div class="fc lock" id="fc-qpost">問</div><div class="fl">研究<br>問卷</div></div>
   </div>
 
   <!-- 華文前測入口（8格進度條下，整體進度條上）-->
   <div id="pre-entry-box" style="background:#fff;border:2px solid var(--bm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.8rem;text-align:center;">
     <div id="pre-entry-todo" style="display:none;">
-      <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">尚未完成華文前測</div>
-      <button onclick="show('pretest')" style="background:var(--bm);color:#fff;border:none;padding:11px 28px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">📝 前往華文前測</button>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">尚未完成華文能力前測</div>
+      <button onclick="show('pretest')" style="background:var(--bm);color:#fff;border:none;padding:11px 28px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">📝 前往華文能力前測</button>
     </div>
     <div id="pre-entry-done" style="display:none;">
-      <div style="font-size:14px;color:#3B6D11;font-weight:700;margin-bottom:4px;">✓ 華文前測已完成</div>
+      <div style="font-size:14px;color:#3B6D11;font-weight:700;margin-bottom:4px;">✓ 華文能力前測已完成</div>
       <div id="pre-entry-score" style="font-size:15px;color:var(--pm);font-weight:700;"></div>
     </div>
   </div>
@@ -397,7 +397,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
     <button onclick="show('qpre')"
        style="background:var(--pm);color:#fff;border:none;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
-      📋 京劇研究前測問卷
+      📝 基本資料
     </button>
     <span id="ov-qpre-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
   </div>
@@ -424,13 +424,13 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
   <!-- 底部：後測區 -->
   <div style="background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-top:.5rem;">
-    <div style="font-size:16px;font-weight:700;color:var(--bd);margin-bottom:12px;">完成四週課程後：</div>
+    <div style="font-size:21px;font-weight:800;color:var(--bd);margin-bottom:14px;">完成四週課程後：</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文後測</button>
+      <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文能力後測</button>
       <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <button onclick="show('qpost')"
            style="background:var(--pm);color:#fff;border:none;padding:11px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
-          📋 京劇研究後測問卷
+          📋 京劇研究問卷
         </button>
         <span id="ov-qpost-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
       </div>
@@ -453,7 +453,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <div class="fgrid">
       <div class="fg full">
         <label class="flbl">學號 Student ID</label>
-        <input class="finput" id="f-id" type="text" placeholder="例如 M11456023"
+        <input class="finput" id="f-id" type="text" placeholder="例如 M11456023" oninput="this.value=this.value.toUpperCase()"
                oninput="this.value=this.value.toUpperCase();checkStudentId(this.value)"
                style="font-size:18px;font-weight:700;letter-spacing:.05em;">
       </div>
@@ -481,7 +481,31 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       <button class="btn-retry" onclick="retryLogin()">重新嘗試</button>
     </div>
   </div>
-  <!-- STEP 2a: 舊生確認/修改資料 -->
+    <!-- 知情同意書（新生第一步）-->
+  <div id="login-consent-card" class="form-card" style="display:none;">
+    <div style="font-size:18px;font-weight:700;color:var(--bd);margin-bottom:12px;">📋 研究參與知情同意書</div>
+    <div style="font-size:15px;line-height:1.8;color:#444;">
+      <p style="margin:0 0 4px;"><strong>研究主題：</strong>AI輔助京劇華語教學對外籍學習者華語學習成效之影響</p>
+      <p style="margin:12px 0 4px;"><strong>研究說明：</strong></p>
+      <p style="margin:0;">本研究旨在探討以京劇《霸王別姬》為素材的AI輔助華語學習平台對華語學習成效的影響。您將在為期四週的課程中完成京劇華語學習任務，並於課程前後完成華語能力測驗與學習經驗問卷。</p>
+      <p style="margin:12px 0 4px;"><strong>您的權益：</strong></p>
+      <p style="margin:0;">• 參與本研究完全自願，不影響您的課程成績。<br>
+      • 您可以隨時退出研究，無需說明理由。<br>
+      • 所有資料僅供學術研究使用，將以匿名方式處理。<br>
+      • 您的個人資料（姓名、學號）僅用於前後測配對，不會出現在研究報告中。<br>
+      • 研究資料將於研究結束後妥善保存5年，屆時將安全銷毀。</p>
+      <p style="margin:12px 0 0;"><strong>研究聯絡人：</strong>開南大學商學院 蕭君華老師 (maehsiao@gapps.knu.edu.tw)</p>
+    </div>
+    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;font-weight:700;color:var(--bd);margin-top:14px;background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:12px 14px;">
+      <input type="checkbox" id="consent-check" onchange="document.getElementById('consent-btn').disabled=!this.checked" style="width:20px;height:20px;margin-top:2px;accent-color:#f59e0b;flex-shrink:0;">
+      <span>我已閱讀並了解上述說明，<strong>同意自願參與本研究</strong>。</span>
+    </label>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="consent-btn" onclick="handleConsentAgree()" disabled style="font-weight:700;font-size:16px;">同意並繼續 →</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
+  </div>
+<!-- STEP 2a: 舊生確認/修改資料 -->
   <div id="login-step2-old" class="form-card" style="display:none;">
     <div style="background:#EAF3DE;border-left:3px solid #276749;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#276749;font-weight:700;margin-bottom:1rem;">
       ✓ 找到您的資料，請確認或修改後登入
@@ -495,100 +519,8 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
         <label class="flbl">姓名 Name</label>
         <input class="finput" id="f-name-old" type="text" placeholder="您的中文或英文姓名">
       </div>
-      <div class="fg full">
-        <label class="flbl">性別 Gender</label>
-        <div class="radio-group">
-          <label class="rlbl"><input type="radio" name="gender-old" value="男"> 男 Male</label>
-          <label class="rlbl"><input type="radio" name="gender-old" value="女"> 女 Female</label>
-          <label class="rlbl"><input type="radio" name="gender-old" value="其他"> 其他 Other</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="flbl">年級 Grade</label>
-        <select class="finput" id="f-grade-old">
-          <option value="">請選擇</option>
-          <option value="一年級">一年級</option>
-          <option value="二年級">二年級</option>
-          <option value="三年級">三年級</option>
-          <option value="四年級">四年級</option>
-          <option value="研究生">研究生</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label class="flbl">中文程度 TOCFL</label>
-        <select class="finput" id="f-tocfl-old">
-          <option value="">請選擇</option>
-          <option value="A1（入門）">A1（入門）</option>
-          <option value="A2（基礎）">A2（基礎）</option>
-          <option value="B1（進階）">B1（進階）</option>
-          <option value="B2（高階）">B2（高階）</option>
-          <option value="C1（流利）">C1（流利）</option>
-          <option value="C2（精通）">C2（精通）</option>
-        </select>
-      </div>
-      <div class="fg full">
-        <label class="flbl">國籍 Nationality</label>
-        <input class="finput" id="f-nation-old" type="text" placeholder="例如 Japan、Korea">
-      </div>
     </div>
-    <div class="err-txt" id="login-err-old"></div>
-    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
-      <button class="btn-p" id="old-login-btn" onclick="doLoginOld()" style="font-weight:700;font-size:16px;">✓ 確認資料，進入課程總覽</button>
-      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
-    </div>
-  </div>
-
-  <!-- STEP 2b: 新生填寫資料 -->
-  <div id="login-step2-new" class="form-card" style="display:none;">
-    <div style="background:#E6F1FB;border-left:3px solid #185FA5;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#185FA5;font-weight:700;margin-bottom:1rem;">
-      新生，請填寫基本資料
-    </div>
-    <div class="fgrid">
-      <div class="fg full">
-        <label class="flbl">再次確認學號（防止輸入錯誤）</label>
-        <input class="finput" id="f-id-confirm" type="text" placeholder="請再次輸入學號"
-               oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fg full">
-        <label class="flbl">姓名 Name</label>
-        <input class="finput" id="f-name" type="text" placeholder="您的中文或英文姓名">
-      </div>
-      <div class="fg full">
-        <label class="flbl">性別 Gender</label>
-        <div class="radio-group">
-          <label class="rlbl"><input type="radio" name="gender" value="男"> 男 Male</label>
-          <label class="rlbl"><input type="radio" name="gender" value="女"> 女 Female</label>
-          <label class="rlbl"><input type="radio" name="gender" value="其他"> 其他 Other</label>
-        </div>
-      </div>
-      <div class="fg">
-        <label class="flbl">年級 Grade</label>
-        <select class="finput" id="f-grade">
-          <option value="">請選擇</option>
-          <option value="一年級">一年級</option>
-          <option value="二年級">二年級</option>
-          <option value="三年級">三年級</option>
-          <option value="四年級">四年級</option>
-          <option value="研究生">研究生</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label class="flbl">中文程度 TOCFL</label>
-        <select class="finput" id="f-tocfl">
-          <option value="">請選擇</option>
-          <option value="A1（入門）">A1（入門）</option>
-          <option value="A2（基礎）">A2（基礎）</option>
-          <option value="B1（進階）">B1（進階）</option>
-          <option value="B2（高階）">B2（高階）</option>
-          <option value="C1（流利）">C1（流利）</option>
-          <option value="C2（精通）">C2（精通）</option>
-        </select>
-      </div>
-      <div class="fg full">
-        <label class="flbl">國籍 Nationality</label>
-        <input class="finput" id="f-nation" type="text" placeholder="例如 Japan、Korea">
-      </div>
-    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0;">其餘基本資料（性別、年級、中文程度、國籍等）將在下一頁填寫。</p>
 
     <!-- 倫理宣言 -->
     <div style="background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;">
@@ -603,7 +535,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 
     <div class="err-txt" id="login-err-new"></div>
     <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
-      <button class="btn-p" id="new-student-btn" onclick="doLoginNew()" style="font-weight:700;font-size:16px;">新生：儲存，前往華文前測 →</button>
+      <button class="btn-p" id="new-student-btn" onclick="doLoginNew()" style="font-weight:700;font-size:16px;">新生：儲存，下一步 →</button>
       <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
     </div>
   </div>
@@ -615,7 +547,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   
   <div class="info" id="pre-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出前測」一次計分。計分後題目鎖定，分數自動儲存。</div>
   <div class="quiz-hdr">
-    <div><div class="qh-title">華語能力遷移前測</div><div class="qh-sub">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
+    <div><div class="qh-title">華文能力前測</div><div class="qh-sub">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
     <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
       <div style="display:flex;gap:8px;">
         <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--bl);">Part 1</div><div style="font-size:16px;font-weight:700;color:#fff;" id="pre-s1-disp">—</div></div>
@@ -647,14 +579,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <button class="btn-p blue" onclick="submitQuiz('pre')" style="font-size:17px;padding:13px 32px;">送出前測（共30題）</button>
   </div>
   <div class="done-msg" id="pre-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 華文能力前測完成</h3>
     <div id="pre-done-score" style="display:none;"></div>
     <div class="save-status" id="pre-save-status"></div>
     <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:10px;align-items:center;width:100%;">
-      <button onclick="show('qpre')"
-         style="display:block;background:var(--pm);color:#fff;border:none;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:900;cursor:pointer;font-family:var(--sans);text-align:center;width:100%;">
-        📋 京劇研究前測問卷（請接著完成）
-      </button>
-      <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;width:100%;font-size:16px;">↩ 回到總覽</button>
+      <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;width:100%;font-size:16px;">進入課程總覽 →</button>
       <button onclick="doLogout()" class="btn-s" style="font-weight:700;font-size:15px;">登出 Logout</button>
     </div>
   </div>
@@ -774,7 +703,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   
   <div class="info pink" id="post-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出後測」一次計分。完成後將與前測對照學習成效。</div>
   <div class="quiz-hdr pink">
-    <div><div class="qh-title">《霸王別姬》華語能力遷移後測</div><div class="qh-sub" style="color:var(--pl);">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
+    <div><div class="qh-title">《霸王別姬》華文能力後測</div><div class="qh-sub" style="color:var(--pl);">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
     <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
       <div style="display:flex;gap:8px;">
         <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--pl);">Part 1</div><div style="font-size:16px;font-weight:700;color:#fff;" id="post-s1-disp">—</div></div>
@@ -810,51 +739,91 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
     <p style="color:var(--muted);margin-bottom:1.2rem;">感謝您完成四週的學習課程！</p>
     <button onclick="show('qpost')"
        style="display:inline-block;background:#1a6dbf;color:#fff;border:none;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-bottom:12px;">
-      📋 京劇研究後測問卷（請接著完成）
+      📋 京劇研究問卷（請接著完成）
     </button><br>
     <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;margin-top:8px;">完成學習，登出 Logout</button><br>
     <button onclick="unlockPosttest()" class="btn-s" style="font-size:13px;margin-top:14px;opacity:.75;">🔓 重新作答（教師解鎖）</button>
   </div>
 </div>
 
-<!-- ═══ 研究前測問卷（內建，v3.0）═══ -->
+<!-- ═══ 基本資料（內建）═══ -->
 <div id="p-qpre" class="panel">
-  <div class="info">京劇研究前測問卷：基本資料共 4 題，約 1 分鐘。學號僅用於配對華語能力前後測成績，分析時將轉化為代碼，不呈現個人身分。</div>
+  <div class="info">基本資料：共 8 題，約 2 分鐘。學號僅用於配對華語能力前後測成績，分析時將轉化為代碼，不呈現個人身分。</div>
   <div class="sv-block">
-    <h4>一、基本資料</h4>
+    <h4>基本資料</h4>
+    <div class="sv-radio-row">
+      <div class="sv-q">1. 性別：</div>
+      <div class="opts" id="qpre-gender"></div>
+    </div>
     <div class="sv-sel">
-      <div class="sv-q">1. 出生年份：</div>
+      <div class="sv-q">2. 出生年份：</div>
       <select id="qpre-birth"><option value="">請選擇</option></select>
     </div>
+    <div class="sv-sel">
+      <div class="sv-q">3. 年級：</div>
+      <select id="qpre-grade">
+        <option value="">請選擇</option>
+        <option value="一年級">一年級</option>
+        <option value="二年級">二年級</option>
+        <option value="三年級">三年級</option>
+        <option value="四年級">四年級</option>
+        <option value="研究生">研究生</option>
+      </select>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">4. 中文程度 (TOCFL)：</div>
+      <select id="qpre-tocfl">
+        <option value="">請選擇</option>
+        <option value="A1（入門）">A1（入門）</option>
+        <option value="A2（基礎）">A2（基礎）</option>
+        <option value="B1（進階）">B1（進階）</option>
+        <option value="B2（高階）">B2（高階）</option>
+        <option value="C1（流利）">C1（流利）</option>
+        <option value="C2（精通）">C2（精通）</option>
+      </select>
+    </div>
     <div class="sv-radio-row">
-      <div class="sv-q">2. 您學習華語（中文）多久了？</div>
+      <div class="sv-q">5. 華語學習時間：</div>
       <div class="opts" id="qpre-years"></div>
     </div>
     <div class="sv-radio-row">
-      <div class="sv-q">3. 京劇認知程度：參與本課程前，您對京劇的了解程度？</div>
+      <div class="sv-q">6. 京劇認知程度：參與本課程前，您對京劇的了解程度？</div>
       <div class="opts" id="qpre-opera"></div>
     </div>
     <div class="sv-radio-row">
-      <div class="sv-q">4. 華語學習動機：您學習華語最主要的原因？</div>
+      <div class="sv-q">7. 華語學習動機：您學習華語最主要的原因？</div>
       <div class="opts" id="qpre-motive"></div>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">8. 國籍：</div>
+      <select id="qpre-nation" onchange="document.getElementById('qpre-nation-other').style.display=(this.value==='其他')?'block':'none'">
+        <option value="">請選擇</option>
+        <option value="越南">越南 Vietnam</option>
+        <option value="日本">日本 Japan</option>
+        <option value="韓國">韓國 Korea</option>
+        <option value="印尼">印尼 Indonesia</option>
+        <option value="其他">其他 Other</option>
+      </select>
+      <input id="qpre-nation-other" type="text" placeholder="請填寫您的國籍" style="display:none;margin-top:8px;width:100%;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:var(--sans);box-sizing:border-box;">
     </div>
   </div>
   <div class="save-status" id="qpre-save-status"></div>
   <div class="submit-area" id="qpre-submit-area">
-    <button class="btn-p" id="qpre-submit-btn" onclick="submitSurveyPre()" style="font-size:17px;padding:13px 32px;">送出前測問卷</button>
+    <button class="btn-p" id="qpre-submit-btn" onclick="submitSurveyPre()" style="font-size:17px;padding:13px 32px;">送出基本資料</button>
   </div>
   <div class="done-msg" id="qpre-done-msg" style="display:none">
-    <h3 style="color:#276749;">✓ 前測問卷已完成並儲存</h3>
-    <button class="btn-p blue" onclick="if(!SURVEY_ONLY)show('overview')" id="qpre-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
+    <h3 style="color:#276749;">✓ 基本資料已完成並儲存</h3>
+    <button class="btn-p" onclick="show('pretest')" style="font-weight:700;font-size:16px;margin-top:8px;">前往華文能力前測 →</button><br>
+    <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;font-size:15px;margin-top:10px;">↩ 回到總覽</button>
   </div>
 </div>
 
-<!-- ═══ 研究後測問卷（內建，v3.0）═══ -->
+<!-- ═══ 京劇研究問卷（內建）═══ -->
 <div id="p-qpost" class="panel">
-  <div class="info pink">京劇研究後測問卷：量表題請依您的同意程度作答（1=非常不同意 ～ 7=非常同意），最後 3 題開放題為選填。學號僅用於配對成績，分析時去識別化處理。</div>
+  <div class="info pink">京劇研究問卷：量表題請依您的同意程度作答（1=非常不同意 ～ 7=非常同意），最後 3 題開放題為選填。學號僅用於配對成績，分析時去識別化處理。</div>
   <div id="qpost-blocks"></div>
   <div class="sv-block sv-open" id="qpost-open-block">
-    <h4>開放式問題（選填）</h4>
+    <h4>課程意見（選填）</h4>
     <div class="sv-anchor">建議用自己最熟悉的語言回答（中、英、越文均可）；回答無對錯之分，鼓勵具體描述個人經驗與感受；資料將去識別化處理，僅用於學術分析。<br>You may answer in the language you are most comfortable with (Chinese, English, or Vietnamese). / Bạn có thể trả lời bằng ngôn ngữ mà bạn cảm thấy thoải mái nhất (tiếng Trung, tiếng Anh hoặc tiếng Việt).</div>
     <div style="margin-bottom:16px;">
       <div class="sv-q">Q1. 透過學習京劇《霸王別姬》，您對哪個中國文化面向感受最深或最受感動？請描述一個具體的時刻。<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: Through learning Peking Opera (Farewell My Concubine), what aspects of Chinese culture did you feel most connected to or moved by? Please describe a specific moment.<br>VI: Thông qua việc học Kinh kịch (Bá Vương Biệt Cơ), bạn cảm thấy kết nối hoặc xúc động nhất với khía cạnh nào của văn hóa Trung Hoa? Hãy mô tả một khoảnh khắc cụ thể.</span></div>
@@ -871,25 +840,11 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
   </div>
   <div class="save-status" id="qpost-save-status"></div>
   <div class="submit-area" id="qpost-submit-area">
-    <button class="btn-p" id="qpost-submit-btn" onclick="submitSurveyPost()" style="font-size:17px;padding:13px 32px;">送出後測問卷</button>
+    <button class="btn-p" id="qpost-submit-btn" onclick="submitSurveyPost()" style="font-size:17px;padding:13px 32px;">送出京劇研究問卷</button>
   </div>
   <div class="done-msg" id="qpost-done-msg" style="display:none">
-    <h3 style="color:#276749;">✓ 後測問卷已完成並儲存，感謝您的填答！</h3>
-    <button class="btn-p blue" onclick="if(!SURVEY_ONLY)show('overview')" id="qpost-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
-  </div>
-</div>
-
-<!-- ═══ 真人組問卷入口（?mode=survey）═══ -->
-<div id="p-svlogin" class="panel">
-  <div class="form-card" style="max-width:480px;margin:0 auto;">
-    <h3 style="color:var(--bd);margin-top:0;">京劇華語課程 研究問卷</h3>
-    <p style="font-size:14.5px;color:var(--muted);">請輸入您的學號後選擇要填寫的問卷。學號僅用於配對前後測成績，分析時將轉化為代碼，不呈現個人身分。</p>
-    <input id="sv-id" placeholder="請輸入學號" style="width:100%;padding:13px;border:2px solid var(--border);border-radius:10px;font-size:17px;font-family:var(--sans);box-sizing:border-box;margin-bottom:8px;">
-    <div id="sv-err" style="display:none;color:#c53030;font-size:14px;font-weight:700;margin-bottom:8px;">請輸入學號。</div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
-      <button class="btn-p" onclick="svEnter('qpre')" style="font-size:16px;font-weight:700;">📋 填寫前測問卷</button>
-      <button class="btn-p" onclick="svEnter('qpost')" style="font-size:16px;font-weight:700;background:#1a6dbf;">📋 填寫後測問卷</button>
-    </div>
+    <h3 style="color:#276749;">✓ 京劇研究問卷已完成並儲存，感謝您的填答！</h3>
+    <button class="btn-p blue" onclick="show('overview')" id="qpost-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
   </div>
 </div>
 
@@ -898,7 +853,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
 <script>
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbzkRMXSv3K56h4wsyOuJoW5JV0sD1JV-SAriE5rbp0uQIq_U6V73xQ5xEC1Vc35Ij4L/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbylOhAxeUe0TKQshfKOlZkvaWVKAgyrzQNCI28AVhyCJrVWCvw1w4dn4_4qkZboPvgl/exec';
 
 var LYRICS = {
   1:[
@@ -982,7 +937,7 @@ var PRE_QS = {
   p2:[
     {q:'11. 這家公司資金周轉不靈，員工紛紛離職，競爭對手又推出新產品，處境真的是 _______。',opts:['(A) 歌舞昇平','(B) 四面楚歌','(C) 力拔山兮','(D) 寬心飲酒'],ans:'B'},
     {q:'12. 新聞報導說，那名賭徒為了躲避債務，竟然 _______，一個人逃到國外去了。',opts:['(A) 拋妻棄子','(B) 尊師重道','(C) 安居樂業','(D) 飲酒作樂'],ans:'A'},
-    {q:'13. 這場籃球賽，對方有十名職業選手，我們只有三名業餘球員，在 _______ 的情況下，很難贏球。',opts:['(A) 勢均力敵','(B) 敵眾我寡','(C) 千軍萬馬','(D) 人山人海'],ans:'B'},
+    {q:'13. 這場籃球賽，對方有十五名職業選手，我們只有三名業餘球員，在 _______ 的情況下，很難贏球。',opts:['(A) 勢均力敵','(B) 敵眾我寡','(C) 千軍萬馬','(D) 人山人海'],ans:'B'},
     {q:'14. 選舉開票結果顯示，對手的票數遙遙領先，候選人知道 _______，只好準備發表敗選感言。',opts:['(A) 大勢已去','(B) 旭日東昇','(C) 捲土重來','(D) 旗開得勝'],ans:'A'},
     {q:'15. 這兩位鄰居吵了多年，最近終於決定和解，「化 _______ 為玉帛」，不再爭吵了。',opts:['(A) 禮物','(B) 英雄','(C) 干戈','(D) 江山'],ans:'C'},
     {q:'16. 生命很寶貴，遇到再大的困難也不應該 _______，要多尋求親友的協助。',opts:['(A) 尋短見','(B) 尋開心','(C) 尋寶藏','(D) 尋出路'],ans:'A'},
@@ -1162,7 +1117,13 @@ function submitQuiz(quiz){
       else if(inp.value===r.sel&&!r.ok)lbl.classList.add('wrong');
     });
   });
-  S[quiz]={done:true,score:total,s1:s1,s2:s2,s3:s3};save();
+  // 逐題答案(A~D)與得分(0/1)，依題號 1~30 排序後送到 Sheet
+  var ansArr=[],scArr=[];
+  results.forEach(function(r){
+    var qn=parseInt(r.nm.split('_q')[1],10);
+    ansArr[qn-1]=r.sel; scArr[qn-1]=r.ok?1:0;
+  });
+  S[quiz]={done:true,score:total,s1:s1,s2:s2,s3:s3,ans:ansArr,sc:scArr};save();
   var sd=document.getElementById(quiz+'-score-display');if(sd)sd.textContent='總分 '+total+' / 30';
   ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
   var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
@@ -1170,7 +1131,7 @@ function submitQuiz(quiz){
   if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+total+'/30';}
   else{var el=document.getElementById('post-compare');if(el)el.innerHTML='前測：'+(S.pre.s1||0)+'/10·'+(S.pre.s2||0)+'/10·'+(S.pre.s3||0)+'/10 = <b>'+(S.pre.score||0)+'分</b><br>後測：'+s1+'/10·'+s2+'/10·'+s3+'/10 = <b>'+total+'分</b>（進步'+(total-(S.pre.score||0))+'分）';}
   saveQuizToServer(quiz); // v3.0：確認式儲存，成功才顯示 ✓
-  updateProgress();toast((quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
+  updateProgress();toast('華文能力'+(quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
 }
 function restoreQuiz(quiz){
   if(!S[quiz].done)return;
@@ -1232,10 +1193,11 @@ function fetchStudentFromSheet(id){
         localStorage.setItem('kj_s2',JSON.stringify(S));
         showOldStudentForm(res.state.student);
       } else if(res.status==='not_found'){
+        // 新生：先閱讀同意書
         document.getElementById('login-step1').style.display='none';
-        document.getElementById('login-step2-new').style.display='block';
-        document.getElementById('f-id-confirm').value='';
-        document.getElementById('chk-ethics').checked=false;
+        document.getElementById('login-consent-card').style.display='block';
+        document.getElementById('consent-check').checked=false;
+        document.getElementById('consent-btn').disabled=true;
       } else {
         showLoginError('伺服器回應異常，請重試。');
       }
@@ -1252,6 +1214,13 @@ function fetchStudentFromSheet(id){
     showLoginError('連線逾時，請確認網路後重試。');
   };
   xhr.send();
+}
+function handleConsentAgree(){
+  document.getElementById('login-consent-card').style.display='none';
+  document.getElementById('login-step2-new').style.display='block';
+  document.getElementById('f-id-confirm').value='';
+  var eth=document.getElementById('chk-ethics');
+  if(eth){eth.checked=true;var lb=eth.closest('label');if(lb&&lb.parentElement)lb.parentElement.style.display='none';}
 }
 function showLoginError(msg){
   document.getElementById('login-error-card').style.display='block';
@@ -1313,6 +1282,7 @@ function doLoginOld(){
   S.student.nation=nation;
   if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  if(!S.pre.ans)S.pre.ans=null; if(!S.post.ans)S.post.ans=null;
   if(!S.weekSeen)S.weekSeen=[false,false,false,false];
   if(!S.qpreDone)S.qpreDone=false;
   if(!S.qpostDone)S.qpostDone=false;
@@ -1330,32 +1300,28 @@ function doLoginNew(){
   var id=document.getElementById('f-id').value.trim().toUpperCase();
   var idConfirm=document.getElementById('f-id-confirm').value.trim().toUpperCase();
   var name=document.getElementById('f-name').value.trim();
-  var gender=document.querySelector('input[name="gender"]:checked');
-  var grade=document.getElementById('f-grade').value;
-  var tocfl=document.getElementById('f-tocfl').value;
-  var nation=document.getElementById('f-nation').value.trim();
   var ethics=document.getElementById('chk-ethics').checked;
   var err=document.getElementById('login-err-new');
   err.style.display='none';
 
   if(!idConfirm){err.style.display='block';err.textContent='請再次輸入學號確認。';return;}
   if(id!==idConfirm){err.style.display='block';err.textContent='兩次輸入的學號不一致，請確認。';return;}
-  if(!name||!gender||!grade||!tocfl||!nation){err.style.display='block';err.textContent='請填寫所有欄位。';return;}
+  if(!name){err.style.display='block';err.textContent='請填寫姓名。';return;}
   if(!ethics){err.style.display='block';err.textContent='請勾選同意倫理宣言後再送出。';return;}
 
   // 全新學生：清除舊資料
   localStorage.removeItem('kj_s2');
   S={loggedIn:true,
-     student:{id:id,name:name,gender:gender.value,grade:grade,tocfl:tocfl,nation:nation},
+     student:{id:id,name:name,gender:'',grade:'',tocfl:'',nation:''},
      pre:{done:false,score:0,s1:0,s2:0,s3:0},
      post:{done:false,score:0,s1:0,s2:0,s3:0},
      weekSeen:[false,false,false,false],
      qpreDone:false,qpostDone:false};
   renderQ('pre');renderQ('post');
   save();
-  toast('歡迎 '+name+'！請先完成華文前測。');
+  toast('歡迎 '+name+'！請先完成基本資料。');
   sendToSheets('login');updateUI();updateSurveyLinks();
-  initMobToggle();show('pretest');
+  initMobToggle();show('qpre');
 }
 
 // 舊版相容（保留空函式避免 HTML 舊按鈕呼叫錯誤）
@@ -1367,7 +1333,7 @@ function autoFill(id){}
 function doLogout(){
   var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';
   S.loggedIn=false;save();
-  ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['f-id','f-name','f-id-confirm'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
   var su=document.getElementById('sb-user');if(su)su.style.display='none';
   document.querySelectorAll('.hn,.mhn').forEach(function(b){b.classList.remove('on');});
@@ -1376,6 +1342,7 @@ function doLogout(){
   document.getElementById('login-step1').style.display='block';
   document.getElementById('login-loading-card').style.display='none';
   document.getElementById('login-error-card').style.display='none';
+  document.getElementById('login-consent-card').style.display='none';
   resetLoginStep();show('login');toast('已登出。');
 }
 
@@ -1390,7 +1357,9 @@ function exportMyData(){
 // ══ SHEETS（v3.0：確認式送出 + 雙保險）══
 function buildScorePayload(ev){
   var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
-  return {event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0};
+  return {event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0,
+    pre_ans:(S.pre.done&&S.pre.ans)?S.pre.ans:'',pre_sc:(S.pre.done&&S.pre.sc)?S.pre.sc:'',
+    post_ans:(S.post.done&&S.post.ans)?S.post.ans:'',post_sc:(S.post.done&&S.post.sc)?S.post.sc:''};
 }
 // 確認式送出：text/plain 不觸發 CORS preflight，可讀取伺服器回應
 // onOk / onFail 為回呼函式；逾時 20 秒視為失敗
@@ -1464,16 +1433,20 @@ function updateProgress(){
   for(var w=1;w<=4;w++) if(S.weekSeen[w-1]) setFC('fc-w'+w,'fa'+(w+1),'done');
   if(S.post.done) setFC('fc-post','fa6','done'); else setFC('fc-post','fa6','');
   if(S.qpostDone){setFC('fc-qpost',null,'done');var cb2=document.getElementById('chk-qpost');if(cb2)cb2.checked=true;}
-  if(!SURVEY_ONLY){setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);} // v3.0 同步問卷完成狀態
+  setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 }
 
 // ══ SHOW / NAV ══
 function show(id){
-  // v3.0：內建問卷需先登入（真人組模式需先輸入學號）
-  if((id==='qpre'||id==='qpost')){
-    if(SURVEY_ONLY){if(!SV.id){id='svlogin';}}
-    else if(!S.loggedIn){toast('請先登入。');id='login';}
+  // 內建問卷需先登入
+  if((id==='qpre'||id==='qpost') && !S.loggedIn){toast('請先登入。');id='login';}
+  // 順序鎖鏈：基本資料 → 華文能力前測 → 課程/後測 → 京劇研究問卷
+  if(id==='pretest' && S.loggedIn && !S.qpreDone){toast('請先完成基本資料。');id='qpre';}
+  if((id==='course'||id==='posttest') && S.loggedIn && !S.pre.done){
+    toast('請先完成華文能力前測。');
+    id=S.qpreDone?'pretest':'qpre';
   }
+  if(id==='qpost' && S.loggedIn && !S.post.done){toast('請先完成華文能力後測。');id=S.pre.done?'posttest':(S.qpreDone?'pretest':'qpre');}
   // 若前測已完成，不允許進入前測頁（改去總覽）
   if(id==='pretest' && S.loggedIn && S.pre.done){
     id='overview';
@@ -1627,9 +1600,7 @@ function speakAndShow(btn){
 }
 
 // ══ 內建研究問卷（v3.0）══
-// 真人組入口：網址加 ?mode=survey（group 自動標記「真人」，且不顯示 SP 題組）
-var SURVEY_ONLY=(function(){try{return new URLSearchParams(location.search).get('mode')==='survey';}catch(e){return false;}})();
-var SV={id:''}; // 真人組填答者學號
+// 全員皆使用本平台，SP 題組對全員顯示
 
 // 前測問卷選項
 var QPRE_OPTS={
@@ -1644,7 +1615,7 @@ var QPOST_SCALE=[
     'PCR1. 學習京劇相關內容，可以幫助我建立中文學習目標。',
     'PCR2. 以京劇作為學習素材，符合我的中文學習需求。',
     'PCR3. 京劇相關知識，能幫助我連結我自身的中文學習經驗。']},
-  {key:'SP',title:'社會臨場感',platformOnly:true,items:[
+  {key:'SP',title:'社會臨場感',items:[
     'SP1. 在這個AI輔助京劇華語學習平台中，與AI系統及其他學習者互動時，我感到很自在。',
     'SP2. 我覺得在這個AI輔助京劇學習環境中，我的學習回應與進度得到了認可。',
     'SP3. 我覺得透過這個AI輔助京劇華語平台參與學習活動，感到很舒適。',
@@ -1699,17 +1670,17 @@ function renderSurveyPre(){
       box.appendChild(lbl);
     });
   }
+  fill('qpre-gender','qpre_gender',['女','男','其他']);
   fill('qpre-years','qpre_years',QPRE_OPTS.years);
   fill('qpre-opera','qpre_opera',QPRE_OPTS.opera);
   fill('qpre-motive','qpre_motive',QPRE_OPTS.motive);
 }
 
-// 渲染後測量表（真人組略過 SP 題組）
+// 渲染京劇研究問卷量表
 function renderSurveyPost(){
   var wrap=document.getElementById('qpost-blocks');if(!wrap)return;
   wrap.innerHTML='';
   QPOST_SCALE.forEach(function(blk){
-    if(blk.platformOnly&&SURVEY_ONLY)return; // 真人組不顯示 SP
     var div=document.createElement('div');div.className='sv-block';
     var h='<h4>'+blk.key+'　'+blk.title+'</h4><div class="sv-anchor">1 = 非常不同意　～　7 = 非常同意</div>';
     blk.items.forEach(function(txt,i){
@@ -1734,18 +1705,24 @@ function setSurveyDoneUI(which,done){
 
 // 送出前測問卷
 function submitSurveyPre(){
-  var id=SURVEY_ONLY?SV.id:(S.loggedIn?S.student.id:'');
+  var id=S.loggedIn?S.student.id:'';
   if(!id){toast('請先登入。');return;}
-  var birth=document.getElementById('qpre-birth').value;
   function val(n){var c=document.querySelector('input[name="'+n+'"]:checked');return c?c.value:'';}
+  var gender=val('qpre_gender');
+  var birth=document.getElementById('qpre-birth').value;
+  var grade=document.getElementById('qpre-grade').value;
+  var tocfl=document.getElementById('qpre-tocfl').value;
   var years=val('qpre_years'),opera=val('qpre_opera'),motive=val('qpre_motive');
-  if(!birth||!years||!opera||!motive){toast('尚有題目未作答，請完成後再送出。');return;}
+  var nation=document.getElementById('qpre-nation').value;
+  if(nation==='其他'){nation=document.getElementById('qpre-nation-other').value.trim();}
+  if(!gender||!birth||!grade||!tocfl||!years||!opera||!motive||!nation){toast('尚有題目未作答，請完成後再送出。');return;}
   var btn=document.getElementById('qpre-submit-btn');if(btn)btn.disabled=true;
   setSaveStatus('qpre-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
-  sendConfirm({event:'survey_pre',id:id,group:SURVEY_ONLY?'真人':'平台',birth:birth,years:years,opera:opera,motive:motive},
+  sendConfirm({event:'survey_pre',id:id,gender:gender,birth:birth,grade:grade,tocfl:tocfl,nation:nation,years:years,opera:opera,motive:motive},
     function(){
       setSaveStatus('qpre-save-status','ok','✓ 問卷已成功儲存');
-      if(!SURVEY_ONLY){S.qpreDone=true;save();updateProgress();}
+      S.student.gender=gender;S.student.grade=grade;S.student.tocfl=tocfl;S.student.nation=nation;
+      S.qpreDone=true;save();updateProgress();updateUI();
       setSurveyDoneUI('qpre',true);
     },
     function(){
@@ -1756,14 +1733,13 @@ function submitSurveyPre(){
 
 // 送出後測問卷
 function submitSurveyPost(){
-  var id=SURVEY_ONLY?SV.id:(S.loggedIn?S.student.id:'');
+  var id=S.loggedIn?S.student.id:'';
   if(!id){toast('請先登入。');return;}
   var items=[];var missing=null;
   document.querySelectorAll('.sv-item.sv-missing').forEach(function(el){el.classList.remove('sv-missing');});
   QPOST_SCALE.forEach(function(blk){
     blk.items.forEach(function(_,i){
       var nm='sv_'+blk.key+'_'+(i+1);
-      if(blk.platformOnly&&SURVEY_ONLY){items.push('');return;} // 真人組 SP 補空，欄位對齊
       var c=document.querySelector('input[name="'+nm+'"]:checked');
       if(!c){
         var row=document.getElementById('row-'+nm);
@@ -1775,39 +1751,19 @@ function submitSurveyPost(){
   if(missing){toast('尚有量表題未作答（已標示紅底），請完成後再送出。');missing.scrollIntoView({behavior:'smooth',block:'center'});return;}
   var btn=document.getElementById('qpost-submit-btn');if(btn)btn.disabled=true;
   setSaveStatus('qpost-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
-  sendConfirm({event:'survey_post',id:id,group:SURVEY_ONLY?'真人':'平台',items:items,
+  sendConfirm({event:'survey_post',id:id,items:items,
                q1:document.getElementById('qpost-q1').value.trim(),
                q2:document.getElementById('qpost-q2').value.trim(),
                q3:document.getElementById('qpost-q3').value.trim()},
     function(){
       setSaveStatus('qpost-save-status','ok','✓ 問卷已成功儲存');
-      if(!SURVEY_ONLY){S.qpostDone=true;save();updateProgress();}
+      S.qpostDone=true;save();updateProgress();
       setSurveyDoneUI('qpost',true);
     },
     function(){
       if(btn)btn.disabled=false;
       setSaveStatus('qpost-save-status','fail','⚠ 儲存失敗（可能是網路不穩），您的作答仍在頁面上，請再按一次送出。');
     });
-}
-
-// 真人組入口：輸入學號後進入指定問卷
-function svEnter(which){
-  var id=document.getElementById('sv-id').value.trim().toUpperCase();
-  var err=document.getElementById('sv-err');
-  if(!id||id.length<3){if(err)err.style.display='block';return;}
-  if(err)err.style.display='none';
-  SV.id=id;
-  show(which);
-}
-
-// 啟用真人組純問卷模式：隱藏側欄與導覽，只留問卷
-function initSurveyOnly(){
-  if(!SURVEY_ONLY)return;
-  var sb=document.querySelector('.sidebar');if(sb)sb.style.display='none';
-  document.querySelectorAll('.hn,.mhn').forEach(function(b){b.style.display='none';});
-  var bk1=document.getElementById('qpre-back-btn');if(bk1)bk1.style.display='none';
-  var bk2=document.getElementById('qpost-back-btn');if(bk2)bk2.style.display='none';
-  show('svlogin');
 }
 
 // ══ INIT ══
@@ -1820,10 +1776,9 @@ show('login');
 updateUI();
 updateMobLogout();
 initMobToggle();
-initSurveyOnly(); // ?mode=survey → 真人組純問卷模式
-if(!SURVEY_ONLY){setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);}
+setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 
 </script>
-<div class="version-tag">v3.0-20260612</div>
+<div class="version-tag">v3.4-20260612</div>
 </body>
 </html>
