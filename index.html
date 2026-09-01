@@ -493,6 +493,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
       • 您可以隨時退出研究，無需說明理由。<br>
       • 所有資料僅供學術研究使用，將以匿名方式處理。<br>
       • 您的個人資料（姓名、學號）僅用於前後測配對，不會出現在研究報告中。<br>
+      • 系統將記錄您的平台使用情形（登入時間、教材瀏覽、功能使用次數）作為學習歷程分析之用。<br>
       • 研究資料將於研究結束後妥善保存5年，屆時將安全銷毀。</p>
       <p style="margin:12px 0 0;"><strong>研究聯絡人：</strong>開南大學商學院 蕭君華老師 (maehsiao@gapps.knu.edu.tw)</p>
     </div>
@@ -999,7 +1000,7 @@ var POST_QS = {
 };
 
 
-var S={loggedIn:false,student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},pre:{done:false,score:0,s1:0,s2:0,s3:0},post:{done:false,score:0,s1:0,s2:0,s3:0},weekSeen:[false,false,false,false],qpreDone:false,qpostDone:false};
+var S={loggedIn:false,act:{total:0,w:[0,0,0,0],days:{},lookups:0,tts:0},student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},pre:{done:false,score:0,s1:0,s2:0,s3:0},post:{done:false,score:0,s1:0,s2:0,s3:0},weekSeen:[false,false,false,false],qpreDone:false,qpostDone:false};
 function save(){try{localStorage.setItem('kj_s2',JSON.stringify(S));}catch(e){}}
 function load(){try{var d=localStorage.getItem('kj_s2');if(d)S=JSON.parse(d);}catch(e){}}
 
@@ -1008,6 +1009,7 @@ if(window.speechSynthesis){
   window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
 }
 function speakText(text){
+  bumpCounter('tts');logEvent('tts','',String(text).slice(0,20)); // 記錄朗讀
   if(!('speechSynthesis' in window)){alert('您的瀏覽器不支援語音，請用 Chrome。');return;}
   window.speechSynthesis.cancel();
   var t=text
@@ -1058,6 +1060,7 @@ function renderLyrics(){
 function toggleRow(el){el.classList.toggle('open');}
 function searchLyric(w){
   var q=document.getElementById('search'+w).value.trim();
+  if(q){bumpCounter('lookups');logEvent('lookup','week'+w,q);} // 記錄查詢
   var res=document.getElementById('lresult'+w);
   if(!q){res.className='lresult';return;}
   var found=null;
@@ -1130,7 +1133,8 @@ function submitQuiz(quiz){
   var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
   if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+total+'/30';}
   else{var el=document.getElementById('post-compare');if(el)el.innerHTML='前測：'+(S.pre.s1||0)+'/10·'+(S.pre.s2||0)+'/10·'+(S.pre.s3||0)+'/10 = <b>'+(S.pre.score||0)+'分</b><br>後測：'+s1+'/10·'+s2+'/10·'+s3+'/10 = <b>'+total+'分</b>（進步'+(total-(S.pre.score||0))+'分）';}
-  saveQuizToServer(quiz); // v3.0：確認式儲存，成功才顯示 ✓
+  logEvent('quiz_submit',quiz,String(total));flushLog();
+  saveQuizToServer(quiz);
   updateProgress();toast('華文能力'+(quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
 }
 function restoreQuiz(quiz){
@@ -1283,11 +1287,13 @@ function doLoginOld(){
   if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.pre.ans)S.pre.ans=null; if(!S.post.ans)S.post.ans=null;
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{},lookups:0,tts:0};
   if(!S.weekSeen)S.weekSeen=[false,false,false,false];
   if(!S.qpreDone)S.qpreDone=false;
   if(!S.qpostDone)S.qpostDone=false;
   save();
   try{sendToSheets('login_return');}catch(e){}
+  LOG.segStart=Date.now();LOG.lastAct=Date.now();logEvent('login_return');
   toast('歡迎回來，'+name+'！');
   try{updateUI();}catch(e){}
   try{updateSurveyLinks();}catch(e){}
@@ -1320,7 +1326,7 @@ function doLoginNew(){
   renderQ('pre');renderQ('post');
   save();
   toast('歡迎 '+name+'！請先完成基本資料。');
-  sendToSheets('login');updateUI();updateSurveyLinks();
+  sendToSheets('login');LOG.segStart=Date.now();LOG.lastAct=Date.now();logEvent('login');updateUI();updateSurveyLinks();
   initMobToggle();show('qpre');
 }
 
@@ -1331,6 +1337,7 @@ function autoFill(id){}
 
 
 function doLogout(){
+  touchActivity();logEvent('logout');flushLog();LOG.segStart=0;
   var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';
   S.loggedIn=false;save();
   ['f-id','f-name','f-id-confirm'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
@@ -1353,6 +1360,84 @@ function exportMyData(){
   if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){toast('已複製！');});}
   else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已複製！');}
 }
+
+// ══ 學習行為記錄（v3.5）══
+// 設計：事件先暫存在瀏覽器，於關鍵時點批次送出，避免大量並發打爆 Apps Script 配額
+// 有效時間：連續 5 分鐘無任何操作即停止計時（閒置不計入）
+var IDLE_LIMIT=300000;      // 閒置門檻 5 分鐘（毫秒）
+var LOG={buf:[],lastAct:0,segStart:0,curWeek:0};
+
+// 記錄一筆事件；type=事件類型，target=對象，extra=附加資訊
+function logEvent(type,target,extra){
+  if(!S.loggedIn||!S.student.id)return;
+  LOG.buf.push({t:new Date().toISOString(),type:type,target:target||'',extra:extra||''});
+  touchActivity();
+  if(LOG.buf.length>=40)flushLog(); // 累積過多先送一次，避免遺失
+}
+
+// 每次操作都更新活躍時間，並累計有效秒數
+function touchActivity(){
+  var now=Date.now();
+  if(LOG.segStart===0){LOG.segStart=now;LOG.lastAct=now;return;}
+  var gap=now-LOG.lastAct;
+  if(gap<=IDLE_LIMIT){
+    addActiveTime(gap,LOG.curWeek); // 間隔在門檻內才計入有效時間
+  }
+  LOG.lastAct=now;
+}
+
+// 累加有效毫秒到總計與各週
+function addActiveTime(ms,week){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  S.act.total+=ms;
+  if(week>=1&&week<=4)S.act.w[week-1]+=ms;
+  var d=new Date().toISOString().slice(0,10);
+  S.act.days[d]=1; // 記錄使用日期（去重後即為使用天數）
+  save();
+}
+
+// 批次送出事件日誌
+function flushLog(){
+  if(!S.loggedIn||!S.student.id||!LOG.buf.length)return;
+  var batch=LOG.buf.slice();LOG.buf=[];
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({event:'log',id:S.student.id,events:batch,summary:buildActSummary()})
+  }).catch(function(){LOG.buf=batch.concat(LOG.buf);}); // 失敗則放回緩衝，下次再送
+}
+
+// 彙總指標（寫入「資料」分頁 6 個欄位）
+function buildActSummary(){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  var weeksOpened=0;
+  for(var i=0;i<4;i++){if(S.weekSeen[i])weeksOpened++;}
+  return {
+    minutes:Math.round(S.act.total/60000),          // 總有效分鐘
+    days:Object.keys(S.act.days).length,            // 使用天數
+    unitRate:Math.round(weeksOpened/4*100),         // 單元完成率(%)
+    lookups:S.act.lookups||0,                       // 查詢次數
+    tts:S.act.tts||0                                // 朗讀次數
+  };
+}
+
+// 計數器
+function bumpCounter(k){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  S.act[k]=(S.act[k]||0)+1;save();
+}
+
+// 離開頁面前送出剩餘事件（sendBeacon 在頁面卸載時仍可送達）
+window.addEventListener('beforeunload',function(){
+  if(!S.loggedIn||!S.student.id)return;
+  touchActivity();
+  try{
+    navigator.sendBeacon(SHEETS_URL,new Blob([JSON.stringify(
+      {event:'log',id:S.student.id,events:LOG.buf,summary:buildActSummary()}
+    )],{type:'text/plain'}));
+    LOG.buf=[];
+  }catch(e){}
+});
+// 每 3 分鐘自動送出一次，避免長時間停留累積過多未送資料
+setInterval(function(){if(S.loggedIn)flushLog();},180000);
 
 // ══ SHEETS（v3.0：確認式送出 + 雙保險）══
 function buildScorePayload(ev){
@@ -1409,6 +1494,7 @@ function switchWeek(n){
   for(var i=1;i<=4;i++){document.getElementById('wk-'+i).style.display=(i===n)?'block':'none';var nb=document.getElementById('wnav'+i);if(nb)nb.classList.toggle('on',i===n);}
   var titles=['第一週：天亡我楚','第二週：四面楚歌','第三週：力拔山兮氣蓋世','第四週：虞姬舞劍'];
   var h=document.getElementById('course-h2');if(h)h.textContent=titles[n-1];
+  LOG.curWeek=n;logEvent('week_open','week'+n);
   S.weekSeen[n-1]=true;save();updateProgress();
 }
 
@@ -1722,6 +1808,7 @@ function submitSurveyPre(){
     function(){
       setSaveStatus('qpre-save-status','ok','✓ 問卷已成功儲存');
       S.student.gender=gender;S.student.grade=grade;S.student.tocfl=tocfl;S.student.nation=nation;
+      logEvent('survey_submit','basic');flushLog();
       S.qpreDone=true;save();updateProgress();updateUI();
       setSurveyDoneUI('qpre',true);
     },
@@ -1757,6 +1844,7 @@ function submitSurveyPost(){
                q3:document.getElementById('qpost-q3').value.trim()},
     function(){
       setSaveStatus('qpost-save-status','ok','✓ 問卷已成功儲存');
+      logEvent('survey_submit','research');flushLog();
       S.qpostDone=true;save();updateProgress();
       setSurveyDoneUI('qpost',true);
     },
@@ -1779,6 +1867,6 @@ initMobToggle();
 setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 
 </script>
-<div class="version-tag">v3.4-20260612</div>
+<div class="version-tag">v3.5-20260612</div>
 </body>
 </html>
