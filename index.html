@@ -521,10 +521,32 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
         <input class="finput" id="f-name-old" type="text" placeholder="您的中文或英文姓名">
       </div>
     </div>
-    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0;">其餘基本資料（性別、年級、中文程度、國籍等）將在下一頁填寫。</p>
+    <div class="err-txt" id="login-err-old"></div>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="old-login-btn" onclick="doLoginOld()" style="font-weight:700;font-size:16px;">✓ 確認資料，進入課程總覽</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
+  </div>
 
-    <!-- 倫理宣言 -->
-    <div style="background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;">
+<!-- STEP 2b: 新生填寫姓名（其餘基本資料在下一頁） -->
+  <div id="login-step2-new" class="form-card" style="display:none;">
+    <div style="background:#FDF0F3;border-left:3px solid var(--pm);border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:var(--pd);font-weight:700;margin-bottom:1rem;">
+      新生，請填寫以下資料
+    </div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">再次確認學號（防止輸入錯誤）</label>
+        <input class="finput" id="f-id-confirm" type="text" placeholder="請再次輸入學號" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg full">
+        <label class="flbl">姓名 Name</label>
+        <input class="finput" id="f-name" type="text" placeholder="您的中文或英文姓名">
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0;">其餘基本資料（性別、出生年份、年級、中文程度、國籍等）將在下一頁填寫。</p>
+
+    <!-- 倫理宣言（已於同意書頁確認者自動隱藏） -->
+    <div id="ethics-box" style="background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;">
       <div style="font-size:14px;color:#78350f;line-height:1.8;margin-bottom:10px;">
         本研究旨在探討將「戲劇教育」融入華語教學的成效。您的個人填答內容將予以保密且不對外公開，分析時將去識別化處理。
       </div>
@@ -1224,7 +1246,7 @@ function handleConsentAgree(){
   document.getElementById('login-step2-new').style.display='block';
   document.getElementById('f-id-confirm').value='';
   var eth=document.getElementById('chk-ethics');
-  if(eth){eth.checked=true;var lb=eth.closest('label');if(lb&&lb.parentElement)lb.parentElement.style.display='none';}
+  if(eth){eth.checked=true;var box=document.getElementById('ethics-box');if(box)box.style.display='none';}
 }
 function showLoginError(msg){
   document.getElementById('login-error-card').style.display='block';
@@ -1867,6 +1889,6 @@ initMobToggle();
 setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 
 </script>
-<div class="version-tag">v3.5-20260612</div>
+<div class="version-tag">v3.5.1-20260612</div>
 </body>
 </html>
