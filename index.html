@@ -1229,7 +1229,7 @@ function fetchStudentFromSheet(id){
         showLoginError('伺服器回應異常，請重試。');
       }
     }catch(e){
-      showLoginError('資料解析失敗，請重試。');
+      showLoginError('登入處理發生問題（'+(e&&e.message?e.message:'未知')+'），請重試。');
     }
   };
   xhr.onerror=function(){
@@ -1261,16 +1261,15 @@ function checkStudentId(val){
 }
 
 function showOldStudentForm(stu){
-  var ec=document.getElementById('login-error-card');if(ec)ec.style.display='none';   // 清掉先前的錯誤訊息
+  // 舊生表單只需確認學號與姓名；其餘基本資料沿用伺服器既有紀錄
+  var ec=document.getElementById('login-error-card');if(ec)ec.style.display='none';
   var lc=document.getElementById('login-loading-card');if(lc)lc.style.display='none';
+  var cc=document.getElementById('login-consent-card');if(cc)cc.style.display='none';
   document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-step2-new').style.display='none';
   document.getElementById('login-step2-old').style.display='block';
   document.getElementById('f-id-old').value=stu.id||'';
   document.getElementById('f-name-old').value=stu.name||'';
-  document.getElementById('f-grade-old').value=stu.grade||'';
-  document.getElementById('f-tocfl-old').value=stu.tocfl||'';
-  document.getElementById('f-nation-old').value=stu.nation||'';
-  if(stu.gender) document.querySelectorAll('input[name="gender-old"]').forEach(function(r){r.checked=(r.value===stu.gender);});
 }
 
 function resetLoginStep(){
@@ -1284,17 +1283,9 @@ function resetLoginStep(){
 function doLoginOld(){
   var id=document.getElementById('f-id-old').value.trim();
   var name=document.getElementById('f-name-old').value.trim();
-  var gender=document.querySelector('input[name="gender-old"]:checked');
-  var grade=document.getElementById('f-grade-old').value;
-  var tocfl=document.getElementById('f-tocfl-old').value;
-  var nation=document.getElementById('f-nation-old').value.trim();
   var err=document.getElementById('login-err-old');
   err.style.display='none';
   if(!name){err.style.display='block';err.textContent='請填寫姓名。';return;}
-  if(!gender){err.style.display='block';err.textContent='請選擇性別。';return;}
-  if(!grade){err.style.display='block';err.textContent='請選擇年級。';return;}
-  if(!tocfl){err.style.display='block';err.textContent='請選擇中文程度。';return;}
-  if(!nation){err.style.display='block';err.textContent='請填寫國籍。';return;}
 
   try{
     var d=localStorage.getItem('kj_s2');
@@ -1305,10 +1296,7 @@ function doLoginOld(){
   if(!S.student)S.student={};
   S.student.id=id;
   S.student.name=name;
-  S.student.gender=gender.value;
-  S.student.grade=grade;
-  S.student.tocfl=tocfl;
-  S.student.nation=nation;
+  // 性別／年級／程度／國籍沿用既有值（於「基本資料」頁填寫與修改）
   if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
   if(!S.pre.ans)S.pre.ans=null; if(!S.post.ans)S.post.ans=null;
@@ -1892,6 +1880,6 @@ initMobToggle();
 setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 
 </script>
-<div class="version-tag">v3.7-20261016</div>
+<div class="version-tag">v3.8-20261016</div>
 </body>
 </html>
