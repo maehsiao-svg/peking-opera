@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>京劇華語教學平台 — 霸王別姬</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bd:#0C3B6E;--bm:#1a6dbf;--bl:#4a9fd4;--bp:#d0e8f8;--bpp:#eaf4fc;
+  --pd:#8B1A5E;--pm:#c2457a;--pl:#e8a0c0;--pp:#fce8f3;
+  --gold:#c9a227;--ink:#0a1829;--ink2:#1e3a5f;--muted:#4a6a8a;
+  --bg:#f0f5fc;--card:#fff;--border:rgba(26,109,191,0.18);
+  --serif:'Noto Serif TC',serif;--sans:'Noto Sans TC',sans-serif;
+}
+html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;}
+.app{display:flex;flex-direction:column;min-height:100vh;}
+/* ITP 修復：載入中 + 連線失敗 */
+.login-loading{text-align:center;padding:30px 20px;color:var(--bd)}
+.login-loading .spinner{display:inline-block;width:32px;height:32px;border:3px solid #e0e8f0;border-top-color:var(--bd);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.login-error-box{background:#fff5f5;border:2px solid #c53030;border-radius:12px;padding:18px 20px;margin:16px 0;text-align:center}
+.login-error-box .err-icon{font-size:32px;margin-bottom:8px}
+.login-error-box .err-title{font-size:16px;font-weight:700;color:#c53030;margin-bottom:8px}
+.login-error-box .err-text{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.login-error-box .btn-retry{background:#c53030;color:#fff;padding:10px 24px;font-size:15px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.version-tag{position:fixed;bottom:6px;left:6px;font-size:11px;color:#fff;background:var(--bd);padding:3px 8px;border-radius:6px;opacity:0.85;pointer-events:none;z-index:999;font-weight:700;letter-spacing:0.3px}
+/* ── 內建問卷（v3.0）── */
+.sv-block{background:#fff;border:2px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem}
+.sv-block h4{margin:0 0 4px;color:var(--bd);font-size:17px}
+.sv-anchor{font-size:13px;color:var(--muted);margin-bottom:10px}
+.sv-item{padding:10px 0;border-bottom:1px dashed var(--border)}
+.sv-item:last-child{border-bottom:none}
+.sv-item.sv-missing{background:#fff5f5;border-radius:8px;padding-left:8px;padding-right:8px}
+.sv-q{font-size:15.5px;font-weight:600;margin-bottom:8px;line-height:1.55}
+.sv-scale{display:flex;gap:4px;flex-wrap:wrap}
+.sv-scale label{flex:1;min-width:34px;text-align:center;border:1.5px solid var(--border);border-radius:8px;padding:8px 2px;font-size:15px;font-weight:700;cursor:pointer;background:#fafafa;user-select:none}
+.sv-scale input{display:none}
+.sv-scale input:checked+span{display:block;background:var(--pm);color:#fff;border-radius:6px}
+.sv-scale label:has(input:checked){background:var(--pm);border-color:var(--pm)}
+.sv-scale label:has(input:checked) span{color:#fff}
+.sv-open textarea{width:100%;min-height:90px;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:15px;font-family:var(--sans);box-sizing:border-box}
+.sv-open .sv-q{font-weight:600}
+.sv-sel,.sv-radio-row{margin-bottom:14px}
+.sv-sel select{width:100%;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:var(--sans)}
+.sv-radio-row .opts{display:flex;flex-direction:column;gap:8px}
+.sv-radio-row .opts label{display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:15.5px;cursor:pointer;background:#fafafa}
+.sv-radio-row .opts label:has(input:checked){background:var(--pm);color:#fff;border-color:var(--pm)}
+.sv-radio-row .opts input{width:18px;height:18px;accent-color:#fff}
+.save-status{margin:10px 0;padding:10px 14px;border-radius:10px;font-size:15px;font-weight:700;display:none}
+.save-status.saving{display:block;background:#fffbe8;color:#8a6d00;border:1.5px solid #e0c860}
+.save-status.ok{display:block;background:#eaf7e6;color:#276749;border:1.5px solid #68d391}
+.save-status.fail{display:block;background:#fff5f5;color:#c53030;border:1.5px solid #c53030}
+.btn-retry-save{background:#c53030;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-left:10px}
+/* LAYOUT */
+.body-wrap{display:flex;flex:1;}
+.sidebar{width:220px;background:var(--bd);border-right:3px solid var(--gold);padding:1.5rem 0;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 88px);overflow-y:auto;}
+.sb-sec{padding:0 .9rem;margin-bottom:1.3rem;}
+.sb-lbl{font-size:19px;color:var(--gold);font-weight:900;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid rgba(201,162,39,.5);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:8px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:3px;transition:all .18s;}
+.sb-item:hover{background:rgba(74,159,212,.18);}
+.sb-item.on{background:rgba(194,69,122,.3);color:var(--gold);}
+.sb-dot{width:8px;height:8px;border-radius:50%;background:rgba(232,244,255,.35);flex-shrink:0;}
+.sb-item.done .sb-dot{background:#68d391;}
+.sb-item.on .sb-dot{background:var(--gold);}
+.sb-user{margin:auto 1rem 1rem;background:rgba(74,159,212,.1);border:1px solid rgba(201,162,39,.2);border-radius:10px;padding:12px;text-align:center;}
+.sb-uid{font-size:14px;color:var(--gold);margin-bottom:4px;font-weight:700;}
+.sb-uname{font-size:19px;color:#fff;font-weight:900;}
+.sb-usub{font-size:14px;color:#e8f4ff;margin-top:3px;font-weight:600;}
+.content{flex:1;padding:2rem 2.5rem;overflow-y:auto;max-height:calc(100vh - 88px);}
+.panel{display:none;animation:fadeIn .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* SECTION */
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:1.8rem;}
+.sec-bar{width:5px;height:34px;background:var(--pm);flex-shrink:0;}
+.sec-head h2{font-family:var(--serif);font-size:26px;color:var(--bd);font-weight:700;}
+.info{background:var(--bpp);border-left:4px solid var(--bm);border-radius:0 8px 8px 0;padding:12px 16px;font-size:15px;color:var(--ink2);margin-bottom:1.5rem;line-height:1.65;}
+.info.pink{background:var(--pp);border-left-color:var(--pm);color:var(--pd);}
+/* FLOW */
+.flow{display:flex;align-items:center;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.8rem;overflow-x:auto;}
+.fs{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;}
+.fc{width:42px;height:42px;border-radius:50%;background:var(--bpp);border:2px solid var(--bl);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--bm);}
+.fc.done{background:#c6f6d5;border-color:#48bb78;color:#22543d;}
+.fc.cur{background:var(--pm);border-color:var(--pd);color:#fff;}
+.fl{font-size:12px;color:var(--muted);text-align:center;max-width:58px;line-height:1.3;}
+.fa{height:2px;width:28px;background:var(--bl);opacity:.3;margin:0 3px;margin-bottom:20px;flex-shrink:0;}
+.fa.done{background:#48bb78;opacity:1;}
+/* PROGRESS */
+.prog-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:14px;}
+.prog-lbl{font-size:15px;color:var(--muted);min-width:70px;}
+.prog-track{flex:1;height:10px;background:var(--bpp);border-radius:5px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--bm);border-radius:5px;transition:width .5s;}
+.prog-pct{font-size:16px;font-weight:700;color:var(--bd);min-width:40px;text-align:right;}
+/* WEEK CARDS */
+.week-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin-bottom:1.5rem;}
+.wcard{background:var(--card);border:2px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.wcard:hover{border-color:var(--bm);transform:translateY(-2px);}
+.wbanner{height:86px;display:flex;align-items:center;justify-content:center;position:relative;}
+.wk1 .wbanner{background:var(--bd);}.wk2 .wbanner{background:var(--pd);}
+.wk3 .wbanner{background:#0a2a5c;}.wk4 .wbanner{background:#5e1040;}
+.wbn{font-family:var(--serif);font-size:26px;color:var(--gold);letter-spacing:.18em;font-weight:700;}
+.wbnum{position:absolute;top:8px;right:10px;font-size:10px;color:rgba(201,162,39,.4);}
+.wbody{padding:12px 14px;}
+.wtitle{display:none;}
+.wdesc{font-size:16px;color:var(--ink2);line-height:1.6;font-weight:500;}
+.wst{display:inline-block;font-size:12px;padding:3px 10px;border-radius:10px;font-weight:500;margin-top:6px;}
+.st-on{background:var(--pp);color:var(--pd);}.st-lock{background:var(--bpp);color:var(--bm);}
+/* FORM */
+.form-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:2rem;max-width:600px;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg.full{grid-column:1/-1;}
+.flabel{font-size:16px;color:var(--bd);font-weight:600;}
+.finput{border:2px solid var(--bp);border-radius:8px;padding:10px 13px;font-size:17px;font-family:var(--sans);background:var(--bpp);color:var(--ink);outline:none;transition:border-color .18s;width:100%;}
+.finput:focus{border-color:var(--bm);background:#fff;}
+.fsel{border:2px solid var(--bp);border-radius:8px;padding:10px 13px;font-size:17px;font-family:var(--sans);background:var(--bpp);color:var(--ink);outline:none;width:100%;}
+.rrow{display:flex;gap:18px;flex-wrap:wrap;padding-top:4px;}
+.ri{display:flex;align-items:center;gap:7px;font-size:17px;color:var(--ink2);cursor:pointer;}
+.ri input{accent-color:var(--pm);width:18px;height:18px;}
+.fdiv{border:none;border-top:2px dashed var(--border);margin:1.4rem 0;}
+.btn-p{background:var(--pm);color:#fff;border:none;padding:11px 26px;border-radius:25px;font-size:16px;font-family:var(--sans);font-weight:600;cursor:pointer;transition:background .18s;}
+.btn-p:hover{background:var(--pd);}
+.btn-p.blue{background:var(--bm);}.btn-p.blue:hover{background:var(--bd);}
+.btn-s{background:transparent;color:var(--bm);border:2px solid var(--bp);padding:11px 20px;border-radius:25px;font-size:16px;font-family:var(--sans);cursor:pointer;font-weight:700;}
+.btn-s:hover{border-color:var(--bm);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:1.4rem;}
+.err-txt{color:#c53030;font-size:15px;margin-top:10px;display:none;}
+/* QUIZ */
+.quiz-hdr{background:var(--bd);border-radius:12px;padding:1.4rem 2rem;margin-bottom:1.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.quiz-hdr.pink{background:var(--pd);}
+.qh-title{font-family:var(--serif);font-size:22px;color:var(--gold);}
+.qh-sub{font-size:14px;color:var(--bl);margin-top:4px;}
+.qscore{background:var(--pm);color:#fff;padding:8px 20px;border-radius:20px;font-size:18px;font-weight:700;}
+.qpart-scores{display:flex;gap:8px;flex-wrap:wrap;}
+.qps{background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;}
+.qps-lbl{font-size:11px;color:var(--bl);}
+.qps-val{font-size:16px;font-weight:700;color:#fff;}
+.qpart{background:var(--card);border:2px solid var(--border);border-radius:12px;margin-bottom:1.2rem;overflow:hidden;}
+.qphdr{background:var(--bpp);padding:12px 1.3rem;display:flex;justify-content:space-between;align-items:center;}
+.qphdr.pink{background:var(--pp);}
+.qphdr-t{font-size:17px;font-weight:700;color:var(--bd);}
+.qphdr.pink .qphdr-t{color:var(--pd);}
+.qphdr-s{font-size:14px;color:var(--muted);}
+.qrow{padding:1.1rem 1.3rem;border-bottom:1px solid var(--bpp);transition:background .2s;}
+.qrow.unanswered{background:#fff5f5;border-left:4px solid #e24b4a;border-radius:0 8px 8px 0;}
+.qrow:last-of-type{border-bottom:none;}
+.qt{font-size:17px;color:var(--ink);margin-bottom:11px;line-height:1.7;font-weight:500;}
+.qopts{display:flex;flex-direction:column;gap:8px;}
+.qopt{display:flex;align-items:flex-start;gap:10px;font-size:16px;color:var(--ink2);cursor:pointer;line-height:1.6;padding:7px 10px;border-radius:8px;transition:background .12s;}
+.qopt:hover{background:var(--bpp);}
+.qopt input{accent-color:var(--pm);width:18px;height:18px;margin-top:3px;flex-shrink:0;}
+.qopt.correct{background:#f0fff4;color:#22543d;font-weight:500;}
+.qopt.wrong{background:#fff5f5;color:#742a2a;}
+.submit-area{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:1.5rem 2rem;margin-top:1rem;text-align:center;}
+.submit-area h3{font-family:var(--serif);font-size:20px;color:var(--bd);margin-bottom:8px;}
+.submit-area p{font-size:15px;color:var(--muted);margin-bottom:1.2rem;}
+.done-msg{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:1.8rem 2rem;text-align:center;margin-top:1rem;}
+.done-msg h3{font-family:var(--serif);font-size:22px;margin-bottom:8px;}
+.score-compare{font-size:17px;color:var(--bd);margin-bottom:1rem;line-height:2;}
+/* VIDEO */
+.video-wrap{max-width:720px;margin-bottom:1.4rem;}
+.video-btn{background:var(--bd);border-radius:12px;border:3px solid var(--gold);padding:2rem;text-align:center;}
+.video-btn-title{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.video-btn-sub{font-size:14px;color:var(--bl);margin-bottom:20px;}
+.video-btn a{display:inline-flex;align-items:center;gap:10px;background:var(--pm);color:#fff;padding:14px 32px;border-radius:30px;font-size:18px;font-weight:700;text-decoration:none;}
+/* LYRICS */
+.lyric-search-box{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.3rem;max-width:720px;margin-bottom:1.2rem;}
+.lsearch-row{display:flex;gap:10px;margin-bottom:1rem;}
+.lsearch-input{flex:1;border:2px solid var(--bp);border-radius:8px;padding:10px 14px;font-size:16px;font-family:var(--sans);background:var(--bpp);color:var(--ink);outline:none;}
+.lsearch-input:focus{border-color:var(--bm);}
+.lsearch-btn{background:var(--bm);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans);}
+.lresult{background:var(--bpp);border-radius:8px;padding:1rem 1.2rem;display:none;margin-top:4px;}
+.lresult.show{display:block;}
+.lresult-zh{font-family:var(--serif);font-size:19px;color:var(--ink);margin-bottom:5px;}
+.lresult-py{font-size:14px;color:var(--muted);margin-bottom:8px;}
+.lresult-tip{font-size:15px;color:var(--pm);line-height:1.65;padding:8px 12px;background:var(--pp);border-left:3px solid var(--pm);border-radius:0 6px 6px 0;}
+.speak-btn{display:inline-flex;align-items:center;gap:6px;background:var(--bm);color:#fff;border:none;padding:7px 14px;border-radius:20px;font-size:14px;cursor:pointer;margin-top:8px;font-family:var(--sans);}
+.lyric-card{background:var(--card);border:2px solid var(--border);border-radius:12px;max-width:720px;overflow:hidden;margin-bottom:1.2rem;}
+.lyric-head{background:var(--bd);padding:12px 1.3rem;display:flex;align-items:center;justify-content:space-between;}
+.lyric-head-t{font-family:var(--serif);font-size:17px;color:var(--gold);}
+.lyric-head-hint{font-size:13px;color:var(--bl);}
+.lrow{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:9px 1.3rem;border-bottom:1px solid var(--bpp);cursor:pointer;transition:background .12s;}
+.lrow:last-child{border-bottom:none;}
+.lrow:hover,.lrow.open{background:var(--bpp);}
+.lnum{font-size:13px;color:var(--bl);padding-top:2px;text-align:center;}
+.lmain{display:flex;flex-direction:column;gap:3px;}
+.lzh{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.5;}
+.lpy{font-size:13px;color:var(--muted);}
+.ltip{font-size:14px;color:var(--pm);margin-top:5px;padding:7px 10px;background:var(--pp);border-radius:6px;border-left:3px solid var(--pm);display:none;line-height:1.6;}
+.lrow.open .ltip{display:block;}
+.lspeak{background:none;border:1px solid var(--bl);color:var(--bl);border-radius:16px;padding:4px 10px;font-size:12px;cursor:pointer;white-space:nowrap;align-self:flex-start;margin-top:2px;}
+.lspeak:hover{background:var(--bm);border-color:var(--bm);color:#fff;}
+.tag-badge{display:inline-block;font-size:12px;color:var(--gold);background:rgba(201,162,39,.12);padding:2px 10px;border-radius:4px;margin:8px 1.3rem 0;font-style:italic;}
+/* WEEK NAV */
+.week-nav{display:flex;gap:8px;margin-bottom:1.4rem;flex-wrap:wrap;}
+.wnav{background:var(--card);border:2px solid var(--border);color:var(--bm);padding:7px 16px;border-radius:20px;font-size:15px;cursor:pointer;font-family:var(--sans);}
+.wnav.on{background:var(--bd);border-color:var(--bd);color:#fff;font-weight:600;}
+/* LOGOUT */
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--bd);color:#fff;padding:13px 20px;border-radius:10px;font-size:15px;border-left:4px solid var(--gold);opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;z-index:9999;}
+.toast.show{opacity:1;transform:translateY(0);}
+/* MOBILE */
+@media(max-width:768px){
+  #topbar{display:none;}
+  
+  
+  .sidebar{display:none;}
+  .body-wrap{display:block;}
+  .content{padding:1rem;max-height:none;}
+  .week-grid{grid-template-columns:1fr;}
+  .fgrid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .quiz-hdr{padding:1rem;}
+  .sec-head h2{font-size:20px;}
+  .btn-row{flex-direction:column;}
+  .btn-p,.btn-s{width:100%;text-align:center;}
+  .form-card{padding:1rem;}
+  .lrow{grid-template-columns:22px 1fr;}
+  .lspeak{font-size:13px;padding:4px 10px;}
+  .flow{overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- TOP BAR - logo only, no nav -->
+<div id="topbar" style="background:var(--bd);border-bottom:4px solid var(--gold);padding:10px 16px;display:flex;align-items:center;flex-shrink:0;gap:12px;">
+
+  <!-- 霸王臉譜 -->
+  <svg width="52" height="60" viewBox="0 0 120 138" style="flex-shrink:0;">
+    <ellipse cx="60" cy="74" rx="50" ry="58" fill="white" stroke="#c9a227" stroke-width="2"/>
+    <path d="M14 46 Q22 14 60 12 Q98 14 106 46 Q90 26 60 22 Q30 26 14 46" fill="#111"/>
+    <path d="M10 44 Q16 28 36 36 Q46 46 44 64 Q32 72 12 64 Q6 56 10 44" fill="#111"/>
+    <path d="M110 44 Q104 28 84 36 Q74 46 76 64 Q88 72 108 64 Q114 56 110 44" fill="#111"/>
+    <path d="M36 36 Q60 28 84 36 Q60 40 36 36" fill="#111"/>
+    <ellipse cx="30" cy="50" rx="5" ry="4" fill="#222"/>
+    <ellipse cx="90" cy="50" rx="5" ry="4" fill="#222"/>
+    <circle cx="30" cy="50" r="2" fill="#1a0050"/>
+    <circle cx="90" cy="50" r="2" fill="#1a0050"/>
+    <circle cx="31" cy="49" r="0.9" fill="white"/>
+    <circle cx="91" cy="49" r="0.9" fill="white"/>
+    <path d="M40 68 Q60 62 80 68 Q78 80 60 78 Q42 80 40 68" fill="#111"/>
+    <path d="M40 80 Q60 76 80 80 Q78 96 60 94 Q42 96 40 80" fill="#111"/>
+    <path d="M12 56 Q20 50 18 62 Q16 72 24 78" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M10 68 Q18 64 16 74" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M108 56 Q100 50 102 62 Q104 72 96 78" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M110 68 Q102 64 104 74" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+    <ellipse cx="60" cy="74" rx="7" ry="8" fill="white"/>
+    <path d="M56 70 Q60 67 64 70" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M55 75 Q60 72 65 75" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M56 80 Q60 77 64 80" fill="none" stroke="#444" stroke-width="1"/>
+    <path d="M40 98 Q60 94 80 98 Q60 102 40 98" fill="#8b1a1a"/>
+    <path d="M40 100 Q60 120 80 100 Q66 114 60 116 Q54 114 40 100" fill="#111"/>
+    <path d="M22 40 Q60 10 98 40" fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  </svg>
+
+  <!-- 虞姬臉譜 -->
+  <svg width="52" height="60" viewBox="0 0 120 138" style="flex-shrink:0;">
+    <defs>
+      <linearGradient id="uL" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c04060" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#8b1a2e" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="uR" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c04060" stop-opacity="0.1"/>
+        <stop offset="100%" stop-color="#8b1a2e" stop-opacity="0.95"/>
+      </linearGradient>
+      <linearGradient id="dL" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b1a2e" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#d06080" stop-opacity="0.05"/>
+      </linearGradient>
+      <linearGradient id="dR" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8b1a2e" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#d06080" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="60" cy="82" rx="46" ry="52" fill="#f5e8ec" stroke="#c9a227" stroke-width="1.8"/>
+    <path d="M12 58 Q22 8 60 10 Q98 8 108 58 Q92 24 60 20 Q28 24 12 58" fill="#180028"/>
+    <circle cx="60" cy="12" r="9" fill="#0e7090"/><circle cx="60" cy="12" r="6" fill="#5dcfea"/><circle cx="60" cy="12" r="3" fill="white"/>
+    <circle cx="38" cy="18" r="6" fill="#0e7090"/><circle cx="38" cy="18" r="4" fill="#5dcfea"/>
+    <circle cx="82" cy="18" r="6" fill="#0e7090"/><circle cx="82" cy="18" r="4" fill="#5dcfea"/>
+    <circle cx="22" cy="30" r="5" fill="#0e7090"/><circle cx="22" cy="30" r="3" fill="#5dcfea"/>
+    <circle cx="98" cy="30" r="5" fill="#0e7090"/><circle cx="98" cy="30" r="3" fill="#5dcfea"/>
+    <circle cx="14" cy="44" r="3" fill="#5dcfea"/>
+    <circle cx="10" cy="56" r="3" fill="#5dcfea"/>
+    <circle cx="8"  cy="68" r="3" fill="#5dcfea"/>
+    <circle cx="106" cy="44" r="3" fill="#5dcfea"/>
+    <circle cx="110" cy="56" r="3" fill="#5dcfea"/>
+    <circle cx="112" cy="68" r="3" fill="#5dcfea"/>
+    <path d="M20 62 Q34 50 50 57" fill="none" stroke="#1a0020" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M70 57 Q86 50 100 62" fill="none" stroke="#1a0020" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M34 72 Q20 72 18 62 Q20 50 34 50 Q50 50 52 62 Q50 72 34 72" fill="url(#uL)"/>
+    <path d="M86 72 Q100 72 102 62 Q100 50 86 50 Q70 50 68 62 Q70 72 86 72" fill="url(#uR)"/>
+    <path d="M20 72 Q34 65 52 72 Q34 78 20 72" fill="#1a0020"/>
+    <path d="M68 72 Q86 65 100 72 Q86 78 68 72" fill="#1a0020"/>
+    <ellipse cx="34" cy="72" rx="6" ry="3.8" fill="white"/>
+    <ellipse cx="86" cy="72" rx="6" ry="3.8" fill="white"/>
+    <circle cx="34" cy="72" r="2.4" fill="#1a0020"/>
+    <circle cx="86" cy="72" r="2.4" fill="#1a0020"/>
+    <circle cx="35" cy="71" r="1" fill="white"/>
+    <circle cx="87" cy="71" r="1" fill="white"/>
+    <path d="M34 74 Q20 74 18 82 Q20 96 34 96 Q50 96 52 82 Q50 74 34 74" fill="url(#dL)"/>
+    <path d="M86 74 Q100 74 102 82 Q100 96 86 96 Q70 96 68 82 Q70 74 86 74" fill="url(#dR)"/>
+    <ellipse cx="22" cy="96" rx="11" ry="7" fill="rgba(140,30,60,0.15)"/>
+    <ellipse cx="98" cy="96" rx="11" ry="7" fill="rgba(140,30,60,0.15)"/>
+    <path d="M48 114 Q60 108 72 114 Q60 122 48 114" fill="#9b1a3a"/>
+    <path d="M50 114 Q60 110 70 114" fill="#c0304a" stroke="none"/>
+  </svg>
+
+  <!-- 文字 -->
+  <div style="flex:1;min-width:0;">
+    <div id="topbar-title" onclick="secretClear()" style="font-family:var(--serif);font-size:clamp(20px,6vw,34px);color:var(--gold);font-weight:700;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;">京劇華語教學平台</div>
+    <div style="font-size:clamp(11px,3vw,14px);color:#c8e8f8;margin-top:3px;letter-spacing:.02em;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">霸王別姬 ‧ Peking Opera Chinese ‧ 四週課程</div>
+  </div>
+</div>
+
+<!-- MOBILE HEADER -->
+
+<div id="mob-bar" style="display:none;background:var(--bd);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;display:none;align-items:center;justify-content:space-between;padding:.7rem 1.2rem;">
+  <button onclick="toggleMobSidebar()" style="background:none;border:none;color:var(--gold);font-family:var(--serif);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+    <span id="mob-icon">☰</span> 京劇華語教學平台
+  </button>
+  <button id="mob-logout-btn" onclick="doLogout()" style="display:none;background:rgba(194,69,122,.4);border:1.5px solid var(--pm);color:#fff;border-radius:8px;padding:6px 14px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出</button>
+</div>
+<div class="body-wrap">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-sec">
+    <div class="sb-item" id="sb-overview" onclick="show('overview')" style="background:rgba(201,162,39,.15);margin-bottom:8px;"><span class="sb-dot" style="background:var(--gold);"></span>總覽</div>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">進入課程前</div>
+    <div class="sb-item" id="sb-login" onclick="show('login')"><span class="sb-dot"></span>登入</div>
+    <div class="sb-item" id="sb-pretest" onclick="show('pretest')"><span class="sb-dot"></span>華文能力前測</div>
+    <div class="sb-item" id="sb-qpre" onclick="show('qpre')"><span class="sb-dot"></span>基本資料</div>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">四週課程</div>
+    <div class="sb-item" id="sb-week1" onclick="show('course');switchWeek(1)"><span class="sb-dot"></span>第一週</div>
+    <div class="sb-item" id="sb-week2" onclick="show('course');switchWeek(2)"><span class="sb-dot"></span>第二週</div>
+    <div class="sb-item" id="sb-week3" onclick="show('course');switchWeek(3)"><span class="sb-dot"></span>第三週</div>
+    <div class="sb-item" id="sb-week4" onclick="show('course');switchWeek(4)"><span class="sb-dot"></span>第四週</div>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">課後評量</div>
+    <div class="sb-item" id="sb-posttest" onclick="show('posttest')"><span class="sb-dot"></span>華文能力後測</div>
+    <div class="sb-item" id="sb-qpost" onclick="show('qpost')"><span class="sb-dot"></span>京劇研究問卷</div>
+  </div>
+  <div id="sb-user" style="display:none;padding:.8rem .9rem;">
+    <button onclick="doLogout()" style="width:100%;background:rgba(194,69,122,.35);border:2px solid rgba(194,69,122,.6);color:#fff;border-radius:8px;padding:11px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);">登出 Logout</button>
+  </div>
+</div>
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ═══ OVERVIEW ═══ -->
+<div id="p-overview" class="panel">
+
+  <!-- 進度條 8格 -->
+  <div class="flow" style="overflow-x:auto;gap:0;">
+    <div class="fs"><div class="fc lock" id="fc-pre">測</div><div class="fl">華文<br>能力前測</div></div>
+    <div class="fa" id="fa0"></div>
+    <div class="fs"><div class="fc lock" id="fc-qpre">問</div><div class="fl">基本<br>資料</div></div>
+    <div class="fa" id="fa1"></div>
+    <div class="fs"><div class="fc lock" id="fc-w1">1</div><div class="fl">第一<br>週</div></div>
+    <div class="fa" id="fa2"></div>
+    <div class="fs"><div class="fc lock" id="fc-w2">2</div><div class="fl">第二<br>週</div></div>
+    <div class="fa" id="fa3"></div>
+    <div class="fs"><div class="fc lock" id="fc-w3">3</div><div class="fl">第三<br>週</div></div>
+    <div class="fa" id="fa4"></div>
+    <div class="fs"><div class="fc lock" id="fc-w4">4</div><div class="fl">第四<br>週</div></div>
+    <div class="fa" id="fa5"></div>
+    <div class="fs"><div class="fc lock" id="fc-post">測</div><div class="fl">華文<br>能力後測</div></div>
+    <div class="fa" id="fa6"></div>
+    <div class="fs"><div class="fc lock" id="fc-qpost">問</div><div class="fl">研究<br>問卷</div></div>
+  </div>
+
+  <!-- 華文前測入口（8格進度條下，整體進度條上）-->
+  <div id="pre-entry-box" style="background:#fff;border:2px solid var(--bm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.8rem;text-align:center;">
+    <div id="pre-entry-todo" style="display:none;">
+      <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">尚未完成華文能力前測</div>
+      <button onclick="show('pretest')" style="background:var(--bm);color:#fff;border:none;padding:11px 28px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">📝 前往華文能力前測</button>
+    </div>
+    <div id="pre-entry-done" style="display:none;">
+      <div style="font-size:14px;color:#3B6D11;font-weight:700;margin-bottom:4px;">✓ 華文能力前測已完成</div>
+      <div id="pre-entry-score" style="font-size:15px;color:var(--pm);font-weight:700;"></div>
+    </div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-lbl">整體進度</div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-pct" id="prog-pct">0%</div>
+  </div>
+
+  <!-- 京劇研究前測（內建問卷，v3.0）-->
+  <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <button onclick="show('qpre')"
+       style="background:var(--pm);color:#fff;border:none;padding:10px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
+      📝 基本資料
+    </button>
+    <span id="ov-qpre-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
+  </div>
+
+  <!-- 四週課程卡片 -->
+  <div class="week-grid">
+    <div class="wcard wk1" onclick="show('course');switchWeek(1)">
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第一週</span><span class="wbn">天亡我楚</span></div>
+      <div class="wbody"><div class="wdesc">項羽對天長嘆，感慨命運無奈。學習文言感嘆句型。</div><span class="wst st-on">點擊進入</span></div>
+    </div>
+    <div class="wcard wk2" onclick="show('course');switchWeek(2)">
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第二週</span><span class="wbn">四面楚歌</span></div>
+      <div class="wbody"><div class="wdesc">楚軍被圍，四面皆敵。學習古詩詞與場景詞彙。</div><span class="wst st-on">點擊進入</span></div>
+    </div>
+    <div class="wcard wk3" onclick="show('course');switchWeek(3)">
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第三週</span><span class="wbn">力拔山兮</span></div>
+      <div class="wbody"><div class="wdesc">英雄氣概的語言表達，古代誇飾修辭手法。</div><span class="wst st-on">點擊進入</span></div>
+    </div>
+    <div class="wcard wk4" onclick="show('course');switchWeek(4)">
+      <div class="wbanner"><span class="wbnum" style="font-size:13px;color:var(--gold);opacity:1;font-weight:700;right:auto;left:10px;">第四週</span><span class="wbn">虞姬舞劍</span></div>
+      <div class="wbody"><div class="wdesc">生離死別的情感表達，婉轉委婉語言藝術。</div><span class="wst st-on">點擊進入</span></div>
+    </div>
+  </div>
+
+  <!-- 底部：後測區 -->
+  <div style="background:var(--card);border:2px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;margin-top:.5rem;">
+    <div style="font-size:21px;font-weight:800;color:var(--bd);margin-bottom:14px;">完成四週課程後：</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onclick="show('posttest')" style="font-weight:700;font-size:17px;background:var(--bm);color:#fff;border:none;padding:13px 32px;border-radius:25px;cursor:pointer;font-family:var(--sans);width:100%;">📝 華文能力後測</button>
+      <div style="background:#fff;border:2px solid var(--pm);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <button onclick="show('qpost')"
+           style="background:var(--pm);color:#fff;border:none;padding:11px 22px;border-radius:22px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--sans);">
+          📋 京劇研究問卷
+        </button>
+        <span id="ov-qpost-status" style="font-size:15px;color:var(--muted);font-weight:600;">尚未填寫</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 登出 -->
+  <div style="margin-top:1.5rem;padding-top:1.2rem;border-top:2px dashed var(--border);text-align:center;">
+    <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+  </div>
+
+</div>
+<!-- ═══ LOGIN ═══ -->
+<div id="p-login" class="panel">
+  <div class="sec-head"><div class="sec-bar"></div><h2>登入</h2></div>
+
+  <!-- STEP 1: 輸入學號 -->
+  <div id="login-step1" class="form-card">
+    <div class="info" style="font-size:15px;margin-bottom:1rem;">請輸入您的學號，系統將自動識別新生或舊生。</div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">學號 Student ID</label>
+        <input class="finput" id="f-id" type="text" placeholder="例如 M11456023" oninput="this.value=this.value.toUpperCase()"
+               oninput="this.value=this.value.toUpperCase();checkStudentId(this.value)"
+               style="font-size:18px;font-weight:700;letter-spacing:.05em;">
+      </div>
+    </div>
+    <div class="err-txt" id="login-err-step1"></div>
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn-p blue" id="btn-check-id" onclick="submitStudentId()" style="font-weight:700;font-size:16px;width:100%;">確認學號 →</button>
+    </div>
+  </div>
+
+  <!-- 載入中 -->
+  <div id="login-loading-card" class="form-card" style="display:none;">
+    <div class="login-loading">
+      <div class="spinner"></div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px">正在載入您的進度...</div>
+      <div style="font-size:13px;color:var(--muted)">請稍候，正在從伺服器恢復您之前做過的內容</div>
+    </div>
+  </div>
+  <!-- 連線失敗 -->
+  <div id="login-error-card" class="form-card" style="display:none;">
+    <div class="login-error-box">
+      <div class="err-icon">⚠️</div>
+      <div class="err-title">連線失敗</div>
+      <div class="err-text" id="login-err-detail">無法連接到伺服器，請按下方按鈕重試。</div>
+      <button class="btn-retry" onclick="retryLogin()">重新嘗試</button>
+    </div>
+  </div>
+    <!-- 知情同意書（新生第一步）-->
+  <div id="login-consent-card" class="form-card" style="display:none;">
+    <div style="font-size:18px;font-weight:700;color:var(--bd);margin-bottom:12px;">📋 研究參與知情同意書</div>
+    <div style="font-size:15px;line-height:1.8;color:#444;">
+      <p style="margin:0 0 4px;"><strong>研究主題：</strong>AI輔助京劇華語教學對外籍學習者華語學習成效之影響</p>
+      <p style="margin:12px 0 4px;"><strong>研究說明：</strong></p>
+      <p style="margin:0;">本研究旨在探討以京劇《霸王別姬》為素材的AI輔助華語學習平台對華語學習成效的影響。您將在為期四週的課程中完成京劇華語學習任務，並於課程前後完成華語能力測驗與學習經驗問卷。</p>
+      <p style="margin:12px 0 4px;"><strong>您的權益：</strong></p>
+      <p style="margin:0;">• 參與本研究完全自願，不影響您的課程成績。<br>
+      • 您可以隨時退出研究，無需說明理由。<br>
+      • 所有資料僅供學術研究使用，將以匿名方式處理。<br>
+      • 您的個人資料（姓名、學號）僅用於前後測配對，不會出現在研究報告中。<br>
+      • 系統將記錄您的平台使用情形（登入時間、教材瀏覽、功能使用次數）作為學習歷程分析之用。<br>
+      • 研究資料將於研究結束後妥善保存5年，屆時將安全銷毀。</p>
+      <p style="margin:12px 0 0;"><strong>研究聯絡人：</strong>開南大學商學院 蕭君華老師 (maehsiao@gapps.knu.edu.tw)</p>
+    </div>
+    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;font-weight:700;color:var(--bd);margin-top:14px;background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:12px 14px;">
+      <input type="checkbox" id="consent-check" onchange="document.getElementById('consent-btn').disabled=!this.checked" style="width:20px;height:20px;margin-top:2px;accent-color:#f59e0b;flex-shrink:0;">
+      <span>我已閱讀並了解上述說明，<strong>同意自願參與本研究</strong>。</span>
+    </label>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="consent-btn" onclick="handleConsentAgree()" disabled style="font-weight:700;font-size:16px;">同意並繼續 →</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
+  </div>
+<!-- STEP 2a: 舊生確認/修改資料 -->
+  <div id="login-step2-old" class="form-card" style="display:none;">
+    <div style="background:#EAF3DE;border-left:3px solid #276749;border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:#276749;font-weight:700;margin-bottom:1rem;">
+      ✓ 找到您的資料，請確認或修改後登入
+    </div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">學號</label>
+        <input class="finput" id="f-id-old" type="text" disabled style="background:#f0f0f0;font-weight:700;">
+      </div>
+      <div class="fg full">
+        <label class="flbl">姓名 Name</label>
+        <input class="finput" id="f-name-old" type="text" placeholder="您的中文或英文姓名">
+      </div>
+    </div>
+    <div class="err-txt" id="login-err-old"></div>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="old-login-btn" onclick="doLoginOld()" style="font-weight:700;font-size:16px;">✓ 確認資料，進入課程總覽</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
+  </div>
+
+<!-- STEP 2b: 新生填寫姓名（其餘基本資料在下一頁） -->
+  <div id="login-step2-new" class="form-card" style="display:none;">
+    <div style="background:#FDF0F3;border-left:3px solid var(--pm);border-radius:0 8px 8px 0;padding:10px 14px;font-size:15px;color:var(--pd);font-weight:700;margin-bottom:1rem;">
+      新生，請填寫以下資料
+    </div>
+    <div class="fgrid">
+      <div class="fg full">
+        <label class="flbl">再次確認學號（防止輸入錯誤）</label>
+        <input class="finput" id="f-id-confirm" type="text" placeholder="請再次輸入學號" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="fg full">
+        <label class="flbl">姓名 Name</label>
+        <input class="finput" id="f-name" type="text" placeholder="您的中文或英文姓名">
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0;">其餘基本資料（性別、出生年份、年級、中文程度、國籍等）將在下一頁填寫。</p>
+
+    <!-- 倫理宣言（已於同意書頁確認者自動隱藏） -->
+    <div id="ethics-box" style="background:#fff8e1;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;">
+      <div style="font-size:14px;color:#78350f;line-height:1.8;margin-bottom:10px;">
+        本研究旨在探討將「戲劇教育」融入華語教學的成效。您的個人填答內容將予以保密且不對外公開，分析時將去識別化處理。
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:15px;color:#92400e;font-weight:600;">
+        <input type="checkbox" id="chk-ethics" style="width:20px;height:20px;margin-top:2px;accent-color:#f59e0b;flex-shrink:0;">
+        <span>我已閱讀並同意將去識別化後的資料用於學術研究</span>
+      </label>
+    </div>
+
+    <div class="err-txt" id="login-err-new"></div>
+    <div class="btn-row" style="margin-top:1rem;flex-direction:column;gap:10px;">
+      <button class="btn-p" id="new-student-btn" onclick="doLoginNew()" style="font-weight:700;font-size:16px;">新生：儲存，下一步 →</button>
+      <button class="btn-s" onclick="resetLoginStep()" style="font-weight:600;font-size:14px;">← 重新輸入學號</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ PRETEST ═══ -->
+<div id="p-pretest" class="panel">
+  
+  <div class="info" id="pre-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出前測」一次計分。計分後題目鎖定，分數自動儲存。</div>
+  <div class="quiz-hdr">
+    <div><div class="qh-title">華文能力前測</div><div class="qh-sub">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+      <div style="display:flex;gap:8px;">
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--bl);">Part 1</div><div style="font-size:16px;font-weight:700;color:#fff;" id="pre-s1-disp">—</div></div>
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--bl);">Part 2</div><div style="font-size:16px;font-weight:700;color:#fff;" id="pre-s2-disp">—</div></div>
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--bl);">Part 3</div><div style="font-size:16px;font-weight:700;color:#fff;" id="pre-s3-disp">—</div></div>
+      </div>
+      <div class="qscore" id="pre-score-display">尚未送出</div>
+    </div>
+  </div>
+
+  <div class="qpart">
+    <div class="qphdr"><span class="qphdr-t">第一部分：詞彙語義遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="pre-p1-qs"></div>
+  </div>
+
+  <div class="qpart">
+    <div class="qphdr pink"><span class="qphdr-t">第二部分：成語與典故遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="pre-p2-qs"></div>
+  </div>
+
+  <div class="qpart">
+    <div class="qphdr"><span class="qphdr-t">第三部分：句型語法遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="pre-p3-qs"></div>
+  </div>
+
+  <div class="submit-area" id="pre-submit-area">
+    <h3>確認送出前測</h3>
+    <p>送出後無法修改，題目將鎖定，分數自動儲存。</p>
+    <button class="btn-p blue" onclick="submitQuiz('pre')" style="font-size:17px;padding:13px 32px;">送出前測（共30題）</button>
+  </div>
+  <div class="done-msg" id="pre-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 華文能力前測完成</h3>
+    <div id="pre-done-score" style="display:none;"></div>
+    <div class="save-status" id="pre-save-status"></div>
+    <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:10px;align-items:center;width:100%;">
+      <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;width:100%;font-size:16px;">進入課程總覽 →</button>
+      <button onclick="doLogout()" class="btn-s" style="font-weight:700;font-size:15px;">登出 Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ COURSE ═══ -->
+<div id="p-course" class="panel">
+  <div class="sec-head"><div class="sec-bar"></div><h2 id="course-h2">課程</h2></div>
+  <div class="week-nav">
+    <button class="wnav on" id="wnav1" onclick="switchWeek(1)">第一週：天亡我楚</button>
+    <button class="wnav" id="wnav2" onclick="switchWeek(2)">第二週：四面楚歌</button>
+    <button class="wnav" id="wnav3" onclick="switchWeek(3)">第三週：力拔山兮</button>
+    <button class="wnav" id="wnav4" onclick="switchWeek(4)">第四週：虞姬舞劍</button>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div id="wk-1">
+    <div class="info">【西皮散板 xī pí sàn bǎn】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第一週：天亡我楚</div><a href="https://youtu.be/Kq22flf0dhE" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <!-- SEARCH BOX -->
+    <div class="lyric-search-box">
+      <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢 — 輸入不懂的台詞，查白話文解釋並朗讀</div>
+      <div class="lsearch-row">
+        <input class="lsearch-input" id="search1" type="text" placeholder="輸入台詞關鍵字，例如：天亡我楚">
+        <button class="lsearch-btn" onclick="searchLyric(1)">查詢</button>
+      </div>
+      <div class="lresult" id="lresult1"></div>
+    </div>
+    <div class="lyric-card">
+      <div class="lyric-head"><span class="lyric-head-t">完整台詞對照</span><span class="lyric-head-hint">點擊任一句 → 展開白話解釋 + 朗讀</span></div>
+      <div class="tag-badge">西皮散板 xī pí sàn bǎn</div>
+      <div id="w1-lyrics"></div>
+    </div>
+    <div class="btn-row"><button class="btn-p blue" style="font-weight:700;font-size:16px;" onclick="show('overview')">↩ 回到課程總覽</button></div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div id="wk-2" style="display:none">
+    <div class="info">點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第二週：四面楚歌</div><a href="https://youtu.be/eG-sdcJaSDM" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="lyric-search-box">
+      <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
+      <div class="lsearch-row">
+        <input class="lsearch-input" id="search2" type="text" placeholder="輸入台詞關鍵字">
+        <button class="lsearch-btn" onclick="searchLyric(2)">查詢</button>
+      </div>
+      <div class="lresult" id="lresult2"></div>
+    </div>
+    <div class="lyric-card">
+      <div class="lyric-head"><span class="lyric-head-t">完整台詞對照</span><span class="lyric-head-hint">點擊任一句 → 展開白話解釋 + 朗讀</span></div>
+      <div id="w2-lyrics"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-p blue" style="font-weight:700;font-size:16px;" onclick="show('overview')">↩ 回到課程總覽</button>
+    </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
+  </div>
+
+  <!-- WEEK 3 -->
+  <div id="wk-3" style="display:none">
+    <div class="info">【垓下歌《史記》】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第三週：力拔山兮氣蓋世</div><a href="https://youtu.be/iHP6sTjgV64" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="lyric-search-box">
+      <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
+      <div class="lsearch-row">
+        <input class="lsearch-input" id="search3" type="text" placeholder="輸入台詞關鍵字">
+        <button class="lsearch-btn" onclick="searchLyric(3)">查詢</button>
+      </div>
+      <div class="lresult" id="lresult3"></div>
+    </div>
+    <div class="lyric-card">
+      <div class="lyric-head"><span class="lyric-head-t">完整台詞對照</span><span class="lyric-head-hint">點擊任一句 → 展開白話解釋 + 朗讀</span></div>
+      <div class="tag-badge">垓下歌 《史記》</div>
+      <div id="w3-lyrics"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-p blue" style="font-weight:700;font-size:16px;" onclick="show('overview')">↩ 回到課程總覽</button>
+    </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
+  </div>
+
+  <!-- WEEK 4 -->
+  <div id="wk-4" style="display:none">
+    <div class="info">【西皮二六 xī pí èr liù】點擊台詞可展開白話解釋，點「朗讀」聽標準語發音。</div>
+    <div class="video-wrap"><div class="video-btn"><div class="video-btn-title">第四週：虞姬舞劍</div><a href="https://youtu.be/0NspuPmn0Is" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>前往 YouTube 觀看影片</a></div></div>
+    <div class="lyric-search-box">
+      <div style="font-size:16px;font-weight:600;color:var(--bd);margin-bottom:10px;">台詞查詢</div>
+      <div class="lsearch-row">
+        <input class="lsearch-input" id="search4" type="text" placeholder="輸入台詞關鍵字">
+        <button class="lsearch-btn" onclick="searchLyric(4)">查詢</button>
+      </div>
+      <div class="lresult" id="lresult4"></div>
+    </div>
+    <div class="lyric-card">
+      <div class="lyric-head"><span class="lyric-head-t">完整台詞對照</span><span class="lyric-head-hint">點擊任一句 → 展開白話解釋 + 朗讀</span></div>
+      <div class="tag-badge">西皮二六 xī pí èr liù</div>
+      <div id="w4-lyrics"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;font-size:16px;">↩ 回到課程總覽</button>
+    </div>
+<div style="margin-top:2rem;padding-top:1.5rem;border-top:2px dashed var(--border);text-align:center;">
+  <button onclick="doLogout()" class="btn-p" style="background:rgba(194,69,122,.5);border:2px solid var(--pm);font-size:16px;padding:10px 32px;font-weight:700;">登出 Logout</button>
+</div>
+  </div>
+</div>
+
+<!-- ═══ POSTTEST ═══ -->
+<div id="p-posttest" class="panel">
+  
+  <div class="info pink" id="post-info-bar">本測驗共 30 題，分為三部分。請<strong>全部作答完畢後</strong>，按最下方「送出後測」一次計分。完成後將與前測對照學習成效。</div>
+  <div class="quiz-hdr pink">
+    <div><div class="qh-title">《霸王別姬》華文能力後測</div><div class="qh-sub" style="color:var(--pl);">詞彙語義 · 成語典故 · 句型語法　共 30 題</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+      <div style="display:flex;gap:8px;">
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--pl);">Part 1</div><div style="font-size:16px;font-weight:700;color:#fff;" id="post-s1-disp">—</div></div>
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--pl);">Part 2</div><div style="font-size:16px;font-weight:700;color:#fff;" id="post-s2-disp">—</div></div>
+        <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 12px;text-align:center;"><div style="font-size:11px;color:var(--pl);">Part 3</div><div style="font-size:16px;font-weight:700;color:#fff;" id="post-s3-disp">—</div></div>
+      </div>
+      <div class="qscore" id="post-score-display" style="background:var(--bd);">尚未送出</div>
+    </div>
+  </div>
+
+  <div class="qpart">
+    <div class="qphdr pink"><span class="qphdr-t">第一部分：詞彙語義遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="post-p1-qs"></div>
+  </div>
+  <div class="qpart">
+    <div class="qphdr"><span class="qphdr-t">第二部分：成語與典故遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="post-p2-qs"></div>
+  </div>
+  <div class="qpart">
+    <div class="qphdr pink"><span class="qphdr-t">第三部分：句型語法遷移（共10題）</span><span class="qphdr-s">每題1分，共10分</span></div>
+    <div id="post-p3-qs"></div>
+  </div>
+
+  <div class="submit-area" id="post-submit-area">
+    <h3>確認送出後測</h3>
+    <p>送出後無法修改，題目將鎖定，分數自動儲存並與前測比較。</p>
+    <button class="btn-p" onclick="submitQuiz('post')" style="font-size:17px;padding:13px 32px;">送出後測（共30題）</button>
+  </div>
+  <div class="done-msg" id="post-done-msg" style="display:none">
+    <h3 style="color:var(--pd);">恭喜完成後測！</h3>
+    <div class="score-compare" id="post-compare"></div>
+    <div class="save-status" id="post-save-status"></div>
+    <p style="color:var(--muted);margin-bottom:1.2rem;">感謝您完成四週的學習課程！</p>
+    <button onclick="show('qpost')"
+       style="display:inline-block;background:#1a6dbf;color:#fff;border:none;padding:13px 32px;border-radius:25px;font-size:17px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-bottom:12px;">
+      📋 京劇研究問卷（請接著完成）
+    </button><br>
+    <button onclick="doLogout()" class="btn-p" style="font-weight:700;font-size:17px;margin-top:8px;">完成學習，登出 Logout</button><br>
+    <button onclick="unlockPosttest()" class="btn-s" style="font-size:13px;margin-top:14px;opacity:.75;">🔓 重新作答（教師解鎖）</button>
+  </div>
+</div>
+
+<!-- ═══ 基本資料（內建）═══ -->
+<div id="p-qpre" class="panel">
+  <div class="info">基本資料：共 8 題，約 2 分鐘。學號僅用於配對華語能力前後測成績，分析時將轉化為代碼，不呈現個人身分。</div>
+  <div class="sv-block">
+    <h4>基本資料</h4>
+    <div class="sv-radio-row">
+      <div class="sv-q">1. 性別：</div>
+      <div class="opts" id="qpre-gender"></div>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">2. 出生年份：</div>
+      <select id="qpre-birth"><option value="">請選擇</option></select>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">3. 年級：</div>
+      <select id="qpre-grade">
+        <option value="">請選擇</option>
+        <option value="一年級">一年級</option>
+        <option value="二年級">二年級</option>
+        <option value="三年級">三年級</option>
+        <option value="四年級">四年級</option>
+        <option value="研究生">研究生</option>
+      </select>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">4. 中文程度 (TOCFL)：</div>
+      <select id="qpre-tocfl">
+        <option value="">請選擇</option>
+        <option value="A1（入門）">A1（入門）</option>
+        <option value="A2（基礎）">A2（基礎）</option>
+        <option value="B1（進階）">B1（進階）</option>
+        <option value="B2（高階）">B2（高階）</option>
+        <option value="C1（流利）">C1（流利）</option>
+        <option value="C2（精通）">C2（精通）</option>
+      </select>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">5. 華語學習時間：</div>
+      <div class="opts" id="qpre-years"></div>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">6. 京劇認知程度：參與本課程前，您對京劇的了解程度？</div>
+      <div class="opts" id="qpre-opera"></div>
+    </div>
+    <div class="sv-radio-row">
+      <div class="sv-q">7. 華語學習動機：您學習華語最主要的原因？</div>
+      <div class="opts" id="qpre-motive"></div>
+    </div>
+    <div class="sv-sel">
+      <div class="sv-q">8. 國籍：</div>
+      <select id="qpre-nation" onchange="document.getElementById('qpre-nation-other').style.display=(this.value==='其他')?'block':'none'">
+        <option value="">請選擇</option>
+        <option value="越南">越南 Vietnam</option>
+        <option value="日本">日本 Japan</option>
+        <option value="韓國">韓國 Korea</option>
+        <option value="印尼">印尼 Indonesia</option>
+        <option value="其他">其他 Other</option>
+      </select>
+      <input id="qpre-nation-other" type="text" placeholder="請填寫您的國籍" style="display:none;margin-top:8px;width:100%;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:16px;font-family:var(--sans);box-sizing:border-box;">
+    </div>
+  </div>
+  <div class="save-status" id="qpre-save-status"></div>
+  <div class="submit-area" id="qpre-submit-area">
+    <button class="btn-p" id="qpre-submit-btn" onclick="submitSurveyPre()" style="font-size:17px;padding:13px 32px;">送出基本資料</button>
+  </div>
+  <div class="done-msg" id="qpre-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 基本資料已完成並儲存</h3>
+    <button class="btn-p" onclick="show('pretest')" style="font-weight:700;font-size:16px;margin-top:8px;">前往華文能力前測 →</button><br>
+    <button class="btn-p blue" onclick="show('overview')" style="font-weight:700;font-size:15px;margin-top:10px;">↩ 回到總覽</button>
+  </div>
+</div>
+
+<!-- ═══ 京劇研究問卷（內建）═══ -->
+<div id="p-qpost" class="panel">
+  <div class="info pink">京劇研究問卷：量表題請依您的同意程度作答（1=非常不同意 ～ 7=非常同意），最後 3 題開放題為選填。學號僅用於配對成績，分析時去識別化處理。</div>
+  <div id="qpost-blocks"></div>
+  <div class="sv-block sv-open" id="qpost-open-block">
+    <h4>課程意見（選填）</h4>
+    <div class="sv-anchor">建議用自己最熟悉的語言回答（中、英、越文均可）；回答無對錯之分，鼓勵具體描述個人經驗與感受；資料將去識別化處理，僅用於學術分析。<br>You may answer in the language you are most comfortable with (Chinese, English, or Vietnamese). / Bạn có thể trả lời bằng ngôn ngữ mà bạn cảm thấy thoải mái nhất (tiếng Trung, tiếng Anh hoặc tiếng Việt).</div>
+    <div style="margin-bottom:16px;">
+      <div class="sv-q">Q1. 透過學習京劇《霸王別姬》，您對哪個中國文化面向感受最深或最受感動？請描述一個具體的時刻。<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: Through learning Peking Opera (Farewell My Concubine), what aspects of Chinese culture did you feel most connected to or moved by? Please describe a specific moment.<br>VI: Thông qua việc học Kinh kịch (Bá Vương Biệt Cơ), bạn cảm thấy kết nối hoặc xúc động nhất với khía cạnh nào của văn hóa Trung Hoa? Hãy mô tả một khoảnh khắc cụ thể.</span></div>
+      <textarea id="qpost-q1"></textarea>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div class="sv-q">Q2. 這門課的學習方式如何影響您繼續學習華語的動機？您認為有什麼可以改進的地方？<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: How did the learning experience in this course influence your motivation to continue learning Mandarin? What would you improve?<br>VI: Trải nghiệm học tập trong khóa học này đã ảnh hưởng như thế nào đến động lực tiếp tục học tiếng Hoa của bạn? Bạn nghĩ có điều gì có thể cải thiện không?</span></div>
+      <textarea id="qpost-q2"></textarea>
+    </div>
+    <div>
+      <div class="sv-q">Q3. 與您過去的華語學習經驗相比，透過京劇內容學習有什麼特別或不同之處？什麼最有幫助或最具挑戰性？<br><span style="font-weight:400;color:var(--muted);font-size:13.5px;">EN: Compared to your previous Mandarin learning experiences, what was unique or different about learning through Peking Opera content? What was most helpful or challenging?<br>VI: So với những trải nghiệm học tiếng Hoa trước đây của bạn, việc học qua nội dung Kinh kịch có gì đặc biệt hoặc khác biệt? Điều gì hữu ích nhất hoặc khó khăn nhất?</span></div>
+      <textarea id="qpost-q3"></textarea>
+    </div>
+  </div>
+  <div class="save-status" id="qpost-save-status"></div>
+  <div class="submit-area" id="qpost-submit-area">
+    <button class="btn-p" id="qpost-submit-btn" onclick="submitSurveyPost()" style="font-size:17px;padding:13px 32px;">送出京劇研究問卷</button>
+  </div>
+  <div class="done-msg" id="qpost-done-msg" style="display:none">
+    <h3 style="color:#276749;">✓ 京劇研究問卷已完成並儲存，感謝您的填答！</h3>
+    <button class="btn-p blue" onclick="show('overview')" id="qpost-back-btn" style="font-weight:700;font-size:16px;margin-top:8px;">↩ 回到總覽</button>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /body-wrap -->
+</div><!-- /app -->
+<div class="toast" id="toast"></div>
+<script>
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbzkRMXSv3K56h4wsyOuJoW5JV0sD1JV-SAriE5rbp0uQIq_U6V73xQ5xEC1Vc35Ij4L/exec';
+
+var LYRICS = {
+  1:[
+    {zh:'槍挑了漢營中數員上將',py:'qiāng tiāo le hàn yíng zhōng shù yuán shàng jiàng',tip:'白話：用槍刺殺了漢軍營中好幾位大將。「挑」有刺殺、擊敗之意。'},
+    {zh:'縱英勇怎提防這十面的埋藏',py:'zòng yīng yǒng zěn tí fáng zhè shí miàn de mái cáng',tip:'白話：縱使再英勇，又怎麼能防範四面八方的埋伏呢？'},
+    {zh:'傳將令休出兵各歸營帳',py:'chuán jiàng lìng xiū chū bīng gè guī yíng zhàng',tip:'白話：傳達將令，停止出兵，各自回到自己的營帳。'},
+    {zh:'大王回營啊',py:'dà wáng huí yíng a',tip:'白話：大王回來了！（士兵吆喝通報，展現帝王派頭，如同「皇上駕到」）'},
+    {zh:'這一戰連累你多受驚慌',py:'zhè yí zhàn lián lèi nǐ duō shòu jīng huāng',tip:'白話：這一場戰役連累妳受了很多驚嚇。（項羽對虞姬說）'},
+    {zh:'大王，今日出戰勝負如何',py:'dà wáng, jīn rì chū zhàn shèng fù rú hé',tip:'白話：大王，今天出戰，勝負情況如何？（虞姬詢問項羽）'},
+    {zh:'槍挑漢營數員上將',py:'qiāng tiāo hàn yíng shù yuán shàng jiàng',tip:'白話：用槍刺殺了漢軍營中幾位將領。（項羽回答）'},
+    {zh:'怎奈敵眾我寡難以取勝',py:'zěn nài dí zhòng wǒ guǎ nán yǐ qǔ shèng',tip:'白話：無奈敵人眾多我方兵少，難以取得勝利。'},
+    {zh:'此乃天亡我楚，非戰之罪也',py:'cǐ nǎi tiān wáng wǒ chǔ, fēi zhàn zhī zuì yě',tip:'白話：這是上天要讓楚國滅亡，不是打仗的罪過。這是全劇最核心的台詞。'},
+    {zh:'兵家勝負，乃是常情',py:'bīng jiā shèng fù, nǎi shì cháng qíng',tip:'白話：軍事上的勝負，本來就是很正常的事情。'},
+    {zh:'備得有酒，與大王對飲幾杯如何',py:'bèi dé yǒu jiǔ, yǔ dài wáng duì yǐn jǐ bēi rú hé',tip:'白話：我準備好了酒，和大王對酌幾杯，您覺得如何？（虞姬邀項羽共飲）'},
+    {zh:'有勞妃子，看酒',py:'yǒu láo fēi zi, kàn jiǔ',tip:'白話：麻煩妃子了，請上酒。（項羽回應）'}
+  ],
+  2:[
+    {zh:'看，雲斂晴空，冰輪乍湧',py:'yún liàn qíng kōng, bīng lún zhà yǒng',tip:'白話：看，雲彩散去晴空萬里，月亮突然升起。「冰輪」是月亮的雅稱。'},
+    {zh:'好一派清秋光景',py:'hǎo yī pài qīng qiū guāng jǐng',tip:'白話：真是好一番清秋景象！'},
+    {zh:'月色雖好，只是四野俱是悲愁之聲，令人可慘',py:'yuè sè suī hǎo, zhǐ shì sì yě jù shì bēi chóu zhī shēng, lìng rén kě cǎn',tip:'白話：月色雖然美好，但四周田野都是悲傷哀愁的聲音，讓人感到淒慘。'},
+    {zh:'只因秦王無道，兵戈四起，荼炭生靈',py:'zhǐ yīn qín wáng wú dào, bīng gē sì qǐ, tú tàn shēng líng',tip:'白話：都是因為秦王暴虐無道，四處戰爭，讓百姓遭受苦難。「荼炭生靈」意為使百姓受到水深火熱的苦難。'},
+    {zh:'使那些無罪黎民，遠別爹娘，拋妻棄子',py:'shǐ nà xiē wú zuì lí mín, yuǎn bié diē niáng, pāo qī qì zǐ',tip:'白話：讓那些無辜的百姓，遠離父母，拋下妻兒。'},
+    {zh:'怎的叫人不恨',py:'zěn de jiào rén bù hèn',tip:'白話：這怎能叫人不痛恨？對戰亂使百姓受苦的憤慨。'},
+    {zh:'千古英雄爭何事，贏得沙場戰骨寒',py:'qiān gǔ yīng xióng zhēng hé shì, yíng dé shā chǎng zhàn gǔ hán',tip:'白話：千古英雄們爭的究竟是什麼？換來的不過是沙場上的累累白骨。'},
+    {zh:'田園將蕪胡不歸，千里從軍為了誰',py:'tián yuán jiāng wú hú bù guī, qiān lǐ cóng jūn wèi le shuí',tip:'白話：田園將要荒蕪了，為何不回家？千里從軍到底是為了誰？（引自陶淵明，表達思鄉）'},
+    {zh:'這四面敵軍所唱歌聲，跟咱們家鄉的腔調一個味兒',py:'zhè sì miàn dí jūn suǒ chàng gē shēng, gēn zán men jiā xiāng de qiāng diào yī gè wèir',tip:'白話：這四面敵軍所唱的歌，和我們家鄉的口音腔調是一樣的。'},
+    {zh:'想是劉邦已得楚地，招來的兵都是咱們的鄉親',py:'xiǎng shì liú bāng yǐ dé chǔ dì, zhāo lái de bīng dōu shì zán men de xiāng qīn',tip:'白話：看來劉邦已經佔領了楚地，他招募的士兵都是我們的同鄉。'},
+    {zh:'天天盼著楚兵來救，可後援斷絕了',py:'tiān tiān pàn zhe chǔ bīng lái jiù, kě hòu yuán duàn jué le',tip:'白話：天天盼著楚國的援兵來救，但後方支援已完全斷絕了。'},
+    {zh:'只恐大勢去矣',py:'zhǐ kǒng dà shì qù yǐ',tip:'白話：只怕大局已去，難以挽回了。（「矣」是文言語氣詞，表示感嘆）'},
+    {zh:'哎呀且住，適聽眾兵丁談論，只因救兵不到，大家均有離散之心',py:'āi ya qiě zhù, shì tīng zhòng bīng dīng tán lùn, zhǐ yīn jiù bīng bù dào, dà jiā jūn yǒu lí sàn zhī xīn',tip:'白話：唉，先停下！剛才聽到士兵們議論，因為援兵不來，大家都有四散逃走的心思。'},
+    {zh:'哎呀，大王啊大王，只恐大勢去矣（旁白）',py:'āi ya, dà wáng a dà wáng, zhǐ kǒng dà shì qù yǐ',tip:'白話：唉，大王啊大王，只怕大局已去，難以挽回了。（虞姬在旁獨白，憂心如焚）'}
+  ],
+  3:[
+    {zh:'啊，大王',py:'ā, dà wáng',tip:'白話：虞姬深情呼喚項羽，充滿憂慮與不捨。'},
+    {zh:'好在垓下之地，高崗絕岩，不易攻入',py:'hǎo zài gāi xià zhī dì, gāo gǎng jué yán, bù yì gōng rù',tip:'白話：幸好垓下地形險要，高崗峭壁，敵軍不容易攻進來。'},
+    {zh:'候得機會，再圖破圍求救，也還不遲呀',py:'hòu dé jī huì, zài tú pò wéi qiú jiù, yě hái bù chí ya',tip:'白話：等待時機，再設法突破重圍求援，也還不算太晚。「不遲」安慰虞姬不要太擔心。'},
+    {zh:'備得有酒，再與大王對飲幾杯',py:'bèi dé yǒu jiǔ, zài yǔ dà wáng duì yǐn jǐ bēi',tip:'白話：已備好美酒，陪大王對飲幾杯，暫解憂愁。'},
+    {zh:'如此，酒來',py:'rú cǐ, jiǔ lái',tip:'白話：好，那就上酒吧！'},
+    {zh:'大王請',py:'dà wáng qǐng',tip:'白話：大王請先飲。（虞姬敬酒給項羽）'},
+    {zh:'妃子請',py:'fēi zǐ qǐng',tip:'白話：妃子也請飲。（項羽回敬虞姬）'},
+    {zh:'咳，想俺項羽呵',py:'kāi, xiǎng ǎn xiàng yǔ hē',tip:'白話：唉，想我項羽啊⋯⋯（項羽感慨萬千，引出《垓下歌》）'},
+    {zh:'力拔山兮氣蓋世',py:'lì bá shān xī qì gài shì',tip:'白話：力量能拔起大山，氣概壓倒天下。形容項羽的蓋世武勇。'},
+    {zh:'時不利兮騅不逝',py:'shí bù lì xī zhuī bù shì',tip:'白話：時運不利，連愛馬騅也不肯前進。反映項羽陷入困境的無奈。'},
+    {zh:'騅不逝兮可奈何',py:'zhuī bù shì xī kě nài hé',tip:'白話：騅馬不走，我能怎麼辦呢？「奈何」表示無可奈何的深沉嘆息。'},
+    {zh:'虞兮虞兮奈若何',py:'yú xī yú xī nài ruò hé',tip:'白話：虞姬啊虞姬，我又能拿你怎麼辦呢？項羽對虞姬深情的呼喚，充滿不捨。'}
+  ],
+  
+4:[
+    {zh:'大王慷慨悲歌，令人淚下',py:'dà wáng kāng kǎi bēi gē, lìng rén lèi xià',tip:'白話：大王悲壯地高歌，令人不禁落淚。虞姬見項羽悲歌而感動。'},
+    {zh:'待妾妃歌舞一回，聊以解憂如何',py:'dài qiè fēi gē wǔ yī huí, liáo yǐ jiě yōu rú hé',tip:'白話：讓妾身為您歌舞一番，姑且用來排解憂愁，如何？（虞姬主動提議）'},
+    {zh:'勸君王飲酒聽虞歌',py:'quàn jūn wáng yǐn jiǔ tīng yú gē',tip:'白話：勸大王飲酒，聽虞姬為您唱歌。'},
+    {zh:'解君憂悶舞婆娑',py:'jiě jūn yōu mèn wǔ pó suō',tip:'白話：為您解愁，翩翩起舞。「婆娑」形容舞姿輕盈優美。'},
+    {zh:'贏秦無道把江山破',py:'yíng qín wú dào bǎ jiāng shān pò',tip:'白話：暴秦無道，使江山陷入戰亂。「贏秦」指秦朝（嬴姓）。'},
+    {zh:'英雄四路起干戈',py:'yīng xióng sì lù qǐ gān gē',tip:'白話：天下英雄四方揭竿而起，烽火連天。「干戈」泛指兵器、戰爭。'},
+    {zh:'自古常言不欺我，寬心飲酒寶帳坐',py:'zì gǔ cháng yán bù qī wǒ, kuān xīn yǐn jiǔ bǎo zhàng zuò',tip:'白話：古人的話從來不騙人，請大王放寬心，在帳中飲酒。虞姬安慰項羽不要憂慮。'},
+    {zh:'成敗興亡一剎那',py:'chéng bài xīng wáng yī chà nuó',tip:'白話：成敗興亡不過是一瞬間的事。感嘆世事無常。'},
+    {zh:'報！啟奏大王，漢軍人馬從四面殺來',py:'bào! qǐ zòu dà wáng, hàn jūn rén mǎ cóng sì miàn shā lái',tip:'白話：報告！稟告大王，漢軍從四面八方殺來了。情勢危急。'},
+    {zh:'吩咐眾將四面迎敵',py:'fēn fù zhòng jiàng sì miàn yíng dí',tip:'白話：命令眾將從四面迎擊敵軍。項羽臨危不亂，下令應戰。'},
+    {zh:'報！八千子弟兵俱已散盡',py:'bào! bā qiān zǐ dì bīng jù yǐ sàn jìn',tip:'白話：報告！八千名江東子弟兵已全部潰散。項羽的最後希望破滅。'},
+    {zh:'妃子，快快隨孤殺出重圍',py:'fēi zǐ, kuài kuài suí gū shā chū chóng wéi',tip:'白話：妃子，快跟我殺出重重包圍！項羽要帶虞姬突圍。'},
+    {zh:'大王啊，此番出戰，倘能闖出重圍，且退往江東，再圖復興楚國，拯救黎民',py:'dà wáng ā, cǐ fān chū zhàn, tǎng néng chuǎng chū chóng wéi, qiě tuì wǎng jiāng dōng, zài tú fù xīng chǔ guó, zhěng jiù lí mín',tip:'白話：大王啊，此番出戰，若能突破重圍，先退回江東，再謀復興楚國、拯救百姓。虞姬為項羽設想退路。'},
+    {zh:'妾身若是同行，豈不牽累大王',py:'qiè shēn ruò shì tóng xíng, qǐ bù qiān lèi dà wáng',tip:'白話：妾身若隨您同行，豈不是拖累了大王？「豈不」是反問語氣，意思是「難道不會」。'},
+    {zh:'願以大王腰間寶劍，自刎君前',py:'yuàn yǐ dà wáng yāo jiān bǎo jiàn, zì wěn jūn qián',tip:'白話：願以大王腰間的寶劍，在您面前自刎。虞姬決意以死明志，不拖累項羽。'},
+    {zh:'免得掛念妾身哪',py:'miǎn dé guà niàn qiè shēn nā',tip:'白話：免得大王掛念妾身。虞姬最後的深情，讓項羽放手去戰。'},
+    {zh:'漢兵已略地，四面楚歌聲',py:'hàn bīng yǐ lüè dì, sì miàn chǔ gē shēng',tip:'白話：漢軍已佔領各地，四面響起楚地的歌聲。虞姬感受到大勢已去。'},
+    {zh:'君王意氣盡，賤妾何聊生',py:'jūn wáng yì qì jìn, jiàn qiè hé liáo shēng',tip:'白話：大王的雄心壯志已耗盡，妾身又有什麼理由獨自苟活？（虞姬決意殉情）'}
+  ]};
+var PRE_QS = {
+  p1:[
+    {q:'1. 林教授對學術倫理的要求非常 _______，如果發現學生抄襲，一定會給不及格。',opts:['(A) 嚴厲','(B) 憂悶','(C) 婆娑','(D) 驚慌'],ans:'A'},
+    {q:'2. 現在網路詐騙很多，我們千萬不能隨便 _______ 陌生人傳來的訊息。',opts:['(A) 寬心','(B) 輕信','(C) 吩咐','(D) 提防'],ans:'B'},
+    {q:'3. 小明因為生病還要堅持來上班，結果把感冒傳染給大家，反而 _______ 了同事。',opts:['(A) 拯救','(B) 連累','(C) 埋藏','(D) 興亡'],ans:'B'},
+    {q:'4. 出國旅遊時，在人多的地方要時刻 _______ 扒手，保護好自己的錢包。',opts:['(A) 提防','(B) 飲酒','(C) 慷慨','(D) 散盡'],ans:'A'},
+    {q:'5. 最近連續下了一個月的雨，這種陰濕的天氣真讓人感到 _______。',opts:['(A) 嚴厲','(B) 英勇','(C) 憂悶','(D) 驚慌'],ans:'C'},
+    {q:'6. 考試已經結束了，成績如何就別想太多，放 _______ 好好休息吧！',opts:['(A) 寬心','(B) 驚心','(C) 傷心','(D) 核心'],ans:'A'},
+    {q:'7. 老闆出差前特別 _______ 秘書，一定要把這份合約寄給客戶。',opts:['(A) 聽說','(B) 吩咐','(C) 答應','(D) 討論'],ans:'B'},
+    {q:'8. 這次的手術非常關鍵，醫生和護士都全神貫注，不容許出一點 _______。',opts:['(A) 差錯','(B) 腔調','(C) 生靈','(D) 光景'],ans:'A'},
+    {q:'9. 這家企業發起了一個公益活動，希望能 _______ 瀕臨絕種的野生動物。',opts:['(A) 攻入','(B) 拯救','(C) 牽累','(D) 埋藏'],ans:'B'},
+    {q:'10. 這位富翁晚年時，把原本擁有的家產全部 _______，捐給了慈善機構。',opts:['(A) 散盡','(B) 殺出','(C) 囤積','(D) 尋得'],ans:'A'}
+  ],
+  p2:[
+    {q:'11. 這家公司資金周轉不靈，員工紛紛離職，競爭對手又推出新產品，處境真的是 _______。',opts:['(A) 歌舞昇平','(B) 四面楚歌','(C) 力拔山兮','(D) 寬心飲酒'],ans:'B'},
+    {q:'12. 新聞報導說，那名賭徒為了躲避債務，竟然 _______，一個人逃到國外去了。',opts:['(A) 拋妻棄子','(B) 尊師重道','(C) 安居樂業','(D) 飲酒作樂'],ans:'A'},
+    {q:'13. 這場籃球賽，對方有十五名職業選手，我們只有三名業餘球員，在 _______ 的情況下，很難贏球。',opts:['(A) 勢均力敵','(B) 敵眾我寡','(C) 千軍萬馬','(D) 人山人海'],ans:'B'},
+    {q:'14. 選舉開票結果顯示，對手的票數遙遙領先，候選人知道 _______，只好準備發表敗選感言。',opts:['(A) 大勢已去','(B) 旭日東昇','(C) 捲土重來','(D) 旗開得勝'],ans:'A'},
+    {q:'15. 這兩位鄰居吵了多年，最近終於決定和解，「化 _______ 為玉帛」，不再爭吵了。',opts:['(A) 禮物','(B) 英雄','(C) 干戈','(D) 江山'],ans:'C'},
+    {q:'16. 生命很寶貴，遇到再大的困難也不應該 _______，要多尋求親友的協助。',opts:['(A) 尋短見','(B) 尋開心','(C) 尋寶藏','(D) 尋出路'],ans:'A'},
+    {q:'17. 車禍發生的過程就在 _______，目擊者完全來不及反應。',opts:['(A) 一世紀','(B) 一剎那','(C) 一整天','(D) 一大早'],ans:'B'},
+    {q:'18. 在商場談判中，對方故意示弱可能是 _______，想引誘我們簽下不平等的合約。',opts:['(A) 待客之道','(B) 誘兵之計','(C) 誠心誠意','(D) 舉手之勞'],ans:'B'},
+    {q:'19. 戰爭最可怕的後果就是 _______，讓無數老百姓流離失所，生活痛苦。',opts:['(A) 塗炭生靈','(B) 造福人群','(C) 風調雨順','(D) 國泰民安'],ans:'A'},
+    {q:'20. 這部電影的結尾，主角犧牲自己拯救了世界，那種 _______ 的氣氛讓觀眾都流下了眼淚。',opts:['(A) 輕鬆愉快','(B) 慷慨悲歌','(C) 嬉皮笑臉','(D) 無動於衷'],ans:'B'}
+  ],
+  p3:[
+    {q:'21. 京劇裡說「把江山破」，但在現代口語中，我們不能只說「把杯子破」。下列哪句是正確的現代說法？',opts:['(A) 弟弟把杯子打破了。','(B) 弟弟把杯子破。','(C) 弟弟打破把杯子。','(D) 把杯子弟弟破了。'],ans:'A'},
+    {q:'22. 醫生建議爸爸不要抽菸。請用「勸」字改寫這句話：醫生 _______ 爸爸 _______ 菸。',opts:['(A) 勸 / 戒','(B) 叫 / 買','(C) 讓 / 抽','(D) 請 / 拿'],ans:'A'},
+    {q:'23. 虞姬說：「豈不牽累大王？」這句話的意思是：',opts:['(A) 絕對不會牽累大王。','(B) 難道不會牽累大王嗎？','(C) 請不要牽累大王。','(D) 大王不想被牽累。'],ans:'B'},
+    {q:'24. 「倘能闖出重圍」中的「倘」，在現代漢語中可以用哪個詞替換？',opts:['(A) 但是','(B) 如果','(C) 所以','(D) 雖然'],ans:'B'},
+    {q:'25. 小華盡力了卻還是輸了比賽，教練安慰他說：「這是運氣不好，非你之罪。」這句話的意思是：',opts:['(A) 這是你的錯。','(B) 你犯了罪。','(C) 這不是你的過錯。','(D) 你沒有參加比賽。'],ans:'C'},
+    {q:'26. 「這台電腦壞得太徹底，我也修不好，真是奈它何！」這句話表達了說話者什麼樣的心情？',opts:['(A) 開心','(B) 無可奈何','(C) 生氣','(D) 興奮'],ans:'B'},
+    {q:'27. 「同學們俱已回家了。」這句話中的「俱」字，意思最接近現代漢語的：',opts:['(A) 都','(B) 不','(C) 還','(D) 才'],ans:'A'},
+    {q:'28. 「待我把事情說清楚。」這句話中的「待」，意思是：',opts:['(A) 等待','(B) 對待','(C) 讓','(D) 招待'],ans:'C'},
+    {q:'29. 「我們明天去爬山，如何？」這句話的功能是：',opts:['(A) 詢問原因','(B) 徵求對方的意見','(C) 說明結果','(D) 表示反對'],ans:'B'},
+    {q:'30. 古文「胡不歸」意思是「為什麼不回去？」。現代漢語中，「你去過美國嗎？」如果要加上「胡（為什麼）」，語氣會變成像下列哪一句？',opts:['(A) 你什麼時候去美國？','(B) 你何不（為什麼不）去美國看看呢？','(C) 你去美國做什麼？','(D) 你想去美國嗎？'],ans:'B'}
+  ]
+};
+var POST_QS = {
+  p1:[
+    {q:'1. 為了交通安全，警察最近開始 _______ 取締酒後駕車的行為，罰金提高了很多。',opts:['(A) 寬心','(B) 嚴厲','(C) 婆娑','(D) 慈祥'],ans:'B'},
+    {q:'2. 購買昂貴商品時，要多做功課，不要 _______ 推銷員誇大的廣告詞。',opts:['(A) 輕信','(B) 吩咐','(C) 解憂','(D) 領旨'],ans:'A'},
+    {q:'3. 我們是一個團隊，如果你工作沒做完，就會 _______ 到其他人必須陪你加班。',opts:['(A) 牽累','(B) 拯救','(C) 埋藏','(D) 興亡'],ans:'A'},
+    {q:'4. 現在電腦病毒很厲害，我們在下載不明檔案時，一定要有所 _______。',opts:['(A) 提防','(B) 飲酒','(C) 慷慨','(D) 散盡'],ans:'A'},
+    {q:'5. 他失業半年了都找不到工作，心情非常 _______，整天關在房間裡不出門。',opts:['(A) 嚴厲','(B) 英勇','(C) 憂悶','(D) 驚慌'],ans:'C'},
+    {q:'6. 手術很成功，醫生告訴家屬可以 _______ 了，病人很快就會康復。',opts:['(A) 寬心','(B) 驚心','(C) 傷心','(D) 灰心'],ans:'A'},
+    {q:'7. 媽媽出門前 _______ 我，下雨的時候記得要把陽台的衣服收進來。',opts:['(A) 聽說','(B) 吩咐','(C) 答應','(D) 討論'],ans:'B'},
+    {q:'8. 會計在計算公司帳目的時候必須非常細心，不能出任何 _______。',opts:['(A) 差錯','(B) 腔調','(C) 生靈','(D) 光景'],ans:'A'},
+    {q:'9. 消防隊員冒著生命危險衝進火場，_______ 了受困的居民。',opts:['(A) 攻入','(B) 拯救','(C) 牽累','(D) 埋藏'],ans:'B'},
+    {q:'10. 他是個「月光族」，每個月才剛領薪水，沒過幾天就把錢 _______ 了。',opts:['(A) 散盡','(B) 殺出','(C) 儲存','(D) 尋得'],ans:'A'}
+  ],
+  p2:[
+    {q:'11. 這位政治人物因為收受賄賂被調查，黨內同志也不支持他，現在真的是陷入 _______ 的困境。',opts:['(A) 歌舞昇平','(B) 四面楚歌','(C) 力拔山兮','(D) 寬心飲酒'],ans:'B'},
+    {q:'12. 那個人沉迷於網路遊戲，整天不回家，甚至 _______，完全不管家人的死活。',opts:['(A) 拋妻棄子','(B) 尊師重道','(C) 安居樂業','(D) 飲酒作樂'],ans:'A'},
+    {q:'13. 在電玩戰爭遊戲中，如果不幸遇到 _______ 的局面，最好的策略通常是先撤退，不要硬拼。',opts:['(A) 勢均力敵','(B) 敵眾我寡','(C) 旗鼓相當','(D) 人山人海'],ans:'B'},
+    {q:'14. 棋局下到這裡，黑棋的主將已經被圍死，_______，再下下去也沒有意義了。',opts:['(A) 大勢已去','(B) 旭日東昇','(C) 捲土重來','(D) 旗開得勝'],ans:'A'},
+    {q:'15. 這兩個政黨為了選舉吵得不可開交，希望能早日化 _______ 為玉帛，共同為國家努力。',opts:['(A) 禮物','(B) 英雄','(C) 干戈','(D) 江山'],ans:'C'},
+    {q:'16. 失戀雖然很痛苦，但千萬不要一時想不開而 _______，時間會治癒一切的。',opts:['(A) 尋短見','(B) 尋開心','(C) 尋寶藏','(D) 尋出路'],ans:'A'},
+    {q:'17. 雖然平時練習了很久，但百米賽跑的輸贏往往就在衝線的 _______。',opts:['(A) 一世紀','(B) 一剎那','(C) 一整天','(D) 一大早'],ans:'B'},
+    {q:'18. 足球比賽中，前鋒假裝受傷倒地，其實是 _______，想讓對手放鬆戒心。',opts:['(A) 待客之道','(B) 誘兵之計','(C) 誠心誠意','(D) 舉手之勞'],ans:'B'},
+    {q:'19. 歷史上的暴君為了擴張領土發動戰爭，結果 _______，讓百姓過著悲慘的生活。',opts:['(A) 塗炭生靈','(B) 造福人群','(C) 風調雨順','(D) 國泰民安'],ans:'A'},
+    {q:'20. 在那場追悼會上，大家唱著 _______ 的曲調，懷念這位犧牲的烈士。',opts:['(A) 輕鬆愉快','(B) 慷慨悲歌','(C) 嬉皮笑臉','(D) 無動於衷'],ans:'B'}
+  ],
+  p3:[
+    {q:'21. 請選出符合現代華語語法的句子：',opts:['(A) 他把作業寫。','(B) 他把作業寫完了。','(C) 他寫作業把完了。','(D) 把作業他寫完了。'],ans:'B'},
+    {q:'22. 朋友開車太快了，我很擔心。請用「勸」字完成句子：我 _______ 朋友 _______ 開慢一點。',opts:['(A) 勸 / 要','(B) 叫 / 買','(C) 讓 / 坐','(D) 請 / 拿'],ans:'A'},
+    {q:'23. 「天天吃炸雞，豈不胖死？」這句話的意思是：',opts:['(A) 絕對不會變胖。','(B) 難道不會變胖嗎？','(C) 請不要變胖。','(D) 吃炸雞很健康。'],ans:'B'},
+    {q:'24. 「倘若明天下雨，我們就取消野餐。」這句話中的「倘若」意思接近：',opts:['(A) 但是','(B) 如果','(C) 所以','(D) 雖然'],ans:'B'},
+    {q:'25. 這次車禍是因為對方闖紅燈撞你，責任完全在對方，_______，你不需要負責。',opts:['(A) 非你之罪','(B) 是你的錯','(C) 罪大惡極','(D) 毫無關係'],ans:'A'},
+    {q:'26. 「這隻小狗把我的鞋子咬壞了，但我太愛牠了，真是奈牠何！」這句話表示主人對小狗：',opts:['(A) 非常生氣並處罰牠。','(B) 沒辦法，只能原諒牠。','(C) 想要把牠送人。','(D) 覺得很開心。'],ans:'B'},
+    {q:'27. 「大家的意見俱不相同。」這句話中的「俱」字，意思最接近：',opts:['(A) 都','(B) 不','(C) 還','(D) 才'],ans:'A'},
+    {q:'28. 「待我想一想。」這句話在現代口語中通常怎麼說？',opts:['(A) 讓我想一想。','(B) 等待我想一想。','(C) 對待我想一想。','(D) 招待我想一想。'],ans:'A'},
+    {q:'29. 「這個週末我們去看電影，如何？」這句話是在：',opts:['(A) 詢問電影的劇情。','(B) 提議並詢問對方的意見。','(C) 說明電影的結果。','(D) 表示不想去看電影。'],ans:'B'},
+    {q:'30. 「胡不歸」意思是為什麼不回去。現代成語「食古不化」有時也會說「胡不食古？」，這裡的「胡」也是：',opts:['(A) 什麼時候','(B) 為什麼','(C) 哪裡','(D) 誰'],ans:'B'}
+  ]
+};
+
+
+var S={loggedIn:false,act:{total:0,w:[0,0,0,0],days:{},lookups:0,tts:0},student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},pre:{done:false,score:0,s1:0,s2:0,s3:0},post:{done:false,score:0,s1:0,s2:0,s3:0},weekSeen:[false,false,false,false],qpreDone:false,qpostDone:false};
+function save(){try{localStorage.setItem('kj_s2',JSON.stringify(S));}catch(e){}}
+function load(){try{var d=localStorage.getItem('kj_s2');if(d)S=JSON.parse(d);}catch(e){}}
+
+// ══ TTS 終極版 ══
+if(window.speechSynthesis){
+  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+}
+function speakText(text){
+  bumpCounter('tts');logEvent('tts','',String(text).slice(0,20)); // 記錄朗讀
+  if(!('speechSynthesis' in window)){alert('您的瀏覽器不支援語音，請用 Chrome。');return;}
+  window.speechSynthesis.cancel();
+  var t=text
+    .replace(/傳將令/g,'椽將令')
+    .replace(/同行，豈/g,'同形，豈');
+  var utterance=new SpeechSynthesisUtterance(t);
+  utterance.lang='zh-TW';
+  utterance.rate=0.85;
+  var voices=window.speechSynthesis.getVoices();
+  var zhVoice=voices.find(function(v){
+    return v.lang.includes('zh')||v.name.includes('Chinese')||v.name.includes('Han');
+  });
+  if(zhVoice) utterance.voice=zhVoice;
+  window.speechSynthesis.speak(utterance);
+}
+
+// ══ RENDER ══
+function renderQ(quiz){
+  var data=(quiz==='pre')?PRE_QS:POST_QS;
+  ['p1','p2','p3'].forEach(function(p){
+    var el=document.getElementById(quiz+'-'+p+'-qs');if(!el)return;
+    var html='';
+    data[p].forEach(function(item,i){
+      var base=(p==='p1')?1:(p==='p2')?11:21,qn=base+i,nm=quiz+'_q'+qn;
+      html+='<div class="qrow"><div class="qt">'+item.q+'</div><div class="qopts">';
+      item.opts.forEach(function(opt){var v=opt.charAt(1);html+='<label class="qopt" id="opt-'+nm+'-'+v+'"><input type="radio" name="'+nm+'" value="'+v+'"> '+opt+'</label>';});
+      html+='</div></div>';
+    });
+    el.innerHTML=html;
+  });
+}
+function renderLyrics(){
+  [1,2,3,4].forEach(function(w){
+    var el=document.getElementById('w'+w+'-lyrics');if(!el)return;
+    var html='';
+    LYRICS[w].forEach(function(item,i){
+      var txt=item.zh.replace(/'/g,'\'').replace(/"/g,'\"')+' '+item.py.replace(/'/g,'\'').replace(/"/g,'\"');
+      html+='<div class="lrow" onclick="toggleRow(this)">';
+      html+='<span class="lnum">'+(i+1)+'</span>';
+      html+='<div class="lmain"><span class="lzh">'+item.zh+'</span><span class="lpy">'+item.py+'</span>';
+      html+='<div class="ltip">'+item.tip+'</div></div>';
+      html+='<button class="lspeak" onclick="event.stopPropagation();speakAndShow(this)" data-t="'+item.zh+'" style="font-size:13px;padding:5px 12px;">&#9654; 白話 &amp; 朗讀</button>';
+      html+='</div>';
+    });
+    el.innerHTML=html;
+  });
+}
+function toggleRow(el){el.classList.toggle('open');}
+function searchLyric(w){
+  var q=document.getElementById('search'+w).value.trim();
+  if(q){bumpCounter('lookups');logEvent('lookup','week'+w,q);} // 記錄查詢
+  var res=document.getElementById('lresult'+w);
+  if(!q){res.className='lresult';return;}
+  var found=null;
+  [1,2,3,4].forEach(function(ww){LYRICS[ww].forEach(function(item){if(!found&&item.zh.indexOf(q)>=0)found=item;});});
+  if(found){
+    res.innerHTML='<div class="lresult-zh">'+found.zh+'</div><div class="lresult-py">'+found.py+'</div><div class="lresult-tip">'+found.tip+'</div><button class="speak-btn" onclick="speakText(this.dataset.t)" data-t="'+found.zh+'" style="font-size:13px;">&#9654; 白話 &amp; 朗讀</button>';
+    res.className='lresult show';
+  }else{
+    res.innerHTML='<span style="color:var(--muted)">找不到「'+q+'」</span>';
+    res.className='lresult show';
+  }
+}
+
+// ══ QUIZ ══
+function submitQuiz(quiz){
+  if(S[quiz]&&S[quiz].done)return; // 防雙擊／重複送出
+  var data=(quiz==='pre')?PRE_QS:POST_QS;
+  var total=0,s1=0,s2=0,s3=0,allOk=true;
+  var results=[];
+  var firstUnanswered=null;
+  var unansweredNums=[];
+
+  // 先清除舊的紅框
+  document.querySelectorAll('.qrow.unanswered').forEach(function(el){el.classList.remove('unanswered');});
+
+  ['p1','p2','p3'].forEach(function(p){
+    data[p].forEach(function(item,i){
+      var base=(p==='p1')?1:(p==='p2')?11:21,qn=base+i,nm=quiz+'_q'+qn;
+      var sel=document.querySelector('input[name="'+nm+'"]:checked');
+      if(!sel){
+        allOk=false;
+        unansweredNums.push(qn);
+        // 標示紅框
+        var opts=document.querySelector('input[name="'+nm+'"]');
+        if(opts){
+          var row=opts.closest('.qrow');
+          if(row){row.classList.add('unanswered');if(!firstUnanswered)firstUnanswered=row;}
+        }
+        return;
+      }
+      var ok=(sel.value===item.ans);
+      if(ok){total++;if(p==='p1')s1++;else if(p==='p2')s2++;else s3++;}
+      results.push({nm:nm,sel:sel.value,ans:item.ans,ok:ok});
+    });
+  });
+  if(!allOk){
+    toast('第 '+unansweredNums.join('、')+' 題尚未作答，請完成後再送出');
+    if(firstUnanswered){firstUnanswered.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
+  }
+  results.forEach(function(r){
+    document.querySelectorAll('input[name="'+r.nm+'"]').forEach(function(inp){
+      inp.disabled=true;
+      var lbl=document.getElementById('opt-'+r.nm+'-'+inp.value);
+      if(!lbl)return;
+      if(inp.value===r.ans)lbl.classList.add('correct');
+      else if(inp.value===r.sel&&!r.ok)lbl.classList.add('wrong');
+    });
+  });
+  // 逐題答案(A~D)與得分(0/1)，依題號 1~30 排序後送到 Sheet
+  var ansArr=[],scArr=[];
+  results.forEach(function(r){
+    var qn=parseInt(r.nm.split('_q')[1],10);
+    ansArr[qn-1]=r.sel; scArr[qn-1]=r.ok?1:0;
+  });
+  S[quiz]={done:true,score:total,s1:s1,s2:s2,s3:s3,ans:ansArr,sc:scArr};save();
+  var sd=document.getElementById(quiz+'-score-display');if(sd)sd.textContent='總分 '+total+' / 30';
+  ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
+  var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
+  var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
+  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='Part1:'+s1+'/10  Part2:'+s2+'/10  Part3:'+s3+'/10  總分:'+total+'/30';}
+  else{var el=document.getElementById('post-compare');if(el)el.innerHTML='前測：'+(S.pre.s1||0)+'/10·'+(S.pre.s2||0)+'/10·'+(S.pre.s3||0)+'/10 = <b>'+(S.pre.score||0)+'分</b><br>後測：'+s1+'/10·'+s2+'/10·'+s3+'/10 = <b>'+total+'分</b>（進步'+(total-(S.pre.score||0))+'分）';}
+  logEvent('quiz_submit',quiz,String(total));flushLog();
+  saveQuizToServer(quiz);
+  updateProgress();toast('華文能力'+(quiz==='pre'?'前':'後')+'測完成！得分：'+total+'/30');
+}
+function restoreQuiz(quiz){
+  if(!S[quiz].done)return;
+  var sc=S[quiz].score,s1=S[quiz].s1||0,s2=S[quiz].s2||0,s3=S[quiz].s3||0;
+  var sd=document.getElementById(quiz+'-score-display');if(sd)sd.textContent='總分 '+sc+' / 30';
+  ['1','2','3'].forEach(function(n){var el=document.getElementById(quiz+'-s'+n+'-disp');if(el)el.textContent=(n==='1'?s1:n==='2'?s2:s3)+'/10';});
+  var sa=document.getElementById(quiz+'-submit-area');if(sa)sa.style.display='none';
+  var dm=document.getElementById(quiz+'-done-msg');if(dm)dm.style.display='block';
+  if(quiz==='pre'){var el=document.getElementById('pre-done-score');if(el)el.textContent='華文前測：Part1 '+s1+'分 ‧ Part2 '+s2+'分 ‧ Part3 '+s3+'分 ‧ 總分 '+sc+'/30';}
+  // 隱藏題目區塊
+  ['p1','p2','p3'].forEach(function(p){
+    var el=document.getElementById(quiz+'-'+p+'-qs');
+    if(el){var part=el.closest('.qpart');if(part)part.style.display='none';}
+  });
+  document.querySelectorAll('input[name^="'+quiz+'_q"]').forEach(function(inp){inp.disabled=true;});
+}
+
+// ══ LOGIN ══
+
+// ══ 登入流程 ══
+// Step1: 輸入學號後按確認
+function submitStudentId(){
+  var id=document.getElementById('f-id').value.trim().toUpperCase();
+  var err=document.getElementById('login-err-step1');
+  err.style.display='none';
+  if(!id){err.style.display='block';err.textContent='請輸入學號。';return;}
+  if(id.length<3){err.style.display='block';err.textContent='學號格式不正確，請重新確認。';return;}
+  // 先查 localStorage
+  try{
+    var d=localStorage.getItem('kj_s2');
+    if(d){
+      var sv=JSON.parse(d);
+      if(sv.student&&sv.student.id===id){
+        showOldStudentForm(sv.student);
+        return;
+      }
+    }
+  }catch(e){}
+  // localStorage 沒有 → 去 Sheet 查（ITP 修復）
+  fetchStudentFromSheet(id);
+}
+
+function fetchStudentFromSheet(id){
+  pendingLoginId=id;
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-loading-card').style.display='block';
+  document.getElementById('login-error-card').style.display='none';
+  var getUrl=SHEETS_URL+'?action=load&studentId='+encodeURIComponent(id);
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',getUrl,true);
+  xhr.timeout=15000;
+  xhr.onload=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    try{
+      var res=JSON.parse(xhr.responseText);
+      if(res.status==='ok'&&res.state){
+        S=res.state;
+        S.loggedIn=false;
+        localStorage.setItem('kj_s2',JSON.stringify(S));
+        showOldStudentForm(res.state.student);
+      } else if(res.status==='not_found'){
+        // 新生：先閱讀同意書
+        document.getElementById('login-error-card').style.display='none';
+        document.getElementById('login-step1').style.display='none';
+        document.getElementById('login-consent-card').style.display='block';
+        document.getElementById('consent-check').checked=false;
+        document.getElementById('consent-btn').disabled=true;
+      } else {
+        showLoginError('伺服器回應異常，請重試。');
+      }
+    }catch(e){
+      showLoginError('登入處理發生問題（'+(e&&e.message?e.message:'未知')+'），請重試。');
+    }
+  };
+  xhr.onerror=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    showLoginError('無法連接到伺服器，可能是網路不穩定，請按下方按鈕重試。');
+  };
+  xhr.ontimeout=function(){
+    document.getElementById('login-loading-card').style.display='none';
+    showLoginError('連線逾時，請確認網路後重試。');
+  };
+  xhr.send();
+}
+function handleConsentAgree(){
+  document.getElementById('login-consent-card').style.display='none';
+  document.getElementById('login-step2-new').style.display='block';
+  document.getElementById('f-id-confirm').value='';
+  var eth=document.getElementById('chk-ethics');
+  if(eth){eth.checked=true;var box=document.getElementById('ethics-box');if(box)box.style.display='none';}
+}
+function showLoginError(msg){
+  document.getElementById('login-error-card').style.display='block';
+  document.getElementById('login-err-detail').textContent=msg||'請按下方按鈕重試。';
+}
+function retryLogin(){
+  if(pendingLoginId) fetchStudentFromSheet(pendingLoginId);
+}
+function checkStudentId(val){
+  // 即時格式提示（可選）
+}
+
+function showOldStudentForm(stu){
+  // 舊生表單只需確認學號與姓名；其餘基本資料沿用伺服器既有紀錄
+  var ec=document.getElementById('login-error-card');if(ec)ec.style.display='none';
+  var lc=document.getElementById('login-loading-card');if(lc)lc.style.display='none';
+  var cc=document.getElementById('login-consent-card');if(cc)cc.style.display='none';
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-step2-new').style.display='none';
+  document.getElementById('login-step2-old').style.display='block';
+  document.getElementById('f-id-old').value=stu.id||'';
+  document.getElementById('f-name-old').value=stu.name||'';
+}
+
+function resetLoginStep(){
+  document.getElementById('login-step1').style.display='block';
+  document.getElementById('login-step2-old').style.display='none';
+  document.getElementById('login-step2-new').style.display='none';
+  document.getElementById('login-err-step1').style.display='none';
+}
+
+// 舊生確認/修改送出
+function doLoginOld(){
+  var id=document.getElementById('f-id-old').value.trim();
+  var name=document.getElementById('f-name-old').value.trim();
+  var err=document.getElementById('login-err-old');
+  err.style.display='none';
+  if(!name){err.style.display='block';err.textContent='請填寫姓名。';return;}
+
+  try{
+    var d=localStorage.getItem('kj_s2');
+    if(d){var sv=JSON.parse(d);S=sv;}
+  }catch(e){}
+
+  S.loggedIn=true;
+  if(!S.student)S.student={};
+  S.student.id=id;
+  S.student.name=name;
+  // 性別／年級／程度／國籍沿用既有值（於「基本資料」頁填寫與修改）
+  if(!S.pre)S.pre={done:false,score:0,s1:0,s2:0,s3:0};
+  if(!S.post)S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  if(!S.pre.ans)S.pre.ans=null; if(!S.post.ans)S.post.ans=null;
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{},lookups:0,tts:0};
+  if(!S.weekSeen)S.weekSeen=[false,false,false,false];
+  if(!S.qpreDone)S.qpreDone=false;
+  if(!S.qpostDone)S.qpostDone=false;
+  save();
+  try{sendToSheets('login_return');}catch(e){}
+  LOG.segStart=Date.now();LOG.lastAct=Date.now();logEvent('login_return');
+  toast('歡迎回來，'+name+'！');
+  try{updateUI();}catch(e){}
+  try{updateSurveyLinks();}catch(e){}
+  try{initMobToggle();}catch(e){}
+  show('overview');
+}
+
+// 新生送出
+function doLoginNew(){
+  var id=document.getElementById('f-id').value.trim().toUpperCase();
+  var idConfirm=document.getElementById('f-id-confirm').value.trim().toUpperCase();
+  var name=document.getElementById('f-name').value.trim();
+  var ethics=document.getElementById('chk-ethics').checked;
+  var err=document.getElementById('login-err-new');
+  err.style.display='none';
+
+  if(!idConfirm){err.style.display='block';err.textContent='請再次輸入學號確認。';return;}
+  if(id!==idConfirm){err.style.display='block';err.textContent='兩次輸入的學號不一致，請確認。';return;}
+  if(!name){err.style.display='block';err.textContent='請填寫姓名。';return;}
+  if(!ethics){err.style.display='block';err.textContent='請勾選同意倫理宣言後再送出。';return;}
+
+  // 全新學生：清除舊資料
+  localStorage.removeItem('kj_s2');
+  S={loggedIn:true,
+     student:{id:id,name:name,gender:'',grade:'',tocfl:'',nation:''},
+     pre:{done:false,score:0,s1:0,s2:0,s3:0},
+     post:{done:false,score:0,s1:0,s2:0,s3:0},
+     weekSeen:[false,false,false,false],
+     qpreDone:false,qpostDone:false};
+  renderQ('pre');renderQ('post');
+  save();
+  toast('歡迎 '+name+'！請先完成基本資料。');
+  sendToSheets('login');LOG.segStart=Date.now();LOG.lastAct=Date.now();logEvent('login');updateUI();updateSurveyLinks();
+  initMobToggle();show('qpre');
+}
+
+// 舊版相容（保留空函式避免 HTML 舊按鈕呼叫錯誤）
+function doLogin(isNew){}
+function autoFill(id){}
+
+
+
+function doLogout(){
+  touchActivity();logEvent('logout');flushLog();LOG.segStart=0;
+  var nb=document.getElementById('new-student-btn');if(nb)nb.style.display='block';
+  S.loggedIn=false;save();
+  ['f-id','f-name','f-id-confirm'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+  var su=document.getElementById('sb-user');if(su)su.style.display='none';
+  document.querySelectorAll('.hn,.mhn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on','done');});
+  updateProgress();pendingLoginId='';
+  document.getElementById('login-step1').style.display='block';
+  document.getElementById('login-loading-card').style.display='none';
+  document.getElementById('login-error-card').style.display='none';
+  document.getElementById('login-consent-card').style.display='none';
+  resetLoginStep();show('login');toast('已登出。');
+}
+
+// ══ EXPORT ══
+function exportMyData(){
+  if(!S.loggedIn){toast('請先登入。');return;}
+  var t=['=== 京劇華語教學平台 學習資料 ===','學號: '+S.student.id,'姓名: '+S.student.name,'性別: '+S.student.gender,'年級: '+S.student.grade,'TOCFL: '+S.student.tocfl,'國籍: '+S.student.nation,'','前測 Part1: '+(S.pre.s1||0)+'/10','前測 Part2: '+(S.pre.s2||0)+'/10','前測 Part3: '+(S.pre.s3||0)+'/10','前測總分: '+(S.pre.score||0)+'/30','','後測 Part1: '+(S.post.s1||0)+'/10','後測 Part2: '+(S.post.s2||0)+'/10','後測 Part3: '+(S.post.s3||0)+'/10','後測總分: '+(S.post.score||0)+'/30','','第一週: '+(S.weekSeen[0]?'已觀看':'未觀看'),'第二週: '+(S.weekSeen[1]?'已觀看':'未觀看'),'第三週: '+(S.weekSeen[2]?'已觀看':'未觀看'),'第四週: '+(S.weekSeen[3]?'已觀看':'未觀看')].join('\n');
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){toast('已複製！');});}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('已複製！');}
+}
+
+// ══ 學習行為記錄（v3.5）══
+// 設計：事件先暫存在瀏覽器，於關鍵時點批次送出，避免大量並發打爆 Apps Script 配額
+// 有效時間：連續 5 分鐘無任何操作即停止計時（閒置不計入）
+var IDLE_LIMIT=300000;      // 閒置門檻 5 分鐘（毫秒）
+var LOG={buf:[],lastAct:0,segStart:0,curWeek:0};
+
+// 記錄一筆事件；type=事件類型，target=對象，extra=附加資訊
+function logEvent(type,target,extra){
+  if(!S.loggedIn||!S.student.id)return;
+  LOG.buf.push({t:new Date().toISOString(),type:type,target:target||'',extra:extra||''});
+  touchActivity();
+  if(LOG.buf.length>=40)flushLog(); // 累積過多先送一次，避免遺失
+}
+
+// 每次操作都更新活躍時間，並累計有效秒數
+function touchActivity(){
+  var now=Date.now();
+  if(LOG.segStart===0){LOG.segStart=now;LOG.lastAct=now;return;}
+  var gap=now-LOG.lastAct;
+  if(gap<=IDLE_LIMIT){
+    addActiveTime(gap,LOG.curWeek); // 間隔在門檻內才計入有效時間
+  }
+  LOG.lastAct=now;
+}
+
+// 累加有效毫秒到總計與各週
+function addActiveTime(ms,week){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  S.act.total+=ms;
+  if(week>=1&&week<=4)S.act.w[week-1]+=ms;
+  var d=new Date().toISOString().slice(0,10);
+  S.act.days[d]=1; // 記錄使用日期（去重後即為使用天數）
+  save();
+}
+
+// 批次送出事件日誌
+function flushLog(){
+  if(!S.loggedIn||!S.student.id||!LOG.buf.length)return;
+  var batch=LOG.buf.slice();LOG.buf=[];
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({event:'log',id:S.student.id,events:batch,summary:buildActSummary()})
+  }).catch(function(){LOG.buf=batch.concat(LOG.buf);}); // 失敗則放回緩衝，下次再送
+}
+
+// 彙總指標（寫入「資料」分頁 6 個欄位）
+function buildActSummary(){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  var weeksOpened=0;
+  for(var i=0;i<4;i++){if(S.weekSeen[i])weeksOpened++;}
+  return {
+    minutes:Math.round(S.act.total/60000),          // 總有效分鐘
+    days:Object.keys(S.act.days).length,            // 使用天數
+    unitRate:Math.round(weeksOpened/4*100),         // 單元完成率(%)
+    lookups:S.act.lookups||0,                       // 查詢次數
+    tts:S.act.tts||0                                // 朗讀次數
+  };
+}
+
+// 計數器
+function bumpCounter(k){
+  if(!S.act)S.act={total:0,w:[0,0,0,0],days:{}};
+  S.act[k]=(S.act[k]||0)+1;save();
+}
+
+// 離開頁面前送出剩餘事件（sendBeacon 在頁面卸載時仍可送達）
+window.addEventListener('beforeunload',function(){
+  if(!S.loggedIn||!S.student.id)return;
+  touchActivity();
+  try{
+    navigator.sendBeacon(SHEETS_URL,new Blob([JSON.stringify(
+      {event:'log',id:S.student.id,events:LOG.buf,summary:buildActSummary()}
+    )],{type:'text/plain'}));
+    LOG.buf=[];
+  }catch(e){}
+});
+// 每 3 分鐘自動送出一次，避免長時間停留累積過多未送資料
+setInterval(function(){if(S.loggedIn)flushLog();},180000);
+
+// ══ SHEETS（v3.0：確認式送出 + 雙保險）══
+function buildScorePayload(ev){
+  var now=new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'});
+  return {event:ev,time:now,id:S.student.id,name:S.student.name,gender:S.student.gender,grade:S.student.grade,tocfl:S.student.tocfl,nation:S.student.nation,pre_p1:S.pre.s1||'',pre_p2:S.pre.s2||'',pre_p3:S.pre.s3||'',pre_total:S.pre.done?S.pre.score:'',post_p1:S.post.s1||'',post_p2:S.post.s2||'',post_p3:S.post.s3||'',post_total:S.post.done?S.post.score:'',week1:S.weekSeen[0]?1:0,week2:S.weekSeen[1]?1:0,week3:S.weekSeen[2]?1:0,week4:S.weekSeen[3]?1:0,
+    pre_ans:(S.pre.done&&S.pre.ans)?S.pre.ans:'',pre_sc:(S.pre.done&&S.pre.sc)?S.pre.sc:'',
+    post_ans:(S.post.done&&S.post.ans)?S.post.ans:'',post_sc:(S.post.done&&S.post.sc)?S.post.sc:''};
+}
+// 確認式送出：text/plain 不觸發 CORS preflight，可讀取伺服器回應
+// onOk / onFail 為回呼函式；逾時 20 秒視為失敗
+function sendConfirm(payload,onOk,onFail){
+  var ctrl=new AbortController();
+  var timer=setTimeout(function(){ctrl.abort();},20000);
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),signal:ctrl.signal})
+    .then(function(r){return r.json();})
+    .then(function(res){
+      clearTimeout(timer);
+      if(res&&res.status==='ok'){if(onOk)onOk();}
+      else{if(onFail)onFail(res&&res.message);}
+    })
+    .catch(function(){clearTimeout(timer);if(onFail)onFail();});
+}
+// 低風險事件（登入紀錄）維持射後不理
+function sendToSheets(ev){
+  if(!SHEETS_URL)return;
+  fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(buildScorePayload(ev))}).catch(function(){});
+}
+// 測驗成績：確認式儲存（含失敗重試）
+function setSaveStatus(elId,cls,html){
+  var el=document.getElementById(elId);if(!el)return;
+  el.className='save-status '+cls;el.innerHTML=html;
+}
+function saveQuizToServer(quiz){
+  var stId=quiz+'-save-status';
+  setSaveStatus(stId,'saving','⏳ 正在將分數儲存到伺服器，請勿關閉頁面…');
+  sendConfirm(buildScorePayload(quiz==='pre'?'pretest':'posttest'),
+    function(){setSaveStatus(stId,'ok','✓ 分數已成功儲存');},
+    function(){setSaveStatus(stId,'fail','⚠ 分數儲存失敗（可能是網路不穩）。您的作答仍保留在此裝置，請按重試。<button class="btn-retry-save" onclick="saveQuizToServer(\''+quiz+'\')">重試</button>');}
+  );
+}
+// 後測教師解鎖：輸入教師密碼後清除後測紀錄並重新載入
+function unlockPosttest(){
+  var pw=prompt('請由教師輸入解鎖密碼：');
+  if(pw===null)return;
+  if(pw!=='opera2026'){toast('密碼錯誤。');return;}
+  S.post={done:false,score:0,s1:0,s2:0,s3:0};
+  save();
+  toast('後測已解鎖，頁面即將重新載入…');
+  setTimeout(function(){location.reload();},800);
+}
+
+// ══ SWITCH WEEK ══
+function switchWeek(n){
+  for(var i=1;i<=4;i++){document.getElementById('wk-'+i).style.display=(i===n)?'block':'none';var nb=document.getElementById('wnav'+i);if(nb)nb.classList.toggle('on',i===n);}
+  var titles=['第一週：天亡我楚','第二週：四面楚歌','第三週：力拔山兮氣蓋世','第四週：虞姬舞劍'];
+  var h=document.getElementById('course-h2');if(h)h.textContent=titles[n-1];
+  LOG.curWeek=n;logEvent('week_open','week'+n);
+  S.weekSeen[n-1]=true;save();updateProgress();
+}
+
+// ══ PROGRESS ══
+function updateProgress(){
+  var steps=0;
+  if(S.pre.done) steps++;
+  if(S.qpreDone) steps++;
+  for(var i=0;i<4;i++) if(S.weekSeen[i]) steps++;
+  if(S.post.done) steps++;
+  if(S.qpostDone) steps++;
+  var pct=Math.round(steps/8*100);
+  var pf=document.getElementById('prog-fill');if(pf)pf.style.width=pct+'%';
+  var pp=document.getElementById('prog-pct');if(pp)pp.textContent=pct+'%';
+  function setFC(id,faId,cls){
+    var el=document.getElementById(id);if(!el)return;
+    el.className='fc'+(cls?' '+cls:'');
+    if(faId){var fa=document.getElementById(faId);if(fa)fa.className='fa'+(cls==='done'?' done':'');}
+  }
+  if(S.pre.done) setFC('fc-pre','fa0','done'); else setFC('fc-pre','fa0','');
+  if(S.qpreDone){setFC('fc-qpre','fa1','done');var cb=document.getElementById('chk-qpre');if(cb)cb.checked=true;}
+  for(var w=1;w<=4;w++) if(S.weekSeen[w-1]) setFC('fc-w'+w,'fa'+(w+1),'done');
+  if(S.post.done) setFC('fc-post','fa6','done'); else setFC('fc-post','fa6','');
+  if(S.qpostDone){setFC('fc-qpost',null,'done');var cb2=document.getElementById('chk-qpost');if(cb2)cb2.checked=true;}
+  setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
+}
+
+// ══ SHOW / NAV ══
+function show(id){
+  // 內建問卷需先登入
+  if((id==='qpre'||id==='qpost') && !S.loggedIn){toast('請先登入。');id='login';}
+  // 順序鎖鏈：基本資料 → 華文能力前測 → 課程/後測 → 京劇研究問卷
+  if(id==='pretest' && S.loggedIn && !S.qpreDone){toast('請先完成基本資料。');id='qpre';}
+  if((id==='course'||id==='posttest') && S.loggedIn && !S.pre.done){
+    toast('請先完成華文能力前測。');
+    id=S.qpreDone?'pretest':'qpre';
+  }
+  if(id==='qpost' && S.loggedIn && !S.post.done){toast('請先完成華文能力後測。');id=S.pre.done?'posttest':(S.qpreDone?'pretest':'qpre');}
+  // 若前測已完成，不允許進入前測頁（改去總覽）
+  if(id==='pretest' && S.loggedIn && S.pre.done){
+    id='overview';
+  }
+  // 若前測未完成，清除舊的分數顯示（避免殘留舊帳號資料）
+  if(id==='pretest' && (!S.loggedIn || !S.pre.done)){
+    var sd=document.getElementById('pre-score-display');if(sd)sd.textContent='尚未送出';
+    ['1','2','3'].forEach(function(n){var el=document.getElementById('pre-s'+n+'-disp');if(el)el.textContent='0/10';});
+    var sa=document.getElementById('pre-submit-area');if(sa)sa.style.display='block';
+    var dm=document.getElementById('pre-done-msg');if(dm)dm.style.display='none';
+    ['p1','p2','p3'].forEach(function(p){
+      var el=document.getElementById('pre-'+p+'-qs');
+      if(el){var part=el.closest('.qpart');if(part)part.style.display='block';}
+    });
+  }
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  var el=document.getElementById('p-'+id);if(el)el.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(function(el){el.classList.remove('on');});
+  var m={overview:'sb-overview',login:'sb-login',pretest:'sb-pretest',posttest:'sb-posttest'};
+  if(m[id]){var s=document.getElementById(m[id]);if(s)s.classList.add('on');}
+  // 捲到最上方
+  var content=document.querySelector('.content');
+  if(content) content.scrollTop=0;
+  window.scrollTo(0,0);
+  // 手機版點選後收合側欄
+  if(window.innerWidth<=768){
+    var sb=document.getElementById('sidebar');
+    var ic=document.getElementById('mob-icon');
+    if(sb)sb.classList.remove('mob-open');
+    if(ic)ic.textContent='☰';
+  }
+}
+
+
+// ══ UI ══
+function updateSurveyLinks(){
+  var id=S.student.id||'';
+  var preLink=document.getElementById('pre-survey-link');
+  if(preLink) preLink.href='https://docs.google.com/forms/d/e/1FAIpQLSd82IpIS2kzDmcWJK8TTpY4cDYE4qjqU8mDsYv975ypeXYD4Q/viewform?usp=pp_url&entry.1821000575='+encodeURIComponent(id);
+  var preLink2=document.getElementById('pre-survey-link2');
+  if(preLink2) preLink2.href='https://docs.google.com/forms/d/e/1FAIpQLSd82IpIS2kzDmcWJK8TTpY4cDYE4qjqU8mDsYv975ypeXYD4Q/viewform?usp=pp_url&entry.1821000575='+encodeURIComponent(id);
+  var postLink=document.getElementById('post-survey-link');
+  if(postLink) postLink.href='https://docs.google.com/forms/d/e/1FAIpQLScUJM673tXq0dp9OCKqYOPwAqvloLr5b3gVdN7AYAB0oghU5A/viewform?usp=pp_url&entry.705153980='+encodeURIComponent(id);
+  var postLink2=document.getElementById('post-survey-link2');
+  if(postLink2) postLink2.href='https://docs.google.com/forms/d/e/1FAIpQLScUJM673tXq0dp9OCKqYOPwAqvloLr5b3gVdN7AYAB0oghU5A/viewform?usp=pp_url&entry.705153980='+encodeURIComponent(id);
+}
+
+function updateUI(){
+  if(S.loggedIn){
+    var su=document.getElementById('sb-user');if(su)su.style.display='block';
+
+  }
+  updateMobLogout();
+  updateSurveyLinks();
+  updateProgress();
+  // 華文前測入口狀態控制
+  var preTodo=document.getElementById('pre-entry-todo');
+  var preDone=document.getElementById('pre-entry-done');
+  var preScore=document.getElementById('pre-entry-score');
+  if(S.loggedIn){
+    if(S.pre.done){
+      if(preTodo) preTodo.style.display='none';
+      if(preDone) preDone.style.display='block';
+      if(preScore) preScore.textContent='Part1 '+( S.pre.s1||0)+'分 ‧ Part2 '+(S.pre.s2||0)+'分 ‧ Part3 '+(S.pre.s3||0)+'分 ‧ 總分 '+(S.pre.score||0)+'/30';
+    } else {
+      if(preTodo) preTodo.style.display='block';
+      if(preDone) preDone.style.display='none';
+    }
+  } else {
+    if(preTodo) preTodo.style.display='none';
+    if(preDone) preDone.style.display='none';
+  }
+  if(S.pre.done)restoreQuiz('pre');
+  if(S.post.done)restoreQuiz('post');
+}
+
+// ══ TOAST ══
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+
+// ══ MOBILE TOGGLE ══
+function toggleMobSidebar(){
+  var sb=document.getElementById('sidebar');
+  var ic=document.getElementById('mob-icon');
+  if(!sb)return;
+  var open=sb.classList.contains('mob-open');
+  sb.classList.toggle('mob-open',!open);
+  if(ic)ic.textContent=open?'☰':'✕';
+}
+function initMobToggle(){
+  var btn=document.getElementById('mob-toggle');
+  if(!btn)return;
+  if(window.innerWidth<=768){btn.style.display='flex';}
+  else{btn.style.display='none';}
+}
+window.addEventListener('resize',initMobToggle);
+function updateMobLogout(){
+  var btn=document.getElementById('mob-logout-btn');
+  if(btn)btn.style.display=S.loggedIn?'block':'none';
+}
+
+function nav(id,btn){document.querySelectorAll('.hn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
+function mnav(id,btn){document.querySelectorAll('.mhn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');show(id==='course'?'course':id);if(id==='course')switchWeek(1);}
+
+// ══ HELPERS ══
+var pendingLoginId='';
+var _secretClicks=0,_secretTimer=null;
+function secretClear(){
+  _secretClicks++;
+  if(_secretTimer) clearTimeout(_secretTimer);
+  _secretTimer=setTimeout(function(){_secretClicks=0;},3000);
+  if(_secretClicks>=5){
+    _secretClicks=0;
+    if(confirm('確定要清除所有暫存資料？')){
+      clearAllData();
+    }
+  }
+}
+function toggleQProgress(which, checked){
+  if(which==='qpre') S.qpreDone=checked;
+  else if(which==='qpost') S.qpostDone=checked;
+  save(); updateProgress();
+}
+function clearAllData(){
+  localStorage.removeItem('kj_s2');
+  localStorage.removeItem('kj_s'); // 舊版 key 也清除
+  S={loggedIn:false,student:{id:'',name:'',gender:'',grade:'',tocfl:'',nation:''},
+     pre:{done:false,score:0,s1:0,s2:0,s3:0},
+     post:{done:false,score:0,s1:0,s2:0,s3:0},
+     weekSeen:[false,false,false,false],
+     qpreDone:false,qpostDone:false};
+  renderQ('pre');renderQ('post');
+  ['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+  var sb=document.getElementById('sb-user');if(sb)sb.style.display='none';
+  updateProgress();show('login');
+  toast('✓ 瀏覽器資料已清除');
+}
+function showLogout(){doLogout();}
+function hideLogout(){}
+function speakAndShow(btn){
+  var row=btn.closest('.lrow');
+  if(row) row.classList.add('open');
+  var text=btn.dataset.t;
+  // 多音字修正：替換成正確讀音的同音字讓 TTS 正確發音
+  // 「傳將令」的「傳」讀 chuán（傳遞），TTS 容易讀成 zhuàn
+  // 用零寬空格技巧或替換字解決
+  text=text.replace('傳將令', '川將令');
+  // 「同行」的「行」讀 xíng（行走），TTS 容易讀成 háng
+  text=text.replace('同行，', '同型，');
+  speakText(text);
+}
+
+// ══ 內建研究問卷（v3.0）══
+// 全員皆使用本平台，SP 題組對全員顯示
+
+// 前測問卷選項
+var QPRE_OPTS={
+  years:['少於 1 年','1～2 年','2～3 年','3～5 年','5 年以上'],
+  opera:['完全不了解（從未接觸過京劇）','略有耳聞（聽過但不熟悉）','稍有了解（看過或讀過相關內容）','非常了解（深入了解京劇文化與表演）'],
+  motive:['個人興趣','工作或職涯發展','學業要求（課程必修）','與華語使用者溝通']
+};
+
+// 後測量表（順序對應後端「後測問卷」分頁欄位；SP 為平台組限定）
+var QPOST_SCALE=[
+  {key:'PCR',title:'知覺文化相關性',items:[
+    'PCR1. 學習京劇相關內容，可以幫助我建立中文學習目標。',
+    'PCR2. 以京劇作為學習素材，符合我的中文學習需求。',
+    'PCR3. 京劇相關知識，能幫助我連結我自身的中文學習經驗。']},
+  {key:'SP',title:'社會臨場感',items:[
+    'SP1. 在這個AI輔助京劇華語學習平台中，與AI系統及其他學習者互動時，我感到很自在。',
+    'SP2. 我覺得在這個AI輔助京劇學習環境中，我的學習回應與進度得到了認可。',
+    'SP3. 我覺得透過這個AI輔助京劇華語平台參與學習活動，感到很舒適。',
+    'SP4. 這個AI輔助京劇華語學習平台，營造了一種線上學習社群的感覺。']},
+  {key:'PDQ',title:'知覺課程設計品質',items:[
+    'PDQ1. 這個京劇課程設計良好。',
+    'PDQ2. 教師能有效地引導這個京劇課程。',
+    'PDQ3. 這個京劇課程可以創造一個高效率的學習環境。',
+    'PDQ4. 這個京劇課程幫助我更快地學習中文。']},
+  {key:'IM',title:'跨文化共情',items:[
+    'IM1. 對於那些與我文化背景不同的人（如劇中的中國歷史人物），我能理解他們的內心感受。',
+    'IM2. 我能夠設身處地，站在與我不同文化背景的人（如項羽、虞姬）的角度去思考。',
+    'IM3. 我能體會劇中人物在特定文化情境下（如四面楚歌），身為孤立無援者的那種獨特感受。',
+    'IM4. 當我看見劇中人物遭受壓迫或掙扎時，我能感同身受地分享他們的挫折感。',
+    'IM5. 當我接觸不同種族或文化背景的故事（如《霸王別姬》的劇情）時，我會產生共鳴與連結。']},
+  {key:'PC',title:'知覺能力',items:[
+    'PC1. 我對自己學習京劇相關中文內容的能力感到有信心。',
+    'PC2. 我有能力學會京劇相關的中文內容。',
+    'PC3. 我能夠達成京劇中文學習的目標。',
+    'PC4. 我覺得自己有能力應對京劇中文學習的挑戰，並表現出色。']},
+  {key:'PP',title:'知覺學習成效',items:[
+    'PP1. 這個京劇課程強化我對華語的理解能力。',
+    'PP2. 這個京劇課程可以激發我的學習潛能。',
+    'PP3. 這個京劇課程幫助我培養規劃個人學習任務的能力。',
+    'PP4. 這個京劇課程激勵我對華語文化的興趣。',
+    'PP5. 這個京劇課程提升了我的華語溝通能力。',
+    'PP6. 透過參與這個京劇課程，讓我更有信心去應對不熟悉的字詞。']},
+  {key:'SA',title:'學習滿意度',items:[
+    'SA1. 我覺得這個京劇課程很有價值。',
+    'SA2. 學習這門京劇課程增加了我對華語與京劇文化的興趣。',
+    'SA3. 這個京劇課程增加我對《霸王別姬》文本內容的理解。',
+    'SA4. 整體而言，我對這個京劇課程的品質感到滿意。',
+    'SA5. 整體而言，這次的學習活動是我曾經歷過很好的學習體驗。']},
+  {key:'CI',title:'持續學習意願',items:[
+    'CI1. 我打算在未來繼續學習華語。',
+    'CI2. 我會持續地學習華語語言與文化。',
+    'CI3. 我打算將在這個京劇課程學到的文化知識，應用於未來的華語學習中。',
+    'CI4. 如果可能，我願意參加其他結合戲劇或文化的華語課程。']}
+];
+
+// 渲染前測問卷選項
+function renderSurveyPre(){
+  var sel=document.getElementById('qpre-birth');
+  if(sel&&sel.options.length<=1){
+    for(var y=2012;y>=1975;y--){var o=document.createElement('option');o.value=String(y);o.textContent=y+' 年';sel.appendChild(o);}
+  }
+  function fill(boxId,name,opts){
+    var box=document.getElementById(boxId);if(!box||box.children.length)return;
+    opts.forEach(function(t){
+      var lbl=document.createElement('label');
+      lbl.innerHTML='<input type="radio" name="'+name+'" value="'+t+'"><span>'+t+'</span>';
+      box.appendChild(lbl);
+    });
+  }
+  fill('qpre-gender','qpre_gender',['女','男','其他']);
+  fill('qpre-years','qpre_years',QPRE_OPTS.years);
+  fill('qpre-opera','qpre_opera',QPRE_OPTS.opera);
+  fill('qpre-motive','qpre_motive',QPRE_OPTS.motive);
+}
+
+// 渲染京劇研究問卷量表
+function renderSurveyPost(){
+  var wrap=document.getElementById('qpost-blocks');if(!wrap)return;
+  wrap.innerHTML='';
+  QPOST_SCALE.forEach(function(blk){
+    var div=document.createElement('div');div.className='sv-block';
+    var h='<h4>'+blk.key+'　'+blk.title+'</h4><div class="sv-anchor">1 = 非常不同意　～　7 = 非常同意</div>';
+    blk.items.forEach(function(txt,i){
+      var nm='sv_'+blk.key+'_'+(i+1);
+      h+='<div class="sv-item" id="row-'+nm+'"><div class="sv-q">'+txt+'</div><div class="sv-scale">';
+      for(var v=1;v<=7;v++){h+='<label><input type="radio" name="'+nm+'" value="'+v+'"><span>'+v+'</span></label>';}
+      h+='</div></div>';
+    });
+    div.innerHTML=h;wrap.appendChild(div);
+  });
+}
+
+// 已完成狀態切換
+function setSurveyDoneUI(which,done){
+  var sub=document.getElementById(which+'-submit-area');
+  var dm=document.getElementById(which+'-done-msg');
+  if(sub)sub.style.display=done?'none':'block';
+  if(dm)dm.style.display=done?'block':'none';
+  var ov=document.getElementById('ov-'+which+'-status');
+  if(ov){ov.textContent=done?'✓ 已完成':'尚未填寫';ov.style.color=done?'#276749':'';}
+}
+
+// 送出前測問卷
+function submitSurveyPre(){
+  var id=S.loggedIn?S.student.id:'';
+  if(!id){toast('請先登入。');return;}
+  function val(n){var c=document.querySelector('input[name="'+n+'"]:checked');return c?c.value:'';}
+  var gender=val('qpre_gender');
+  var birth=document.getElementById('qpre-birth').value;
+  var grade=document.getElementById('qpre-grade').value;
+  var tocfl=document.getElementById('qpre-tocfl').value;
+  var years=val('qpre_years'),opera=val('qpre_opera'),motive=val('qpre_motive');
+  var nation=document.getElementById('qpre-nation').value;
+  if(nation==='其他'){nation=document.getElementById('qpre-nation-other').value.trim();}
+  if(!gender||!birth||!grade||!tocfl||!years||!opera||!motive||!nation){toast('尚有題目未作答，請完成後再送出。');return;}
+  var btn=document.getElementById('qpre-submit-btn');if(btn)btn.disabled=true;
+  setSaveStatus('qpre-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
+  sendConfirm({event:'survey_pre',id:id,gender:gender,birth:birth,grade:grade,tocfl:tocfl,nation:nation,years:years,opera:opera,motive:motive},
+    function(){
+      setSaveStatus('qpre-save-status','ok','✓ 問卷已成功儲存');
+      S.student.gender=gender;S.student.grade=grade;S.student.tocfl=tocfl;S.student.nation=nation;
+      logEvent('survey_submit','basic');flushLog();
+      S.qpreDone=true;save();updateProgress();updateUI();
+      setSurveyDoneUI('qpre',true);
+    },
+    function(){
+      if(btn)btn.disabled=false;
+      setSaveStatus('qpre-save-status','fail','⚠ 儲存失敗（可能是網路不穩），您的作答仍在頁面上，請再按一次送出。');
+    });
+}
+
+// 送出後測問卷
+function submitSurveyPost(){
+  var id=S.loggedIn?S.student.id:'';
+  if(!id){toast('請先登入。');return;}
+  var items=[];var missing=null;
+  document.querySelectorAll('.sv-item.sv-missing').forEach(function(el){el.classList.remove('sv-missing');});
+  QPOST_SCALE.forEach(function(blk){
+    blk.items.forEach(function(_,i){
+      var nm='sv_'+blk.key+'_'+(i+1);
+      var c=document.querySelector('input[name="'+nm+'"]:checked');
+      if(!c){
+        var row=document.getElementById('row-'+nm);
+        if(row){row.classList.add('sv-missing');if(!missing)missing=row;}
+        items.push(null);
+      }else{items.push(Number(c.value));}
+    });
+  });
+  if(missing){toast('尚有量表題未作答（已標示紅底），請完成後再送出。');missing.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  var btn=document.getElementById('qpost-submit-btn');if(btn)btn.disabled=true;
+  setSaveStatus('qpost-save-status','saving','⏳ 正在儲存問卷，請勿關閉頁面…');
+  sendConfirm({event:'survey_post',id:id,items:items,
+               q1:document.getElementById('qpost-q1').value.trim(),
+               q2:document.getElementById('qpost-q2').value.trim(),
+               q3:document.getElementById('qpost-q3').value.trim()},
+    function(){
+      setSaveStatus('qpost-save-status','ok','✓ 問卷已成功儲存');
+      logEvent('survey_submit','research');flushLog();
+      S.qpostDone=true;save();updateProgress();
+      setSurveyDoneUI('qpost',true);
+    },
+    function(){
+      if(btn)btn.disabled=false;
+      setSaveStatus('qpost-save-status','fail','⚠ 儲存失敗（可能是網路不穩），您的作答仍在頁面上，請再按一次送出。');
+    });
+}
+
+// ══ INIT ══
+load();renderQ('pre');renderQ('post');renderLyrics();switchWeek(1);
+renderSurveyPre();renderSurveyPost(); // v3.0 內建問卷
+// 永遠清空登入表單，永遠先顯示登入頁
+['f-id','f-name','f-grade','f-tocfl','f-nation'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+document.querySelectorAll('input[name="gender"]').forEach(function(r){r.checked=false;});
+show('login');
+updateUI();
+updateMobLogout();
+initMobToggle();
+setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
+
+</script>
+<div class="version-tag">v3.8-20261016</div>
+</body>
+</html>
