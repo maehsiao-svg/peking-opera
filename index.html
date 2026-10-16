@@ -876,7 +876,7 @@ html,body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-siz
 </div><!-- /app -->
 <div class="toast" id="toast"></div>
 <script>
-var SHEETS_URL='https://script.google.com/macros/s/AKfycbzkRMXSv3K56h4wsyOuJoW5JV0sD1JV-SAriE5rbp0uQIq_U6V73xQ5xEC1Vc35Ij4L/exec';
+var SHEETS_URL='https://script.google.com/macros/s/AKfycbylOhAxeUe0TKQshfKOlZkvaWVKAgyrzQNCI28AVhyCJrVWCvw1w4dn4_4qkZboPvgl/exec';
 
 var LYRICS = {
   1:[
@@ -1220,6 +1220,7 @@ function fetchStudentFromSheet(id){
         showOldStudentForm(res.state.student);
       } else if(res.status==='not_found'){
         // 新生：先閱讀同意書
+        document.getElementById('login-error-card').style.display='none';
         document.getElementById('login-step1').style.display='none';
         document.getElementById('login-consent-card').style.display='block';
         document.getElementById('consent-check').checked=false;
@@ -1260,6 +1261,8 @@ function checkStudentId(val){
 }
 
 function showOldStudentForm(stu){
+  var ec=document.getElementById('login-error-card');if(ec)ec.style.display='none';   // 清掉先前的錯誤訊息
+  var lc=document.getElementById('login-loading-card');if(lc)lc.style.display='none';
   document.getElementById('login-step1').style.display='none';
   document.getElementById('login-step2-old').style.display='block';
   document.getElementById('f-id-old').value=stu.id||'';
@@ -1889,6 +1892,6 @@ initMobToggle();
 setSurveyDoneUI('qpre',!!S.qpreDone);setSurveyDoneUI('qpost',!!S.qpostDone);
 
 </script>
-<div class="version-tag">v3.5.2-20260612</div>
+<div class="version-tag">v3.6-20261016</div>
 </body>
 </html>
